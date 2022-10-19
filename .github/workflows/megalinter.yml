@@ -28,7 +28,7 @@ jobs:
       # uses: oxsecurity/megalinter@f14608fee2e1b307de913042d6aad31d06dccf2b
         uses: oxsecurity/megalinter@v6.12.0
         env:
-          - DISABLE: SPELL
+          DISABLE: SPELL
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
         if: ${{ success() }} || ${{ failure() }}
