@@ -1,4 +1,4 @@
-package com.example.flutter_the_spec
+package com.example.flutterTheSpec
 
 import io.flutter.embedding.android.FlutterActivity
 
