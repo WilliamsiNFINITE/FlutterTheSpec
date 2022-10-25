@@ -10,8 +10,8 @@ This wiki shows how to setup the developping environment for the application.
 
 You need to have the following installed :
 
-- [Git](https://git-scm.com/) 
-
+- [Git](https://git-scm.com/)
+- 
 ### Clone directory
 
 You can clone this repository in the directory you want to make the installation with this command in the terminal:
@@ -21,11 +21,11 @@ git clone https://github.com/WilliamsiNFINITE/FlutterTheSpec.git
 
 ## Configuration
 
-# More
+## More
 
-## Author
+### Author
 
-Contact me for any question : 
+Contact me for any question :
 
 [By mail](mailto:williams.hoarau@ensta-bretagne.org)
 
