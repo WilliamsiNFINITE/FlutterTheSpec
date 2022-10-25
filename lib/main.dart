@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,105 +13,174 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+        ),
+        //  home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: Scaffold(
+            body: Center(
+              child: Container(
+                alignment: Alignment.center,
+                decoration:
+                BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+                child: const GraphScene(),
+              ),
+            )));
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class GraphScene extends StatefulWidget {
+  const GraphScene({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<GraphScene> createState() => _GraphSceneState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _GraphSceneState extends State<GraphScene> {
+  Map<Node, Offset> nodeMap = {
+    Node(name: 'node 1'): const Offset(100, 100),
+    Node(name: 'node 2'): const Offset(100, 100),
+    Node(name: 'node 3'): const Offset(100, 100),
+  };
+  final TransformationController _transformationController =
+  TransformationController();
 
-  void _incrementCounter() {
+  int idx = 4;
+
+  Function onDragStarted(Node key) => (x, y) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      nodeMap[key] = _transformationController.toScene(Offset(x, y));
     });
+  };
+
+  Offset? _doubleTapPosition;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () => {nodeMap.forEach((node, offset) => print(node.name))},
+        onDoubleTap: () {
+          setState(() {
+            nodeMap[Node(name: 'node ${idx++}')] =
+                _transformationController.toScene(_doubleTapPosition!);
+          });
+        },
+        onDoubleTapDown: (details) {
+          final RenderBox box = context.findRenderObject() as RenderBox;
+          _doubleTapPosition = box.globalToLocal(details.globalPosition);
+        },
+        child: Center(
+          child: InteractiveViewer(
+            // boundaryMargin: const EdgeInsets.all(2.0),
+              minScale: 0.001,
+              maxScale: 10.5,
+              // constrained: true,
+              transformationController: _transformationController,
+              child: Stack(
+                children: <Widget>[
+                  CustomPaint(
+                    size: const Size(double.infinity, double.infinity),
+                    painter: RelationPainter(nodeMap: nodeMap),
+                  ),
+                  ..._buildNodes()
+                ],
+              )),
+        ));
   }
+
+  List<Widget> _buildNodes() {
+    final res = <Widget>[];
+    nodeMap.forEach((node, offset) {
+      res.add(NodeWidget(
+          offset: offset, node: node, onDragStarted: onDragStarted(node)));
+    });
+    return res;
+  }
+}
+
+class NodeWidget extends StatelessWidget {
+  const NodeWidget(
+      {super.key,
+        required this.offset,
+        required this.node,
+        required this.onDragStarted});
+  final Offset offset;
+  final Node node;
+  final double size = 100;
+  final Function onDragStarted;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    return Positioned(
+      left: offset.dx - size / 2,
+      top: offset.dy - size / 2,
+      child: GestureDetector(
+          onPanStart: (data) =>
+              onDragStarted(data.globalPosition.dx, data.globalPosition.dy),
+          onPanUpdate: (data) =>
+              onDragStarted(data.globalPosition.dx, data.globalPosition.dy),
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: Colors.blueAccent.withOpacity(0.7),
+              border: Border.all(color: Colors.black),
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(10),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            child: Center(
+                child: TextField(
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Name:'),
+                  controller: TextEditingController()..text = node.name,
+                  onSubmitted: (value) => node.name = value,
+                )),
+          )),
     );
   }
 }
+
+class RelationPainter extends CustomPainter {
+  RelationPainter({required this.nodeMap});
+
+  final Map<Node, Offset> nodeMap;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (nodeMap.length > 1) {
+      Node? previous;
+      nodeMap.forEach((index, offset) {
+        if (previous == null) {
+          previous = index;
+          return;
+        }
+        canvas.drawLine(
+          offset,
+          nodeMap[previous]!,
+          Paint()
+            ..color = Colors.red
+            ..strokeWidth = 2,
+        );
+        previous = index;
+      });
+    }
+  }
+
+  @override
+  bool shouldRepaint(RelationPainter oldDelegate) => true;
+}
+
+class Node {
+  Node({this.name = ""});
+  String name;
+}
+
