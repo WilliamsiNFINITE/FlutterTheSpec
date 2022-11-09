@@ -23,6 +23,8 @@ You can clone this repository in the directory you want to make the installation
 
 ## Launch the application
 
+Note that the application can be found online [here](https://flutter-the-spec.surge.sh/)
+
 Move into the repository before launching the application You will have the choice to choose between different devices to run it. 
 
 ```console
