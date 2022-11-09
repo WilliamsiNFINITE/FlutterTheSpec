@@ -1,14 +1,26 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'node.dart';
-import 'nodeWidget.dart';
-import 'relationPainter.dart';
-import 'graphSceneState.dart';
 import 'graphScene.dart';
 
 
 void main() {
+//
+//
+// // get the json file from assets folder
+//   Future<String> _loadNodesAsset() async {
+//     return await rootBundle.loadString('assets/nodes.json');
+//   }
+// // set a variable with the json file content
+//   Future loadNodes() async {
+//     String jsonString = await _loadNodesAsset();
+//     final jsonResponse = json.decode(jsonString);
+//     print(jsonResponse);
+//     return jsonResponse;
+//   }
+//
+//   var my_data_test = loadNodes();
+//   print('my_data_test');
+//   print(my_data_test);
+
   runApp(const MyApp());
 }
 
