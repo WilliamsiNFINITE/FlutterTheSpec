@@ -1,7 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'node.dart';
+import 'automate.dart';
 
 
 class RelationPainter extends CustomPainter {

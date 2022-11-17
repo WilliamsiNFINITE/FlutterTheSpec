@@ -1,15 +1,19 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'node.dart';
+import 'automate.dart';
 import 'graphScene.dart';
 import 'nodeWidget.dart';
 import 'relationPainter.dart';
+// // import to read data from internet
+// import 'package:http/http.dart' as http;
 
-const String data = '''{
+
+const String data =
+'''{
     "nodes":[
         {
             "name": "node1test",
-            "offset": 
+            "offset":
                 {
                     "x" : 100,
                     "y" : 300
@@ -17,40 +21,41 @@ const String data = '''{
         },
         {
             "name": "node2test",
-            "offset": 
+            "offset":
                 {
-                    "x" : 200,
+                    "x" : 300,
+                    "y" : 400
+                }
+        },
+        {
+            "name": "node2test",
+            "offset":
+                {
+                    "x" : 300,
                     "y" : 400
                 }
         }
     ]
 }''';
 
-// var my_data = json.decode(data);
-var my_data = json.decode(data);
-
+// var myData = json.decode(data);
+var myData = json.decode(data);
 // intialize nodeMap
 Map<Node, Offset> nodeMap = {
 };
-
 // add nodes to nodeMap using the data from the json file with loadNodes()
-
-
-
-
 int addNodes(){
-  //add the nodes from my_data to the nodeMap
-  for (var i = 0; i < my_data['nodes'].length; i++) {
-    nodeMap[Node(name: my_data['nodes'][i]['name'])] = Offset( my_data['nodes'][i]['offset']['x'],my_data['nodes'][i]['offset']['y']);
+  //add the nodes from myData to the nodeMap
+  for (int i = 0; i < myData['nodes'].length; i++) {
+    nodeMap[Node(name: myData['nodes'][i]['name'])] = Offset( myData['nodes'][i]['offset']['x'],myData['nodes'][i]['offset']['y']);
   }
-  return 1;
+  print(nodeMap);
+  return 0;
 }
 
 class GraphSceneState extends State<GraphScene> {
-  // Open the file nodes.json
 
-
-  int a = addNodes();
+  var a = addNodes();
 
   final TransformationController _transformationController =
   TransformationController();

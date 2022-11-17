@@ -1,7 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'node.dart';
+import 'automate.dart';
 
 class NodeWidget extends StatelessWidget {
   const NodeWidget(
@@ -29,7 +27,7 @@ class NodeWidget extends StatelessWidget {
             height: size,
             decoration: BoxDecoration(
               color: Colors.blueAccent.withOpacity(0.7),
-              border: Border.all(color: Colors.black),
+              // border: Border.all(color: Colors.black),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(10),
             ),
