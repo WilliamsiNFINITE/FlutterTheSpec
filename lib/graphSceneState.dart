@@ -7,7 +7,7 @@ import 'relationPainter.dart';
 // // import to read data from internet
 // import 'package:http/http.dart' as http;
 
-
+// ____________________________________Partie de production_______________________________________________________
 const String data =
 '''{
     "nodes":[
@@ -41,26 +41,32 @@ const String data =
 // var myData = json.decode(data);
 var myData = json.decode(data);
 // intialize nodeMap
-Map<Node, Offset> nodeMap = {
-};
+Map<Node, Offset> nodeMap = {};
 // add nodes to nodeMap using the data from the json file with loadNodes()
 int addNodes(){
   //add the nodes from myData to the nodeMap
   for (int i = 0; i < myData['nodes'].length; i++) {
     nodeMap[Node(name: myData['nodes'][i]['name'])] = Offset( myData['nodes'][i]['offset']['x'],myData['nodes'][i]['offset']['y']);
   }
-  print(nodeMap);
+  // print(nodeMap);
   return 0;
 }
 
-class GraphSceneState extends State<GraphScene> {
 
+
+// class GraphSceneState extends State<GraphScene> that take one parameter
+class GraphSceneState extends State<GraphScene>{
+
+  //  partie de test
+
+  // partie de production
   var a = addNodes();
-
-  final TransformationController _transformationController =
-  TransformationController();
-
+  final TransformationController _transformationController = TransformationController();
   int idx = 4;
+
+  // GraphSceneState(nodeMapTest){
+  //   nodeMap = nodeMapTest;
+  // }
 
   Function onDragStarted(Node key) => (x, y) {
     setState(() {
@@ -103,6 +109,8 @@ class GraphSceneState extends State<GraphScene> {
   }
 
   List<Widget> _buildNodes() {
+
+
     final res = <Widget>[];
     nodeMap.forEach((node, offset) {
       res.add(NodeWidget(

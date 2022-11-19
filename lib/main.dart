@@ -16,8 +16,6 @@ Future<Map<String,dynamic>> fetchData() async {
   }
 }
 
-//use the function fetchData() to get the data from the internet in a variable called datatest
-
 Future<Map<String, dynamic>> getData() async {
   var data = await fetchData();
   print(data);
@@ -37,15 +35,35 @@ Future<NodeTest> dataToNode() async {
 }
 
 
-void main() {
+Future<void> main() async {
 
-  Future<NodeTest> nodeTest = dataToNode();
+// ____________________________________Partie de test_______________________________________________________
+//
+//   // récupérer l'automate en ligne
+//   var automate = await getData();
+//   var nodes = automate['nodes'];
+//   var relations = automate['relations'];
+//
+//   // créer un map des nodes
+//   Map<Node, Offset> nodeMapTest = {
+//   };
+//
+//   // ajouter les nodes au map
+//   for (int i = 0; i < nodes.length; i++) {
+//     nodeMapTest[Node(name: nodes[i]['name'])] = Offset( nodes[i]['offset']['x'],nodes[i]['offset']['y']);
+//   }
+//
+//   print("nodeMapTest vaut : $nodeMapTest");
+
+
+  // Future<NodeTest> nodeTest = dataToNode();
   // print(nodeTest.nodes.toString()); // LE PROBLEME EST QUE LE JSON CONTIENT UN MAP DE NODES ET NON UN NODE
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
 
   // This widget is the root of your application.
   @override
