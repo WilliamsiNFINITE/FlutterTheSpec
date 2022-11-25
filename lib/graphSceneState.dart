@@ -23,7 +23,7 @@ class GraphSceneState extends State<GraphScene> {
 
     var automate = await fetchData();
     var nodes = automate['nodes'];
-
+    var relations = automate['relations'];
 
     // créer un map des nodes
     Map<Node, Offset> nodeMapTest = {};
