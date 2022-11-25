@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'automate.dart';
 import 'graphScene.dart';
-import 'nodeWidget.dart';
+import 'widget/nodeWidget.dart';
 import 'relationPainter.dart';
 // import to read data from internet
 import 'package:http/http.dart' as http;
