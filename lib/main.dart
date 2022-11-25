@@ -31,8 +31,8 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Flutter the Spec'),
             actions: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                 child:DropdownButton(
                   style: const TextStyle(color: Colors.white, fontSize: 20),
                   hint: const Text('File'),
@@ -48,8 +48,11 @@ class MyApp extends StatelessWidget {
                 ),
               ),
 
-              Padding(
-                  padding: EdgeInsets.all(20.0),
+              Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.green,
+                  ),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                   child: GestureDetector(
                     onTap: () {},
                     // child with a text centerd
@@ -62,8 +65,8 @@ class MyApp extends StatelessWidget {
                     ),
                   )
               ),
-              Padding(
-                  padding: EdgeInsets.all(20.0),
+              Container(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                   child: GestureDetector(
                     onTap: () {},
                     child: const Icon(
@@ -72,8 +75,8 @@ class MyApp extends StatelessWidget {
                     ),
                   )
               ),
-              Padding(
-                  padding: EdgeInsets.all(20.0),
+              Container(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                   child: GestureDetector(
                     onTap: () {},
                     child: const Icon(
@@ -93,6 +96,7 @@ class MyApp extends StatelessWidget {
                 decoration: BoxDecoration(border:  Border.all(color: Colors.blue)),
                 child: const GraphScene(),
               ),
+
             )
         )
     );
