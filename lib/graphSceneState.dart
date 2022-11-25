@@ -4,85 +4,67 @@ import 'automate.dart';
 import 'graphScene.dart';
 import 'nodeWidget.dart';
 import 'relationPainter.dart';
-// // import to read data from internet
-// import 'package:http/http.dart' as http;
+// import to read data from internet
+import 'package:http/http.dart' as http;
 
-// ____________________________________Partie de production_______________________________________________________
-const String data =
-'''{
-    "nodes":[
-        {
-            "name": "node1test",
-            "offset":
-                {
-                    "x" : 100,
-                    "y" : 300
-                }
-        },
-        {
-            "name": "node2test",
-            "offset":
-                {
-                    "x" : 300,
-                    "y" : 400
-                }
-        },
-        {
-            "name": "node2test",
-            "offset":
-                {
-                    "x" : 300,
-                    "y" : 400
-                }
-        }
-    ]
-}''';
 
-// var myData = json.decode(data);
-var myData = json.decode(data);
-// intialize nodeMap
-Map<Node, Offset> nodeMap = {};
-// add nodes to nodeMap using the data from the json file with loadNodes()
-int addNodes(){
-  //add the nodes from myData to the nodeMap
-  for (int i = 0; i < myData['nodes'].length; i++) {
-    nodeMap[Node(name: myData['nodes'][i]['name'])] = Offset( myData['nodes'][i]['offset']['x'],myData['nodes'][i]['offset']['y']);
+class GraphSceneState extends State<GraphScene> {
+
+  Future<Map<String,dynamic>> fetchData() async {
+    final response = await http.get(Uri.parse('https://dl.dropbox.com/s/e2886piklyftecv/nodes.json?dl=0'));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to get the data');
+    }
   }
-  // print(nodeMap);
-  return 0;
-}
+
+  createNodeMap() async{
+
+    var automate = await fetchData();
+    var nodes = automate['nodes'];
 
 
+    // créer un map des nodes
+    Map<Node, Offset> nodeMapTest = {};
+    // ajouter les nodes au map
+    for (int i = 0; i < nodes.length; i++) {
+      nodeMapTest[Node(name: nodes[i]['name'])] = Offset( nodes[i]['offset']['x'],nodes[i]['offset']['y']);
+    }
+    setState(() {
+      testNodeMap = nodeMapTest;
+    });
+  }
 
-// class GraphSceneState extends State<GraphScene> that take one parameter
-class GraphSceneState extends State<GraphScene>{
-
-  //  partie de test
+  Map<Node, Offset> testNodeMap = {};
 
   // partie de production
-  var a = addNodes();
   final TransformationController _transformationController = TransformationController();
-  int idx = 4;
-
-  // GraphSceneState(nodeMapTest){
-  //   nodeMap = nodeMapTest;
-  // }
+  int idx = 1;
 
   Function onDragStarted(Node key) => (x, y) {
     setState(() {
-      nodeMap[key] = _transformationController.toScene(Offset(x, y));
+      testNodeMap[key] = _transformationController.toScene(Offset(x, y));
     });
   };
 
+  @override
+  void initState() {
+    super.initState();
+    createNodeMap();
+    // importAutomate();
+
+  }
+
   Offset? _doubleTapPosition;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => {nodeMap.forEach((node, offset) => print(node.name))},
+        onTap: () => {testNodeMap.forEach((node, offset) => print(node.name))},
         onDoubleTap: () {
           setState(() {
-            nodeMap[Node(name: 'node ${idx++}')] =
-                _transformationController.toScene(_doubleTapPosition!);
+            testNodeMap[Node(name: 'node ${idx++}')] = _transformationController.toScene(_doubleTapPosition!);
           });
         },
         onDoubleTapDown: (details) {
@@ -100,19 +82,17 @@ class GraphSceneState extends State<GraphScene>{
                 children: <Widget>[
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
-                    painter: RelationPainter(nodeMap: nodeMap),
+                    painter: RelationPainter(nodeMap: testNodeMap),
                   ),
-                  ..._buildNodes()
+                  ..._buildNodes(),
                 ],
               )),
         ));
   }
 
   List<Widget> _buildNodes() {
-
-
     final res = <Widget>[];
-    nodeMap.forEach((node, offset) {
+    testNodeMap.forEach((node, offset) {
       res.add(NodeWidget(
           offset: offset, node: node, onDragStarted: onDragStarted(node)));
     });
