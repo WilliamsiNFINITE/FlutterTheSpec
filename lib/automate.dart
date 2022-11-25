@@ -49,28 +49,10 @@ class Node {
 
 }
 
-// class NodeTest{
-//
-//     String name;
-//     Offset offset;
-//
-//     NodeTest({this.name = "", this.offset = Offset.zero});
-//
-//     factory NodeTest.fromJson(Map<String, dynamic> json) {
-//         var offset = json['offset'];
-//         return NodeTest(
-//             name: json['name'],
-//             offset: Offset(offset['x'], offset['y']),
-//         );
-//     }
-//
-// }
-
-
 class Relation {
 
-    Node source;
-    Node target;
+    String source;
+    String target;
     String guard;
     String sync;
     String update;
@@ -88,21 +70,6 @@ class Relation {
         );
     }
 }
-
-// class RelationTest{
-//
-//       NodeTest source;
-//       NodeTest target;
-//       RelationTest({required this.source, required this.target});
-//
-//       factory RelationTest.fromJson(Map<String, dynamic> json) {
-//           return RelationTest(
-//               source: json['source'],
-//               target: json['target']
-//           );
-//       }
-//
-// }
 
 class Predecessor {
 

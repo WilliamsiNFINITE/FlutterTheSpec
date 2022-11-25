@@ -10,6 +10,11 @@ import 'package:http/http.dart' as http;
 
 class GraphSceneState extends State<GraphScene> {
 
+  Map<Node, Offset> nodeMap = {};
+  late List<Node> nodes;
+  late List<Relation> relations;
+  late Automate automate;
+
   Future<Map<String,dynamic>> fetchData() async {
     final response = await http.get(Uri.parse('https://dl.dropbox.com/s/e2886piklyftecv/nodes.json?dl=0'));
     if (response.statusCode == 200) {
@@ -19,24 +24,25 @@ class GraphSceneState extends State<GraphScene> {
     }
   }
 
-  createNodeMap() async{
+  importAutomate() async {
+    Map<String,dynamic> data = await fetchData();
 
-    var automate = await fetchData();
-    var nodes = automate['nodes'];
-    var relations = automate['relations'];
+    var automateTemp = Automate.fromJson(data);
+    var nodesTemp = automateTemp.nodes;
+    var relationsTemp = automateTemp.relations;
+    Map<Node, Offset> nodeMapTemp = {};
 
-    // créer un map des nodes
-    Map<Node, Offset> nodeMapTest = {};
-    // ajouter les nodes au map
-    for (int i = 0; i < nodes.length; i++) {
-      nodeMapTest[Node(name: nodes[i]['name'])] = Offset( nodes[i]['offset']['x'],nodes[i]['offset']['y']);
+    for (Node node in nodesTemp) {
+      nodeMapTemp[node] = Offset( node.offset.dx,node.offset.dy);
     }
+
     setState(() {
-      testNodeMap = nodeMapTest;
+      automate = automateTemp;
+      nodes = nodesTemp;
+      relations = relationsTemp;
+      nodeMap = nodeMapTemp;
     });
   }
-
-  Map<Node, Offset> testNodeMap = {};
 
   // partie de production
   final TransformationController _transformationController = TransformationController();
@@ -44,16 +50,14 @@ class GraphSceneState extends State<GraphScene> {
 
   Function onDragStarted(Node key) => (x, y) {
     setState(() {
-      testNodeMap[key] = _transformationController.toScene(Offset(x, y));
+      nodeMap[key] = _transformationController.toScene(Offset(x, y));
     });
   };
 
   @override
   void initState() {
     super.initState();
-    createNodeMap();
-    // importAutomate();
-
+    importAutomate();
   }
 
   Offset? _doubleTapPosition;
@@ -61,10 +65,10 @@ class GraphSceneState extends State<GraphScene> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => {testNodeMap.forEach((node, offset) => print(node.name))},
+        onTap: () => {nodeMap.forEach((node, offset) => print(node.name))},
         onDoubleTap: () {
           setState(() {
-            testNodeMap[Node(name: 'node ${idx++}')] = _transformationController.toScene(_doubleTapPosition!);
+            nodeMap[Node(name: 'node ${idx++}')] = _transformationController.toScene(_doubleTapPosition!);
           });
         },
         onDoubleTapDown: (details) {
@@ -82,7 +86,7 @@ class GraphSceneState extends State<GraphScene> {
                 children: <Widget>[
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
-                    painter: RelationPainter(nodeMap: testNodeMap),
+                    painter: RelationPainter(nodeMap: nodeMap),
                   ),
                   ..._buildNodes(),
                 ],
@@ -92,7 +96,7 @@ class GraphSceneState extends State<GraphScene> {
 
   List<Widget> _buildNodes() {
     final res = <Widget>[];
-    testNodeMap.forEach((node, offset) {
+    nodeMap.forEach((node, offset) {
       res.add(NodeWidget(
           offset: offset, node: node, onDragStarted: onDragStarted(node)));
     });
