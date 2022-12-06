@@ -16,6 +16,13 @@ class Automate {
       return Automate(nodes: nodesList, relations: relationsList);
     }
 
+    Map<String, dynamic> toJson() {
+      return {
+        'nodes': nodes.map((node) => node.toJson()).toList(),
+        'relations': relations.map((relation) => relation.toJson()).toList(),
+      };
+    }
+
 }
 
 
@@ -47,6 +54,19 @@ class Node {
         );
     }
 
+    Map<String, dynamic> toJson() {
+        return {
+            'name': name,
+            'invariant': invariant,
+            'expIntensity': expIntensity,
+            'isInitial': isInitial,
+            'isUrgent': isUrgent,
+            'isEngaged': isEngaged,
+            'offset': offset,
+        };
+    }
+
+
 }
 
 class Relation {
@@ -69,6 +89,16 @@ class Relation {
             update: json['update']
         );
     }
+
+    Map<String, dynamic> toJson() {
+        return {
+            'source': source,
+            'target': target,
+            'guard': guard,
+            'sync': sync,
+            'update': update,
+        };
+    }
 }
 
 class Predecessor {
@@ -84,7 +114,6 @@ class Successor {
 
     Node node;
     Relation relation;
-
     Successor({required this.node, required this.relation});
 
 }

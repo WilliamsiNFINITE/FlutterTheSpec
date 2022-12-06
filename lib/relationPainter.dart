@@ -3,29 +3,41 @@ import 'automate.dart';
 
 
 class RelationPainter extends CustomPainter {
-  RelationPainter({required this.nodeMap});
+  RelationPainter({required this.nodeMap, required this.relations});
 
   final Map<Node, Offset> nodeMap;
+  final List<Relation> relations; //TODO relations not definied ?
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (nodeMap.length > 1) {
-      Node? previous;
-      nodeMap.forEach((index, offset) {
-        if (previous == null) {
-          previous = index;
-          return;
-        }
-        canvas.drawLine(
-          offset,
-          nodeMap[previous]!,
-          Paint()
-            ..color = Colors.blue
-            ..strokeWidth = 2,
-        );
-        previous = index;
-      });
+    //check if relations is empty
+    if (relations.isEmpty) {
+      return;
     }
+    for (Relation relation in relations) {
+      //find the offsets and draw the line
+      // print('relation: ${relation.source} -> ${relation.target}');
+      for (Node node in nodeMap.keys) {
+        if (node.name == relation.source) {
+          Offset start = nodeMap[node]!;
+          //find the ending offset
+          for (Node node in nodeMap.keys) {
+            if (node.name == relation.target) {
+              Offset end = nodeMap[node]!;
+              //draw the line
+              canvas.drawLine(
+                  start,
+                  end,
+                  Paint()
+                    ..color = Colors.black
+                    ..strokeWidth = 2);
+            }
+          }
+        }
+      }
+    }
+
+
   }
 
   @override

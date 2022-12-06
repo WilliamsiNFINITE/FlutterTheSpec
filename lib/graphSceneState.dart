@@ -1,4 +1,5 @@
 import 'dart:convert';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'automate.dart';
 import 'graphScene.dart';
@@ -46,11 +47,12 @@ class GraphSceneState extends State<GraphScene> {
 
   // partie de production
   final TransformationController _transformationController = TransformationController();
-  int idx = 1;
+  int idx = 0;
 
   Function onDragStarted(Node key) => (x, y) {
     setState(() {
       nodeMap[key] = _transformationController.toScene(Offset(x, y));
+      updateNode(key, x, y);
     });
   };
 
@@ -65,10 +67,12 @@ class GraphSceneState extends State<GraphScene> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => {nodeMap.forEach((node, offset) => print(node.name))},
+        onTap: () => {nodeMap.forEach((node, offset) => print(node.offset))},
         onDoubleTap: () {
           setState(() {
-            nodeMap[Node(name: 'node ${idx++}')] = _transformationController.toScene(_doubleTapPosition!);
+            nodeMap[Node(name: 'new node ${idx}')] = _transformationController.toScene(_doubleTapPosition!);
+            addNewNode('new node ${idx}', _doubleTapPosition!.dx, _doubleTapPosition!.dy);
+            idx++;
           });
         },
         onDoubleTapDown: (details) {
@@ -86,7 +90,7 @@ class GraphSceneState extends State<GraphScene> {
                 children: <Widget>[
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
-                    painter: RelationPainter(nodeMap: nodeMap),
+                    painter: RelationPainter(nodeMap: nodeMap, relations: relations), //TODO relations not definied ?
                   ),
                   ..._buildNodes(),
                 ],
@@ -102,4 +106,33 @@ class GraphSceneState extends State<GraphScene> {
     });
     return res;
   }
+
+  void updateNode(Node key, x, y) {
+    for (Node node in nodes) {
+      if (node.name == key.name) {
+        node.offset = Offset(x, y);
+      }
+    }
+    //print nodes offset
+    for (Node node in nodes) {
+      print('node ${node.name} offset: ${node.offset}');
+    }
+    updateAutomate();
+  }
+
+  void updateAutomate() {
+    automate.nodes = nodes;
+    automate.relations = relations;
+
+    // print automate
+    print('automate: ${automate.toJson()}');
+  }
+
+  void addNewNode(String name, double dx, double dy) {
+    nodes.add(Node(name: name, offset: Offset(dx, dy)));
+    updateAutomate();
+  }
+
+
+
 }

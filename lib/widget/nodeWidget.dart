@@ -29,12 +29,14 @@ class NodeWidget extends StatelessWidget {
               color: Colors.blueAccent.withOpacity(0.7),
               // border: Border.all(color: Colors.black),
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(100),
             ),
             child: Center(
                 child: TextField(
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Name:'),
+                      border: InputBorder.none,
+                      labelText: 'Name:'),
+
                   controller: TextEditingController()..text = node.name,
                   onSubmitted: (value) => node.name = value,
                 )),
