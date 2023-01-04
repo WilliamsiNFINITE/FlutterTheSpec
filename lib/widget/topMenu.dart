@@ -7,184 +7,74 @@ class TopMenu extends AppBar {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.grey,
+      // backgroundColor: Colors.grey,
+      toolbarHeight: 50,
+      backgroundColor: Color.fromRGBO(220, 220, 220, 1),
       title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextButton(
-            child: Text('Fichier', style: TextStyle(color: Colors.white)),
+            // key: keyFile,
+            child: Text('Fichier', style: TextStyle(color: Colors.black)),
             onPressed: () {
-              //container with 4 buttons
-              showDialog(
+              // Afficher les 4 boutons dans un menu déroulant
+              showMenu(
                   context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Fichier'),
-                      content: Container(
-                        height: 200,
-                        width: 200,
-                        child: Column(
-                          children: [
-                            TextButton(
-                              child: Text('Nouveau'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Ouvrir'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Enregistrer'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Enregistrer sous'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  });
-              print('Fichier');
-              // TODO: implement onPressed
-            },
-          ),
-          TextButton(
-            child: Text('Edition', style: TextStyle(color: Colors.white)),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Edition'),
-                      content: Container(
-                        height: 200,
-                        width: 200,
-                        child: Column(
-                          children: [
-                            TextButton(
-                              child: Text('Annuler'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Refaire'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Copier'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Coller'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  });
-              print('Edition');
-              // TODO: implement onPressed
-            },
-          ),
-          TextButton(
-            child: Text('Vue', style: TextStyle(color: Colors.white)),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Vue'),
-                      content: Container(
-                        height: 200,
-                        width: 200,
-                        child: Column(
-                          children: [
-                            TextButton(
-                              child: Text('Zoom'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Etiquette'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Grille'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  });
-              print('Vue');
+                  // position: RelativeRect.fromRect(new Rect.fromPoints(new Offset(0.0, 55.0), new Offset(0.0, 55.0)), new Rect.fromPoints(new Offset(50.0, 5.0), new Offset(200.0, 500.0))),
+                  position: RelativeRect.fromLTRB(15, 52, 15, 0), //TODO éviter de coder en dur la position du menu
+                  items: ["Nouveau", "Ouvrir", "Enregistrer sous"].map((e) => PopupMenuItem(child: Text(e), value: e)).toList());
 
-              // TODO: implement onPressed
+              print('Fichier');
             },
           ),
           TextButton(
-            child: Text('Outils', style: TextStyle(color: Colors.white)),
+            child: Text('Edition', style: TextStyle(color: Colors.black)),
             onPressed: () {
-              print('Outils');
-              //
-            },
-          ),
-          TextButton(
-            child: Text('Options', style: TextStyle(color: Colors.white)),
-            onPressed: () {
-              print('Options');
-              // TODO: implement onPressed
-            },
-          ),
-          TextButton(
-            child: Text('Aide', style: TextStyle(color: Colors.white)),
-            onPressed: () {
-              showDialog(
+              showMenu(
                   context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Fichier'),
-                      content: Container(
-                        height: 200,
-                        width: 200,
-                        child: Column(
-                          children: [
-                            TextButton(
-                              child: Text('A propos'),
-                              onPressed: () {
-                                //TODO
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  });
-              print('Aide');
+                  position: RelativeRect.fromLTRB(75, 52, 75, 0), //TODO éviter de coder en dur la position du menu
+                  items: ["Annuler", "Refaire", "Copier", "Couper", "Coller"].map((e) => PopupMenuItem(child: Text(e), value: e)).toList());
+
+              print('Edition');
+            },
+          ),
+          TextButton(
+            child: Text('Vue', style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              showMenu(
+                  context: context,
+                  position: RelativeRect.fromLTRB(135, 52, 135, 0), //TODO éviter de coder en dur la position du menu
+                  items: ["Zoom Adapté", "Zoomer", "Dézoomer", "Etiquettes", "Grille"].map((e) => PopupMenuItem(child: Text(e), value: e)).toList());
+
+              print('Vue');
+            },
+          ),
+          TextButton(
+            child: Text('Outils', style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              showMenu(
+                  context: context,
+                  position: RelativeRect.fromLTRB(190, 52, 190, 0), //TODO éviter de coder en dur la position du menu
+                  items: ["Vérifier la synthaxe"].map((e) => PopupMenuItem(child: Text(e), value: e)).toList());
+
+              print('Outils');
+            },
+          ),
+          TextButton(
+            child: Text('Options', style: TextStyle(color: Colors.black)),
+            onPressed: () {
               // TODO: implement onPressed
+            },
+          ),
+          TextButton(
+            child: Text('Aide', style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              showMenu(
+                  context: context,
+                  position: RelativeRect.fromLTRB(310, 52, 310, 0), //TODO éviter de coder en dur la position du menu
+                  items: ["A propos"].map((e) => PopupMenuItem(child: Text(e), value: e)).toList());
+
+              print('Aide');
             },
           ),
         ],
