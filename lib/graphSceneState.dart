@@ -1,13 +1,13 @@
 import 'dart:convert';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_the_spec/logic/export.dart';
 import 'automate.dart';
 import 'graphScene.dart';
 import 'widget/nodeWidget.dart';
 import 'relationPainter.dart';
 // import to read data from internet
 import 'package:http/http.dart' as http;
-
 
 class GraphSceneState extends State<GraphScene> {
 
@@ -90,7 +90,7 @@ class GraphSceneState extends State<GraphScene> {
                 children: <Widget>[
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
-                    painter: RelationPainter(nodeMap: nodeMap, relations: relations), //TODO relations not definied ?
+                    painter: RelationPainter(nodeMap: nodeMap, relations: relations),
                   ),
                   ..._buildNodes(),
                 ],
@@ -125,7 +125,8 @@ class GraphSceneState extends State<GraphScene> {
     automate.relations = relations;
 
     // print automate
-    print('automate: ${automate.toJson()}');
+    // exportAutomate(automate);
+    print('automate: ${automate.  toJson()}');
   }
 
   void addNewNode(String name, double dx, double dy) {
@@ -133,6 +134,8 @@ class GraphSceneState extends State<GraphScene> {
     updateAutomate();
   }
 
-
+  Automate getAutomate() {
+    return automate;
+  }
 
 }

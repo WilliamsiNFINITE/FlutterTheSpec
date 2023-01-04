@@ -62,7 +62,7 @@ class Node {
             'isInitial': isInitial,
             'isUrgent': isUrgent,
             'isEngaged': isEngaged,
-            'offset': offset,
+            'offset': {'x': offset.dx, 'y': offset.dy},
         };
     }
 
