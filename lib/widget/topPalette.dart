@@ -18,8 +18,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Nouveau', style: TextStyle(color: Colors.black)),
+                child: IconButton(
+                  icon: const Icon(Icons.create_new_folder),
+                  tooltip: 'Nouveau',
                   onPressed: () {
                     //TODO
                   },
@@ -28,8 +29,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Ouvrir'),
+                child: IconButton(
+                  icon: const Icon(Icons.file_open),
+                  tooltip: 'Ouvrir',
                   onPressed: () {
                     //TODO
                   },
@@ -38,8 +40,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Enregistrer sous'),
+                child: IconButton(
+                  icon: const Icon(Icons.save_alt),
+                  tooltip: 'Télécharger',
                   onPressed: () {
                     //TODO
                   },
@@ -48,8 +51,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Annuler'),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  tooltip: 'Annuler',
                   onPressed: () {
                     //TODO
                   },
@@ -58,8 +62,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Refaire'),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_forward),
+                  tooltip: 'Refaire',
                   onPressed: () {
                     //TODO
                   },
@@ -68,8 +73,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Annuler'),
+                child: IconButton(
+                  icon: const Icon(Icons.settings_overscan),
+                  tooltip: 'Zoom adapté',
                   onPressed: () {
                     //TODO
                   },
@@ -78,8 +84,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Zoom A'),
+                child: IconButton(
+                  icon: const Icon(Icons.zoom_in),
+                  tooltip: 'Zoomer',
                   onPressed: () {
                     //TODO
                   },
@@ -88,8 +95,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Zoom +'),
+                child: IconButton(
+                  icon: const Icon(Icons.zoom_out),
+                  tooltip: 'Dézoomer',
                   onPressed: () {
                     //TODO
                   },
@@ -98,8 +106,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Zoom -'),
+                child: IconButton(
+                  icon: const Icon(Icons.back_hand),
+                  tooltip: 'Outil de sélection',
                   onPressed: () {
                     //TODO
                   },
@@ -108,8 +117,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Selection'),
+                child: IconButton(
+                  icon: const Icon(Icons.circle),
+                  tooltip: 'Ajouter un noeud',
                   onPressed: () {
                     //TODO
                   },
@@ -118,18 +128,9 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: TextButton(
-                  child: Text('Noeud'),
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: TextButton(
-                  child: Text('Relation'),
+                child: IconButton(
+                  icon: const Icon(Icons.share),
+                  tooltip: 'Ajouter un arc',
                   onPressed: () {
                     //TODO
                   },
