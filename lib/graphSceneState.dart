@@ -25,7 +25,7 @@ class GraphSceneState extends State<GraphScene> {
     }
   }
 
-  importAutomate() async {
+  importAutomateFromWeb() async {
     Map<String,dynamic> data = await fetchData();
 
     var automateTemp = Automate.fromJson(data);
@@ -59,7 +59,7 @@ class GraphSceneState extends State<GraphScene> {
   @override
   void initState() {
     super.initState();
-    importAutomate();
+    importAutomateFromWeb();
   }
 
   Offset? _doubleTapPosition;
@@ -101,7 +101,8 @@ class GraphSceneState extends State<GraphScene> {
   List<Widget> _buildNodes() {
     final res = <Widget>[];
     nodeMap.forEach((node, offset) {
-      res.add(NodeWidget(
+      res.add(
+          NodeWidget(
           offset: offset, node: node, onDragStarted: onDragStarted(node)));
     });
     return res;

@@ -34,8 +34,10 @@ class Home extends StatelessWidget{
     var valueChoose;
     late Automate automate;
     GlobalKey keyFile = GlobalKey();
+    final keyGraphScene = new GlobalKey<GraphSceneState>();
 
     const GraphScene graphScene = GraphScene();
+    // const GraphScene graphScene = GraphScene(key: keyGraphScene);
 
     return MaterialApp(
         // debugShowCheckedModeBanner: false, // Remove debug banner
@@ -63,7 +65,7 @@ class Home extends StatelessWidget{
                         // position: RelativeRect.fromRect(new Rect.fromPoints(new Offset(0.0, 55.0), new Offset(0.0, 55.0)), new Rect.fromPoints(new Offset(50.0, 5.0), new Offset(200.0, 500.0))),
                         position: RelativeRect.fromLTRB(15, 52, 15, 0), //TODO éviter de coder en dur la position du menu
                         items: ["Nouveau", "Ouvrir", "Enregistrer sous"].map((e) => PopupMenuItem(child: Text(e), value: e)).toList());
-                    
+
                     print('Fichier');
                   },
                 ),
@@ -103,6 +105,9 @@ class Home extends StatelessWidget{
                 TextButton(
                   child: Text('Options', style: TextStyle(color: Colors.black)),
                   onPressed: () {
+                    //get the automate from graphScene
+                    automate = graphScene.getAutomate();
+                    exportAutomate(automate);
                     // TODO: implement onPressed
                   },
                 ),
@@ -159,8 +164,6 @@ class Home extends StatelessWidget{
                     ],
                   ),
                 ),
-
-
               ],
             ),
                   //   Container(
@@ -187,3 +190,68 @@ class Home extends StatelessWidget{
 
 
 
+
+
+// import 'package:flutter/material.dart';
+//
+// void main() {
+//   runApp(MyApp());
+// }
+//
+// final key = GlobalKey<MyStatefulWidget1State>();
+//
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         body: Column(
+//           mainAxisAlignment: MainAxisAlignment.spaceAround,
+//           children: <Widget>[
+//             MyStatefulWidget1(key: key),
+//             MyStatefulWidget2(),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// class MyStatefulWidget1 extends StatefulWidget {
+//   MyStatefulWidget1({ required Key key }) : super(key: key);
+//   State createState() => MyStatefulWidget1State();
+// }
+//
+// class MyStatefulWidget1State extends State<MyStatefulWidget1> {
+//   String _createdObject = "Hello world!";
+//   String get createdObject => _createdObject;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Text(_createdObject),
+//     );
+//   }
+// }
+//
+// class MyStatefulWidget2 extends StatefulWidget {
+//   State createState() => MyStatefulWidget2State();
+// }
+//
+// class MyStatefulWidget2State extends State<MyStatefulWidget2> {
+//   String _text = 'PRESS ME';
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: ElevatedButton(
+//         child: Text(_text),
+//         onPressed: () {
+//           setState(() {
+//             _text = key.currentState!.createdObject;
+//           });
+//         },
+//       ),
+//     );
+//   }
+// }

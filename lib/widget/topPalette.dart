@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../automate.dart';
+import '../logic/export.dart';
 
 class TopPalette extends Container {
   TopPalette({super.key});
@@ -44,7 +45,7 @@ class TopPalette extends Container {
                   icon: const Icon(Icons.save_alt),
                   tooltip: 'Télécharger',
                   onPressed: () {
-                    //TODO
+                    exportAutomate(new Automate(nodes: [], relations: []));
                   },
                 ),
               ),
