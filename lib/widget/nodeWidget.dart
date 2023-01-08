@@ -18,15 +18,23 @@ class NodeWidget extends StatelessWidget {
       left: offset.dx - size / 2,
       top: offset.dy - size / 2,
       child: GestureDetector(
+          onDoubleTap: () {
+            Offset position = Offset(offset.dx, offset.dy);
+            Offset cursorPosition = Offset(position.dx, position.dy);
+            print(position);
+            print(cursorPosition);
+          },
+          onTap: () => {print(node.name)},
           onPanStart: (data) =>
-              onDragStarted(data.globalPosition.dx, data.globalPosition.dy),
+              onDragStarted(data.globalPosition.dx-(MediaQuery.of(context).size.width*0.1), data.globalPosition.dy-100), //offset from the menu
           onPanUpdate: (data) =>
-              onDragStarted(data.globalPosition.dx, data.globalPosition.dy),
+              onDragStarted(data.globalPosition.dx-(MediaQuery.of(context).size.width*0.1), data.globalPosition.dy-100), //offset from the menu
+
           child: Container(
             width: size,
             height: size,
             decoration: BoxDecoration(
-              color: Colors.blueAccent.withOpacity(0.7),
+              color: Colors.blueAccent.withOpacity(1),
               // border: Border.all(color: Colors.black),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(100),
