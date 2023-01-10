@@ -1,9 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../automate.dart';
 import '../logic/export.dart';
 
 class TopPalette extends Container {
   TopPalette({super.key});
+
+  File? jsonFile;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +38,21 @@ class TopPalette extends Container {
                 child: IconButton(
                   icon: const Icon(Icons.file_open),
                   tooltip: 'Ouvrir',
-                  onPressed: () {
-                    //TODO
+                  onPressed: () async {
+                    final result = await FilePicker.platform.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: ['json'],
+                    );
+                    if(result != null){
+                      var bytesFile = result.files.single.bytes;
+                      var jsonText = String.fromCharCodes(bytesFile!);
+                      Automate automate = Automate.fromJson(jsonDecode(jsonText));
+                      print(automate.toJson());
+                      print('Import réussi');
+                    }
+                    else{
+                      print('Import échoué');
+                    }
                   },
                 ),
               ),

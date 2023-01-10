@@ -272,17 +272,6 @@ class Home extends StatelessWidget{
               return const AlertDialog(
                 title: Text('Flutter the spec'),
                 content: Text('Application de création de machines à états finis'),
-                // actions: <Widget>[
-                //   TextButton(
-                //     style: TextButton.styleFrom(
-                //       textStyle: Theme.of(context).textTheme.labelLarge,
-                //     ),
-                //     child: const Text('OK'),
-                //     onPressed: () {
-                //       Navigator.of(context).pop();
-                //     },
-                //   ),
-                // ],
               );
             });
 
