@@ -1,9 +1,68 @@
 import 'dart:convert';
+// import 'dart:ffi';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../automate.dart';
 import '../logic/export.dart';
+
+
+class PaletteButton extends StatefulWidget {
+  @override
+  PaletteButtonState createState() => new PaletteButtonState();
+}
+
+class PaletteButtonState extends State<PaletteButton> {
+  bool isPressed = false;
+
+  void onPressedForStateButton(){
+    setState(() {
+      if (isPressed){isPressed = false;}
+      else isPressed = true;
+    });
+    print('isPressed = $isPressed');
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    // final ColorScheme colors = Theme.of(context).colorScheme;
+    return IconButton(
+      icon: const Icon(Icons.file_open),
+      tooltip: 'Ouvrir',
+      onPressed: () async {
+        onPressedForStateButton();
+        final result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['json'],
+        );
+        if(result != null){
+          var bytesFile = result.files.single.bytes;
+          var jsonText = String.fromCharCodes(bytesFile!);
+          Automate automate = Automate.fromJson(jsonDecode(jsonText));
+          print(automate.toJson());
+          print('Import réussi');
+        }
+        else{
+          print('Import échoué');
+        }
+      },
+      style: IconButton.styleFrom(
+        foregroundColor: Colors.red,
+        backgroundColor: Colors.blue,
+        disabledBackgroundColor: Colors.greenAccent,
+        hoverColor: Colors.red.withOpacity(0.08),
+        focusColor: Colors.red.withOpacity(0.12),
+        highlightColor: Colors.red.withOpacity(0.12),
+      ),
+    );
+  }
+  
+}
+
+
+
+
 
 class TopPalette extends Container {
   TopPalette({super.key});
@@ -13,8 +72,12 @@ class TopPalette extends Container {
   @override
   Widget build(BuildContext context) {
     return Container(
-        //red background
-        color: Color.fromRGBO(220, 220, 220, 1),
+
+        decoration: BoxDecoration(
+            border:  Border.all(color: Colors.black),
+            color: Color.fromRGBO(220, 220, 220, 1)
+        ),
+
         height: 50,
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(
@@ -35,26 +98,32 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.file_open),
-                  tooltip: 'Ouvrir',
-                  onPressed: () async {
-                    final result = await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['json'],
-                    );
-                    if(result != null){
-                      var bytesFile = result.files.single.bytes;
-                      var jsonText = String.fromCharCodes(bytesFile!);
-                      Automate automate = Automate.fromJson(jsonDecode(jsonText));
-                      print(automate.toJson());
-                      print('Import réussi');
-                    }
-                    else{
-                      print('Import échoué');
-                    }
-                  },
-                ),
+                child:
+                PaletteButton(),
+
+                // IconButton(
+                //   icon: const Icon(Icons.file_open),
+                //   tooltip: 'Ouvrir',
+                //   onPressed: () async {
+                //     final result = await FilePicker.platform.pickFiles(
+                //       type: FileType.custom,
+                //       allowedExtensions: ['json'],
+                //     );
+                //     if(result != null){
+                //       var bytesFile = result.files.single.bytes;
+                //       var jsonText = String.fromCharCodes(bytesFile!);
+                //       Automate automate = Automate.fromJson(jsonDecode(jsonText));
+                //       print(automate.toJson());
+                //       print('Import réussi');
+                //     }
+                //     else{
+                //       print('Import échoué');
+                //     }
+                //   },
+                // ),
+
+
+
               ),
               Container(
                 //width 100
