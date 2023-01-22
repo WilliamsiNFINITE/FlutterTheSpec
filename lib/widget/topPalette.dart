@@ -98,31 +98,8 @@ class TopPalette extends Container {
                 //width 100
                 width: 100,
                 child:
-                PaletteButton(),
-
-                // IconButton(
-                //   icon: const Icon(Icons.file_open),
-                //   tooltip: 'Ouvrir',
-                //   onPressed: () async {
-                //     final result = await FilePicker.platform.pickFiles(
-                //       type: FileType.custom,
-                //       allowedExtensions: ['json'],
-                //     );
-                //     if(result != null){
-                //       var bytesFile = result.files.single.bytes;
-                //       var jsonText = String.fromCharCodes(bytesFile!);
-                //       Automate automate = Automate.fromJson(jsonDecode(jsonText));
-                //       print(automate.toJson());
-                //       print('Import réussi');
-                //     }
-                //     else{
-                //       print('Import échoué');
-                //     }
-                //   },
-                // ),
-
-
-
+                PaletteButton(), //TODO : include 'type' in constructor to know which button to create
+                // TODO : create a class for each button
               ),
               Container(
                 //width 100
