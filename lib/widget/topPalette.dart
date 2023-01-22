@@ -57,7 +57,6 @@ class PaletteButtonState extends State<PaletteButton> {
       ),
     );
   }
-  
 }
 
 
