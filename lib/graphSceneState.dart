@@ -1,7 +1,6 @@
 import 'dart:convert';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_the_spec/logic/export.dart';
 import 'automate.dart';
 import 'graphScene.dart';
 import 'widget/nodeWidget.dart';
@@ -115,9 +114,9 @@ class GraphSceneState extends State<GraphScene> {
       }
     }
     //print nodes offset
-    for (Node node in nodes) {
-      print('node ${node.name} offset: ${node.offset}');
-    }
+    // for (Node node in nodes) {
+    //   print('node ${node.name} offset: ${node.offset}');
+    // }
     updateAutomate();
   }
 
@@ -127,7 +126,7 @@ class GraphSceneState extends State<GraphScene> {
 
     // print automate
     // exportAutomate(automate);
-    print('automate: ${automate.  toJson()}');
+    // print('automate: ${automate.  toJson()}');
   }
 
   void addNewNode(String name, double dx, double dy) {

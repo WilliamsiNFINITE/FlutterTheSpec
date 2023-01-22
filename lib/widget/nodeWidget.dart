@@ -1,34 +1,78 @@
 import 'package:flutter/material.dart';
 import '../automate.dart';
 
-class NodeWidget extends StatelessWidget {
-  const NodeWidget(
-      {super.key,
-        required this.offset,
-        required this.node,
-        required this.onDragStarted});
+class NodeWidget extends StatefulWidget {
+  const NodeWidget({super.key, required this.offset, required this.node, required this.onDragStarted});
+
   final Offset offset;
   final Node node;
   final double size = 100;
   final Function onDragStarted;
 
   @override
+  State<StatefulWidget> createState() => NodeWidgetState();
+
+}
+
+class NodeWidgetState extends State<NodeWidget> {
+
+  bool isDragged = false;
+  bool isSelected = false;
+  late Node node;
+  late Offset offset;
+  late Function onDragStarted;
+  late double size;
+
+  @override
+  void initState() {
+    this.offset = widget.offset;
+    this.node = widget.node;
+    this.size = widget.size;
+    this.onDragStarted = widget.onDragStarted;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: offset.dx - size / 2,
+      left:offset.dx - size / 2,
       top: offset.dy - size / 2,
       child: GestureDetector(
           onDoubleTap: () {
-            Offset position = Offset(offset.dx, offset.dy);
-            Offset cursorPosition = Offset(position.dx, position.dy);
-            print(position);
-            print(cursorPosition);
+            setState(() {
+
+            });
+            // Offset position = Offset(offset.dx, offset.dy);
+            // Offset cursorPosition = Offset(position.dx, position.dy);
+            // print(position);
+            // print(cursorPosition);
           },
-          onTap: () => {print(node.name)},
-          onPanStart: (data) =>
-              onDragStarted(data.globalPosition.dx-(MediaQuery.of(context).size.width*0.1), data.globalPosition.dy-100), //offset from the menu
-          onPanUpdate: (data) =>
-              onDragStarted(data.globalPosition.dx-(MediaQuery.of(context).size.width*0.1), data.globalPosition.dy-100), //offset from the menu
+
+          // On tap, makes a new line between the node and the cursor
+          onTap: () => {
+            setState(() {
+
+            }),
+          },
+
+          onPanStart: (data) => {
+            setState(() {
+              isDragged = true;
+            }),
+          },
+
+          onPanUpdate: (data) => {
+            setState(() {
+              isDragged = true;
+              offset = Offset(data.globalPosition.dx-(MediaQuery.of(context).size.width*0.1), data.globalPosition.dy-100);//offset from the menu
+              onDragStarted(data.globalPosition.dx-(MediaQuery.of(context).size.width*0.1), data.globalPosition.dy-100);//offset from the menu
+            }),
+          },
+
+         onPanEnd: (data) => {
+            setState(() {
+              isDragged = false;
+            }),
+          },
 
           child: Container(
             width: size,
@@ -51,4 +95,5 @@ class NodeWidget extends StatelessWidget {
           )),
     );
   }
+
 }
