@@ -18,6 +18,8 @@ class NodeWidgetState extends State<NodeWidget> {
 
   bool isDragged = false;
   bool isSelected = false;
+  bool isDrawing = false;
+  late Offset previousOffset;
   late Node node;
   late Offset offset;
   late Function onDragStarted;
@@ -50,7 +52,16 @@ class NodeWidgetState extends State<NodeWidget> {
           // On tap, makes a new line between the node and the cursor
           onTap: () => {
             setState(() {
+              if (!isDrawing){
+                // Draw line from node to mouse cursor
+                // set a node as a source
+                previousOffset = this.offset;
 
+              }
+              else{
+                // draw the line between the previous set node and the actual node
+
+              }
             }),
           },
 
