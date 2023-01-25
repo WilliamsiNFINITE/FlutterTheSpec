@@ -2,12 +2,17 @@ import 'dart:convert';
 // import 'dart:ffi';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../automate.dart';
 import '../logic/export.dart';
 
 
 class PaletteButton extends StatefulWidget {
+  final String buttonType;
+  PaletteButton({super.key, required this.buttonType});
+
   @override
   PaletteButtonState createState() => new PaletteButtonState();
 }
@@ -26,7 +31,49 @@ class PaletteButtonState extends State<PaletteButton> {
 
   @override
   Widget build(BuildContext context) {
+
+    // test to get the right button
+    switch (widget.buttonType) {
+      case 'new':
+        return newButton();
+      case 'download':
+        return downloadButton();
+      case 'open':
+        return openButton();
+      case 'undo':
+        return undoButton();
+      case 'redo':
+        return redoButton();
+      case 'adaptedZoom':
+        return adaptedZoomButton();
+      case 'zoomIn':
+        return zoomInButton();
+      case 'zoomOut':
+        return zoomOutButton();
+      case 'select':
+        return selectButton();
+      case 'addNode':
+        return addNodeButton();
+      case 'addRelation':
+        return addRelationButton();
+      default:
+        return Container();
+    }
+
     // final ColorScheme colors = Theme.of(context).colorScheme;
+
+  }
+
+  var buttonStyle = IconButton.styleFrom(
+    foregroundColor: Colors.red,
+    backgroundColor: Colors.blue,
+    disabledBackgroundColor: Colors.greenAccent,
+    hoverColor: Colors.red.withOpacity(0.08),
+    focusColor: Colors.red.withOpacity(0.12),
+    highlightColor: Colors.red.withOpacity(0.12),
+  );
+
+  Widget openButton() {
     return IconButton(
       icon: const Icon(Icons.file_open),
       tooltip: 'Ouvrir',
@@ -47,16 +94,131 @@ class PaletteButtonState extends State<PaletteButton> {
           print('Import échoué');
         }
       },
-      style: IconButton.styleFrom(
-        foregroundColor: Colors.red,
-        backgroundColor: Colors.blue,
-        disabledBackgroundColor: Colors.greenAccent,
-        hoverColor: Colors.red.withOpacity(0.08),
-        focusColor: Colors.red.withOpacity(0.12),
-        highlightColor: Colors.red.withOpacity(0.12),
-      ),
+      style: buttonStyle,
     );
   }
+
+  Widget newButton() {
+    return IconButton(
+      icon: const Icon(Icons.add),
+      tooltip: 'Nouveau',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Nouveau');
+      },
+      style: buttonStyle,
+    );
+  }
+
+  Widget downloadButton() {
+
+    return IconButton(
+      icon: const Icon(Icons.download),
+      tooltip: 'Télécharger',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Télécharger');
+      },
+      style: buttonStyle,
+    );
+  }
+
+  Widget undoButton() {
+    return IconButton(
+      icon: const Icon(Icons.undo),
+      tooltip: 'Annuler',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Annuler');
+      },
+      style: buttonStyle,
+    );
+  }
+
+  Widget redoButton() {
+    return IconButton(
+      icon: const Icon(Icons.redo),
+      tooltip: 'Rétablir',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Rétablir');
+      },
+      style: buttonStyle,
+    );
+  }
+
+  Widget adaptedZoomButton() {
+    return IconButton(
+      icon: const Icon(Icons.zoom_out_map),
+      tooltip: 'Zoom adapté',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Zoom adapté');
+      },
+      style: buttonStyle,
+    );
+  }
+
+  Widget zoomInButton() {
+    return IconButton(
+      icon: const Icon(Icons.zoom_in),
+      tooltip: 'Zoom avant',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Zoom avant');
+      },
+      style: buttonStyle,
+    );
+  }
+
+  Widget zoomOutButton() {
+    return IconButton(
+      icon: const Icon(Icons.zoom_out),
+      tooltip: 'Zoom arrière',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Zoom arrière');
+      },
+      style: buttonStyle,
+    );
+  }
+
+  Widget selectButton() {
+    return IconButton(
+      icon: const Icon(Icons.back_hand_rounded),
+      tooltip: 'Sélectionner',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Sélectionner');
+      },
+      style: buttonStyle,
+    );
+  }
+
+  Widget addNodeButton() {
+    return IconButton(
+      icon: const Icon(Icons.circle),
+      tooltip: 'Ajouter un noeud',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Ajouter un noeud');
+      },
+      style: buttonStyle,
+    );
+  }
+
+  Widget addRelationButton() {
+    return IconButton(
+      icon: const Icon(Icons.arrow_right_alt),
+      tooltip: 'Ajouter une relation',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Ajouter une relation');
+      },
+      style: buttonStyle,
+    );
+  }
+
 }
 
 
@@ -86,121 +248,59 @@ class TopPalette extends Container {
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.create_new_folder),
-                  tooltip: 'Nouveau',
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
+                child: PaletteButton(buttonType: "new"),
               ),
               Container(
                 //width 100
                 width: 100,
                 child:
-                PaletteButton(), //TODO : include 'type' in constructor to know which button to create
-                // TODO : create a class for each button
+                PaletteButton(buttonType: "open"),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.save_alt),
-                  tooltip: 'Télécharger',
-                  onPressed: () {
-                    exportAutomate(new Automate(nodes: [], relations: []));
-                  },
-                ),
+                child: PaletteButton(buttonType: "download"),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  tooltip: 'Annuler',
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
+                child: PaletteButton(buttonType: "undo"),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_forward),
-                  tooltip: 'Refaire',
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
+                child: PaletteButton(buttonType: "redo"),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.settings_overscan),
-                  tooltip: 'Zoom adapté',
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
+                child: PaletteButton(buttonType: "adaptedZoom"),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.zoom_in),
-                  tooltip: 'Zoomer',
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
+                child: PaletteButton(buttonType: "zoomIn"),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.zoom_out),
-                  tooltip: 'Dézoomer',
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
+                child: PaletteButton(buttonType: "zoomOut"),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.back_hand),
-                  tooltip: 'Outil de sélection',
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
+                child: PaletteButton(buttonType: "select"),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.circle),
-                  tooltip: 'Ajouter un noeud',
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
+                child: PaletteButton(buttonType: "addNode"),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: IconButton(
-                  icon: const Icon(Icons.share),
-                  tooltip: 'Ajouter un arc',
-                  onPressed: () {
-                    //TODO
-                  },
-                ),
+                child: PaletteButton(buttonType: "addRelation"),
               ),
-
             ],
           ),
         )

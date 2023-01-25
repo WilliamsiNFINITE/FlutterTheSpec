@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import '../automate.dart';
 
@@ -53,9 +55,9 @@ class NodeWidgetState extends State<NodeWidget> {
           onTap: () => {
             setState(() {
               if (!isDrawing){
-                // Draw line from node to mouse cursor
                 // set a node as a source
                 previousOffset = this.offset;
+                // Draw line from node to mouse cursor
 
               }
               else{
