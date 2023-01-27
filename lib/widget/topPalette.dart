@@ -193,6 +193,7 @@ class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
       icon: const Icon(Icons.circle),
       tooltip: 'Ajouter un noeud',
       onPressed: () {
+        //change style of button
         isPressedNotifier.value = !isPressedNotifier.value;
         print('Ajouter un noeud');
       },
@@ -236,6 +237,51 @@ class TopPalette extends Container {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "new", isPressedNotifier: notifierList[0]),
+              ),
+              Container(
+                width: 100,
+                child:
+                PaletteButton(buttonType: "open", isPressedNotifier: notifierList[1]),
+              ),
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "download", isPressedNotifier: notifierList[2]),
+              ),
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "undo", isPressedNotifier: notifierList[3]),
+              ),
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "redo", isPressedNotifier: notifierList[4]),
+              ),
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "adaptedZoom", isPressedNotifier: notifierList[5]),
+              ),
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "zoomIn", isPressedNotifier: notifierList[6]),
+              ),
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "zoomOut", isPressedNotifier: notifierList[7]),
+              ),
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "select", isPressedNotifier: notifierList[8]),
+              ),
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "addNode", isPressedNotifier: notifierList[9]),
+              ),
+              Container(
+                width: 100,
+                child: PaletteButton(buttonType: "addRelation", isPressedNotifier: notifierList[10]),
+              ),
               // ValueListenableBuilder<bool>(
               //   builder: (BuildContext context, bool value, Widget? child) {
               //     // This builder will only get called when isSelected.value is updated.
@@ -246,62 +292,6 @@ class TopPalette extends Container {
               //   // expensive to build and does not depend on the value from
               //   // the notifier.
               // ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "new", isPressedNotifier: notifierList[0]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child:
-                PaletteButton(buttonType: "open", isPressedNotifier: notifierList[1]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "download", isPressedNotifier: notifierList[2]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "undo", isPressedNotifier: notifierList[3]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "redo", isPressedNotifier: notifierList[4]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "adaptedZoom", isPressedNotifier: notifierList[5]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "zoomIn", isPressedNotifier: notifierList[6]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "zoomOut", isPressedNotifier: notifierList[7]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "select", isPressedNotifier: notifierList[8]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "addNode", isPressedNotifier: notifierList[9]),
-              ),
-              Container(
-                //width 100
-                width: 100,
-                child: PaletteButton(buttonType: "addRelation", isPressedNotifier: notifierList[10]),
-              ),
             ],
           ),
         ),

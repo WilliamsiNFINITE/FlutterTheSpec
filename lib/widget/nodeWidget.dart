@@ -1,15 +1,19 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_the_spec/relationPainter.dart';
 import '../automate.dart';
 
 class NodeWidget extends StatefulWidget {
-  const NodeWidget({super.key, required this.offset, required this.node, required this.onDragStarted});
-
+  final ValueNotifier<bool> drawLineNotifier;
   final Offset offset;
   final Node node;
   final double size = 100;
   final Function onDragStarted;
+
+  NodeWidget({super.key, required this.offset, required this.node, required this.onDragStarted, required this.drawLineNotifier});
+
+
 
   @override
   State<StatefulWidget> createState() => NodeWidgetState();
@@ -18,6 +22,7 @@ class NodeWidget extends StatefulWidget {
 
 class NodeWidgetState extends State<NodeWidget> {
 
+  late ValueNotifier<bool> drawLineNotifier;
   bool isDragged = false;
   bool isSelected = false;
   bool isDrawing = false;
@@ -29,6 +34,7 @@ class NodeWidgetState extends State<NodeWidget> {
 
   @override
   void initState() {
+    this.drawLineNotifier = widget.drawLineNotifier;
     this.offset = widget.offset;
     this.node = widget.node;
     this.size = widget.size;
@@ -42,6 +48,7 @@ class NodeWidgetState extends State<NodeWidget> {
       top: offset.dy - size / 2,
       child: GestureDetector(
           onDoubleTap: () {
+            print('double tap nodewidget');
             setState(() {
 
             });
@@ -53,18 +60,8 @@ class NodeWidgetState extends State<NodeWidget> {
 
           // On tap, makes a new line between the node and the cursor
           onTap: () => {
-            setState(() {
-              if (!isDrawing){
-                // set a node as a source
-                previousOffset = this.offset;
-                // Draw line from node to mouse cursor
-
-              }
-              else{
-                // draw the line between the previous set node and the actual node
-
-              }
-            }),
+            print('tap node widget $drawLineNotifier'),
+            drawLineNotifier.value = !drawLineNotifier.value,
           },
 
           onPanStart: (data) => {
@@ -107,6 +104,19 @@ class NodeWidgetState extends State<NodeWidget> {
                 )),
           )),
     );
+  }
+
+  void drawLine(Node initialNode) {
+    //Draw a line from the node (previousOffset) to the cursor (pointer)
+    Offset pointerOffset = Offset(400, 400);
+    print("draw line");
+
+    CustomPaint(
+      size: const Size(double.infinity, double.infinity),
+      painter: PartialRelationPainter(initialNode: initialNode),
+    );
+    isDrawing = true;
+
   }
 
 }

@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 
 class GraphSceneState extends State<GraphScene> {
 
+  ValueNotifier<bool> drawLineNotifier = ValueNotifier(false);
+
   Map<Node, Offset> nodeMap = {};
   late List<Node> nodes;
   late List<Relation> relations;
@@ -66,7 +68,11 @@ class GraphSceneState extends State<GraphScene> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => {nodeMap.forEach((node, offset) => print(node.offset))},
+        onTap: () => {
+          nodeMap.forEach((node, offset) => print(node.offset)),
+          print('tap graphSceneState'),
+          drawLine(),
+        },
         onDoubleTap: () {
           setState(() {
             nodeMap[Node(name: 'new node ${idx}')] = _transformationController.toScene(_doubleTapPosition!);
@@ -87,6 +93,13 @@ class GraphSceneState extends State<GraphScene> {
               transformationController: _transformationController,
               child: Stack(
                 children: <Widget>[
+                  ValueListenableBuilder<bool>(
+                    builder: (BuildContext context, bool value, Widget? child) {
+                      // This builder will only get called when isSelected.value is updated.
+                      return Text('$value');
+                    },
+                    valueListenable: drawLineNotifier,
+                  ),
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
                     painter: RelationPainter(nodeMap: nodeMap, relations: relations),
@@ -101,8 +114,7 @@ class GraphSceneState extends State<GraphScene> {
     final res = <Widget>[];
     nodeMap.forEach((node, offset) {
       res.add(
-          NodeWidget(
-          offset: offset, node: node, onDragStarted: onDragStarted(node)));
+          NodeWidget(offset: offset, node: node, onDragStarted: onDragStarted(node), drawLineNotifier: drawLineNotifier));
     });
     return res;
   }
@@ -136,6 +148,11 @@ class GraphSceneState extends State<GraphScene> {
 
   Automate getAutomate() {
     return automate;
+  }
+
+  drawLine() {
+    relations.add(Relation(source: nodes[0].name, target: nodes[3].name));
+    updateAutomate();
   }
 
 }
