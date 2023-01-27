@@ -40,6 +40,7 @@ class Home extends StatelessWidget{
     ValueNotifier<bool> isDrawing = ValueNotifier(false);
     ValueNotifier<bool> isDragged = ValueNotifier(false);
     ValueNotifier<bool> isSelected = ValueNotifier(false);
+    List<ValueNotifier<bool>> notifierList = [isSelected,isDragged,isDrawing];
     final TopPalette topPalette = TopPalette(isSelected: isSelected);
     final LeftMenu leftMenu = LeftMenu();
     final TopMenu topMenu = TopMenu();

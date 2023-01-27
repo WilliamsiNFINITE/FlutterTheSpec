@@ -18,8 +18,6 @@ class PaletteButton extends StatefulWidget{
 }
 
 class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
-  final ValueNotifier<int> _counter = ValueNotifier<int>(0);
-  final Widget goodJob = const Text('Good job!');
 
   final ValueNotifier<bool> isPressedNotifier = ValueNotifier(false);
   bool isPressed = false;
@@ -272,19 +270,13 @@ class TopPalette extends Container {
               ValueListenableBuilder<bool>(
                 builder: (BuildContext context, bool value, Widget? child) {
                   // This builder will only get called when isSelected.value is updated.
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Text('$value'),
-                    ],
-                  );
+                  return Text('$value');
                 },
                 valueListenable: isSelected,
                 // The child parameter is most helpful if the child is
                 // expensive to build and does not depend on the value from
                 // the notifier.
               ),
-              Text(isSelected.value.toString()),
               Container(
                 //width 100
                 width: 100,
