@@ -9,7 +9,7 @@ import '../automate.dart';
 import '../logic/export.dart';
 
 
-class PaletteButton extends StatefulWidget {
+class PaletteButton extends StatefulWidget{
   final String buttonType;
   PaletteButton({super.key, required this.buttonType});
 
@@ -17,7 +17,11 @@ class PaletteButton extends StatefulWidget {
   PaletteButtonState createState() => new PaletteButtonState();
 }
 
-class PaletteButtonState extends State<PaletteButton> {
+class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
+  final ValueNotifier<int> _counter = ValueNotifier<int>(0);
+  final Widget goodJob = const Text('Good job!');
+
+  final ValueNotifier<bool> isPressedNotifier = ValueNotifier(false);
   bool isPressed = false;
 
   void onPressedForStateButton(){
@@ -26,6 +30,7 @@ class PaletteButtonState extends State<PaletteButton> {
       else isPressed = true;
     });
     print('isPressed = $isPressed');
+    notifyListeners();
   }
 
 
@@ -59,9 +64,6 @@ class PaletteButtonState extends State<PaletteButton> {
       default:
         return Container();
     }
-
-    // final ColorScheme colors = Theme.of(context).colorScheme;
-
   }
 
   var buttonStyle = IconButton.styleFrom(
@@ -72,6 +74,41 @@ class PaletteButtonState extends State<PaletteButton> {
     focusColor: Colors.red.withOpacity(0.12),
     highlightColor: Colors.red.withOpacity(0.12),
   );
+
+  Widget newButton() {
+    return IconButton(
+      icon: const Icon(Icons.add),
+      tooltip: 'Nouveau',
+      onPressed: () {
+        onPressedForStateButton();
+        print('Nouveau');
+      },
+      style: buttonStyle,
+    );
+    // return
+    //   ValueListenableBuilder<int>(
+    //   builder: (BuildContext context, int value, Widget? child) {
+    //     // This builder will only get called when the _counter
+    //     // is updated.
+    //     return Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //       children: <Widget>[
+    //         Text('$value'),
+    //         child!,
+    //         FloatingActionButton(
+    //           child: const Icon(Icons.plus_one),
+    //           onPressed: () => _counter.value += 1,
+    //         ),
+    //       ],
+    //     );
+    //   },
+    //   valueListenable: _counter,
+    //   // The child parameter is most helpful if the child is
+    //   // expensive to build and does not depend on the value from
+    //   // the notifier.
+    //   child: goodJob,
+    // );
+  }
 
   Widget openButton() {
     return IconButton(
@@ -93,18 +130,6 @@ class PaletteButtonState extends State<PaletteButton> {
         else{
           print('Import échoué');
         }
-      },
-      style: buttonStyle,
-    );
-  }
-
-  Widget newButton() {
-    return IconButton(
-      icon: const Icon(Icons.add),
-      tooltip: 'Nouveau',
-      onPressed: () {
-        onPressedForStateButton();
-        print('Nouveau');
       },
       style: buttonStyle,
     );
@@ -226,14 +251,13 @@ class PaletteButtonState extends State<PaletteButton> {
 
 
 class TopPalette extends Container {
-  TopPalette({super.key});
-
+  ValueNotifier<bool> isSelected;
   File? jsonFile;
+  TopPalette({super.key, required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-
         decoration: BoxDecoration(
             border:  Border.all(color: Colors.black),
             color: Color.fromRGBO(220, 220, 220, 1)
@@ -245,6 +269,22 @@ class TopPalette extends Container {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
+              ValueListenableBuilder<bool>(
+                builder: (BuildContext context, bool value, Widget? child) {
+                  // This builder will only get called when isSelected.value is updated.
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text('$value'),
+                    ],
+                  );
+                },
+                valueListenable: isSelected,
+                // The child parameter is most helpful if the child is
+                // expensive to build and does not depend on the value from
+                // the notifier.
+              ),
+              Text(isSelected.value.toString()),
               Container(
                 //width 100
                 width: 100,
@@ -303,7 +343,7 @@ class TopPalette extends Container {
               ),
             ],
           ),
-        )
+        ),
       );
 
   }

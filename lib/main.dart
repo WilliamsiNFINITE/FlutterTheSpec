@@ -30,17 +30,26 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatelessWidget{
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     var items;
     var onChanged;
     var valueChoose;
+    ValueNotifier<bool> isDrawing = ValueNotifier(false);
+    ValueNotifier<bool> isDragged = ValueNotifier(false);
+    ValueNotifier<bool> isSelected = ValueNotifier(false);
+    final TopPalette topPalette = TopPalette(isSelected: isSelected);
+    final LeftMenu leftMenu = LeftMenu();
+    final TopMenu topMenu = TopMenu();
     late Automate automate;
     GlobalKey keyFile = GlobalKey();
     final keyGraphScene = new GlobalKey<GraphSceneState>();
 
     const GraphScene graphScene = GraphScene();
+
+
     // const GraphScene graphScene = GraphScene(key: keyGraphScene);
 
     return MaterialApp(
@@ -54,10 +63,10 @@ class Home extends StatelessWidget{
           body:  Center(
             // Column  with 2 containers
             child:
-            Column(// TODO le modifier pour en faire un stateful widget qui va pouvoir modifier les etat et les partager
+            Column(// Ici, le parent des widgets que je vais utiliser pour les notifier // TODO le modifier pour en faire un stateful widget qui va pouvoir modifier les etat et les partager
               children: [
-                TopMenu(),
-                TopPalette(),
+                topMenu,
+                topPalette,
                 Container(
                   decoration: BoxDecoration(
                       border:  Border.all(color: Colors.black),
@@ -72,7 +81,7 @@ class Home extends StatelessWidget{
                       Expanded( //Left MENU
                         flex: 1,
                         child:
-                        LeftMenu(),
+                        leftMenu,
                       ),
 
                       Expanded( //GraphScene
@@ -90,7 +99,14 @@ class Home extends StatelessWidget{
                 ),
               ],
             ),
-            )
+            ),
+          floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () => {
+              isSelected.value = !isSelected.value,
+              print('valueSelected in main : $isSelected'),
+            }
+          ),
         )
 
   );
