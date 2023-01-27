@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_the_spec/widget/leftMenu.dart';
@@ -7,8 +5,6 @@ import 'package:flutter_the_spec/widget/topMenu.dart';
 import 'package:flutter_the_spec/widget/topPalette.dart';
 import 'automate.dart';
 import 'graphScene.dart';
-import 'graphSceneState.dart';
-import 'logic/export.dart';
 
 
 Future<void> main() async {
@@ -30,6 +26,8 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatelessWidget{
+  var toprint;
+
 
   // This widget is the root of your application.
   @override
@@ -37,21 +35,25 @@ class Home extends StatelessWidget{
 
     // Notifier that will be used to notify the graphSceneState that a button from the palette has been pressed
     // 0 = new, 1 = open, 2 = download, 3 = undo, 4 = redo, 5 = adaptedZoom, 6 = zoomIn, 7 = zoomOut, 8 = select, 9 = addNode, 10 = addRelation
-    List<ValueNotifier<bool>> notifierList = List<ValueNotifier<bool>>.empty(growable: true);
+    List<ValueNotifier<dynamic>> notifierList = List<ValueNotifier<dynamic>>.empty(growable: true);
+    // notifier for the topPalette
     for (int i = 0; i < 11; i++){
       notifierList.add(ValueNotifier(false));
     }
-    late Automate automate;
+    // notifier for the graphSceneState
+    // 11 = automate
+    ValueNotifier<dynamic> automateNotifier = ValueNotifier<dynamic>(Automate(nodes: [], relations: []));
+    notifierList.add(automateNotifier);
+
 
     final TopPalette topPalette = TopPalette(notifierList: notifierList);
     final LeftMenu leftMenu = LeftMenu();
     final TopMenu topMenu = TopMenu();
-    const GraphScene graphScene = GraphScene();
+    final GraphScene graphScene = GraphScene(notifierList: notifierList);
 
 
     // const GraphScene graphScene = GraphScene(key: keyGraphScene);
 
-    bool toprint;
     return MaterialApp(
         // debugShowCheckedModeBanner: false, // Remove debug banner
         title: 'Flutter The Spec',
@@ -101,7 +103,7 @@ class Home extends StatelessWidget{
             ),
             ),
           floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
+            child: const Icon(Icons.cached),
             onPressed: () => {
               notifierList[0].value = !notifierList[0].value,
               toprint = notifierList[0].value,

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 
 class GraphScene extends StatefulWidget {
-  const GraphScene({super.key});
+  List<ValueNotifier<dynamic>> notifierList;
+  GraphScene({super.key, required this.notifierList});
 
   @override
   State<GraphScene> createState() => GraphSceneState();

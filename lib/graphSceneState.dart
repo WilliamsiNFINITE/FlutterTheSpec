@@ -9,6 +9,7 @@ import 'relationPainter.dart';
 import 'package:http/http.dart' as http;
 
 class GraphSceneState extends State<GraphScene> {
+  late List<ValueNotifier<dynamic>> notifierList;
 
   ValueNotifier<bool> drawLineNotifier = ValueNotifier(false);
 
@@ -71,7 +72,8 @@ class GraphSceneState extends State<GraphScene> {
         onTap: () => {
           nodeMap.forEach((node, offset) => print(node.offset)),
           print('tap graphSceneState'),
-          drawLine(),
+          // drawLine(),
+          print(automate.toJson()),
         },
         onDoubleTap: () {
           setState(() {
@@ -93,13 +95,22 @@ class GraphSceneState extends State<GraphScene> {
               transformationController: _transformationController,
               child: Stack(
                 children: <Widget>[
-                  ValueListenableBuilder<bool>(
-                    builder: (BuildContext context, bool value, Widget? child) {
-                      // This builder will only get called when isSelected.value is updated.
-                      return Text('$value');
-                    },
-                    valueListenable: drawLineNotifier,
-                  ),
+                  // ValueListenableBuilder<bool>(
+                  //   builder: (BuildContext context, bool value, Widget? child) {
+                  //     // This builder will only get called when isSelected.value is updated.
+                  //     return Text('node tap : $value');
+                  //   },
+                  //   valueListenable: drawLineNotifier,
+                  // ),
+                  // ValueListenableBuilder<dynamic>(
+                  //   builder: (BuildContext context, dynamic value, Widget? child) {
+                  //     automate = value;
+                  //     var toprint = value.toJson();
+                  //     var autoToPrint = automate.toJson();
+                  //     return Text('automate actuel $autoToPrint');
+                  //   },
+                  //   valueListenable: widget.notifierList[11],
+                  // ),
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
                     painter: RelationPainter(nodeMap: nodeMap, relations: relations),
@@ -135,7 +146,7 @@ class GraphSceneState extends State<GraphScene> {
   void updateAutomate() {
     automate.nodes = nodes;
     automate.relations = relations;
-
+    widget.notifierList[11].value = automate;
     // print automate
     // exportAutomate(automate);
     // print('automate: ${automate.  toJson()}');
@@ -155,4 +166,19 @@ class GraphSceneState extends State<GraphScene> {
     updateAutomate();
   }
 
+}
+
+class LinePainter  extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.red
+      ..strokeWidth = 2;
+    canvas.drawLine(Offset(0, 0), Offset(100, 100), paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }
