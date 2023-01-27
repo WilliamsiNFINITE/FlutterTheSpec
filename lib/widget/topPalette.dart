@@ -10,8 +10,9 @@ import '../logic/export.dart';
 
 
 class PaletteButton extends StatefulWidget{
+  final ValueNotifier<bool> isPressedNotifier;
   final String buttonType;
-  PaletteButton({super.key, required this.buttonType});
+  PaletteButton({super.key, required this.buttonType, required this.isPressedNotifier});
 
   @override
   PaletteButtonState createState() => new PaletteButtonState();
@@ -22,15 +23,6 @@ class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
   final ValueNotifier<bool> isPressedNotifier = ValueNotifier(false);
   bool isPressed = false;
 
-  void onPressedForStateButton(){
-    setState(() {
-      if (isPressed){isPressed = false;}
-      else isPressed = true;
-    });
-    print('isPressed = $isPressed');
-    notifyListeners();
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +30,27 @@ class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
     // test to get the right button
     switch (widget.buttonType) {
       case 'new':
-        return newButton();
+        return newButton(widget.isPressedNotifier);
       case 'download':
-        return downloadButton();
+        return downloadButton(widget.isPressedNotifier);
       case 'open':
-        return openButton();
+        return openButton(widget.isPressedNotifier);
       case 'undo':
-        return undoButton();
+        return undoButton(widget.isPressedNotifier);
       case 'redo':
-        return redoButton();
+        return redoButton(widget.isPressedNotifier);
       case 'adaptedZoom':
-        return adaptedZoomButton();
+        return adaptedZoomButton(widget.isPressedNotifier);
       case 'zoomIn':
-        return zoomInButton();
+        return zoomInButton(widget.isPressedNotifier);
       case 'zoomOut':
-        return zoomOutButton();
+        return zoomOutButton(widget.isPressedNotifier);
       case 'select':
-        return selectButton();
+        return selectButton(widget.isPressedNotifier);
       case 'addNode':
-        return addNodeButton();
+        return addNodeButton(widget.isPressedNotifier);
       case 'addRelation':
-        return addRelationButton();
+        return addRelationButton(widget.isPressedNotifier);
       default:
         return Container();
     }
@@ -73,47 +65,25 @@ class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
     highlightColor: Colors.red.withOpacity(0.12),
   );
 
-  Widget newButton() {
+  Widget newButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.add),
       tooltip: 'Nouveau',
       onPressed: () {
-        onPressedForStateButton();
-        print('Nouveau');
+        isPressedNotifier.value = !isPressedNotifier.value;
+//         isPressedNotifier.value = !isPressedNotifier.value;
+        print('Nouveau :  $isPressedNotifier');
       },
       style: buttonStyle,
     );
-    // return
-    //   ValueListenableBuilder<int>(
-    //   builder: (BuildContext context, int value, Widget? child) {
-    //     // This builder will only get called when the _counter
-    //     // is updated.
-    //     return Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //       children: <Widget>[
-    //         Text('$value'),
-    //         child!,
-    //         FloatingActionButton(
-    //           child: const Icon(Icons.plus_one),
-    //           onPressed: () => _counter.value += 1,
-    //         ),
-    //       ],
-    //     );
-    //   },
-    //   valueListenable: _counter,
-    //   // The child parameter is most helpful if the child is
-    //   // expensive to build and does not depend on the value from
-    //   // the notifier.
-    //   child: goodJob,
-    // );
   }
 
-  Widget openButton() {
+  Widget openButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.file_open),
       tooltip: 'Ouvrir',
       onPressed: () async {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         final result = await FilePicker.platform.pickFiles(
           type: FileType.custom,
           allowedExtensions: ['json'],
@@ -133,109 +103,109 @@ class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
     );
   }
 
-  Widget downloadButton() {
+  Widget downloadButton(ValueNotifier<bool> isPressedNotifier) {
 
     return IconButton(
       icon: const Icon(Icons.download),
       tooltip: 'Télécharger',
       onPressed: () {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         print('Télécharger');
       },
       style: buttonStyle,
     );
   }
 
-  Widget undoButton() {
+  Widget undoButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.undo),
       tooltip: 'Annuler',
       onPressed: () {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         print('Annuler');
       },
       style: buttonStyle,
     );
   }
 
-  Widget redoButton() {
+  Widget redoButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.redo),
       tooltip: 'Rétablir',
       onPressed: () {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         print('Rétablir');
       },
       style: buttonStyle,
     );
   }
 
-  Widget adaptedZoomButton() {
+  Widget adaptedZoomButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.zoom_out_map),
       tooltip: 'Zoom adapté',
       onPressed: () {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         print('Zoom adapté');
       },
       style: buttonStyle,
     );
   }
 
-  Widget zoomInButton() {
+  Widget zoomInButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.zoom_in),
       tooltip: 'Zoom avant',
       onPressed: () {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         print('Zoom avant');
       },
       style: buttonStyle,
     );
   }
 
-  Widget zoomOutButton() {
+  Widget zoomOutButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.zoom_out),
       tooltip: 'Zoom arrière',
       onPressed: () {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         print('Zoom arrière');
       },
       style: buttonStyle,
     );
   }
 
-  Widget selectButton() {
+  Widget selectButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.back_hand_rounded),
       tooltip: 'Sélectionner',
       onPressed: () {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         print('Sélectionner');
       },
       style: buttonStyle,
     );
   }
 
-  Widget addNodeButton() {
+  Widget addNodeButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.circle),
       tooltip: 'Ajouter un noeud',
       onPressed: () {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         print('Ajouter un noeud');
       },
       style: buttonStyle,
     );
   }
 
-  Widget addRelationButton() {
+  Widget addRelationButton(ValueNotifier<bool> isPressedNotifier) {
     return IconButton(
       icon: const Icon(Icons.arrow_right_alt),
       tooltip: 'Ajouter une relation',
       onPressed: () {
-        onPressedForStateButton();
+        isPressedNotifier.value = !isPressedNotifier.value;
         print('Ajouter une relation');
       },
       style: buttonStyle,
@@ -245,13 +215,12 @@ class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
 }
 
 
-
-
-
 class TopPalette extends Container {
-  ValueNotifier<bool> isSelected;
+  // ValueNotifier<bool> isSelected;
+  List<ValueNotifier<bool>> notifierList;
   File? jsonFile;
-  TopPalette({super.key, required this.isSelected});
+  TopPalette({super.key, required this.notifierList});
+
 
   @override
   Widget build(BuildContext context) {
@@ -267,71 +236,71 @@ class TopPalette extends Container {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              ValueListenableBuilder<bool>(
-                builder: (BuildContext context, bool value, Widget? child) {
-                  // This builder will only get called when isSelected.value is updated.
-                  return Text('$value');
-                },
-                valueListenable: isSelected,
-                // The child parameter is most helpful if the child is
-                // expensive to build and does not depend on the value from
-                // the notifier.
-              ),
+              // ValueListenableBuilder<bool>(
+              //   builder: (BuildContext context, bool value, Widget? child) {
+              //     // This builder will only get called when isSelected.value is updated.
+              //     return Text('$value');
+              //   },
+              //   valueListenable: notifierList[0],
+              //   // The child parameter is most helpful if the child is
+              //   // expensive to build and does not depend on the value from
+              //   // the notifier.
+              // ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "new"),
+                child: PaletteButton(buttonType: "new", isPressedNotifier: notifierList[0]),
               ),
               Container(
                 //width 100
                 width: 100,
                 child:
-                PaletteButton(buttonType: "open"),
+                PaletteButton(buttonType: "open", isPressedNotifier: notifierList[1]),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "download"),
+                child: PaletteButton(buttonType: "download", isPressedNotifier: notifierList[2]),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "undo"),
+                child: PaletteButton(buttonType: "undo", isPressedNotifier: notifierList[3]),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "redo"),
+                child: PaletteButton(buttonType: "redo", isPressedNotifier: notifierList[4]),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "adaptedZoom"),
+                child: PaletteButton(buttonType: "adaptedZoom", isPressedNotifier: notifierList[5]),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "zoomIn"),
+                child: PaletteButton(buttonType: "zoomIn", isPressedNotifier: notifierList[6]),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "zoomOut"),
+                child: PaletteButton(buttonType: "zoomOut", isPressedNotifier: notifierList[7]),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "select"),
+                child: PaletteButton(buttonType: "select", isPressedNotifier: notifierList[8]),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "addNode"),
+                child: PaletteButton(buttonType: "addNode", isPressedNotifier: notifierList[9]),
               ),
               Container(
                 //width 100
                 width: 100,
-                child: PaletteButton(buttonType: "addRelation"),
+                child: PaletteButton(buttonType: "addRelation", isPressedNotifier: notifierList[10]),
               ),
             ],
           ),

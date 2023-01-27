@@ -34,25 +34,24 @@ class Home extends StatelessWidget{
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var items;
-    var onChanged;
-    var valueChoose;
-    ValueNotifier<bool> isDrawing = ValueNotifier(false);
-    ValueNotifier<bool> isDragged = ValueNotifier(false);
-    ValueNotifier<bool> isSelected = ValueNotifier(false);
-    List<ValueNotifier<bool>> notifierList = [isSelected,isDragged,isDrawing];
-    final TopPalette topPalette = TopPalette(isSelected: isSelected);
+
+    // Notifier that will be used to notify the graphSceneState that a button from the palette has been pressed
+    // 0 = new, 1 = open, 2 = download, 3 = undo, 4 = redo, 5 = adaptedZoom, 6 = zoomIn, 7 = zoomOut, 8 = select, 9 = addNode, 10 = addRelation
+    List<ValueNotifier<bool>> notifierList = List<ValueNotifier<bool>>.empty(growable: true);
+    for (int i = 0; i < 11; i++){
+      notifierList.add(ValueNotifier(false));
+    }
+    late Automate automate;
+
+    final TopPalette topPalette = TopPalette(notifierList: notifierList);
     final LeftMenu leftMenu = LeftMenu();
     final TopMenu topMenu = TopMenu();
-    late Automate automate;
-    GlobalKey keyFile = GlobalKey();
-    final keyGraphScene = new GlobalKey<GraphSceneState>();
-
     const GraphScene graphScene = GraphScene();
 
 
     // const GraphScene graphScene = GraphScene(key: keyGraphScene);
 
+    bool toprint;
     return MaterialApp(
         // debugShowCheckedModeBanner: false, // Remove debug banner
         title: 'Flutter The Spec',
@@ -104,8 +103,9 @@ class Home extends StatelessWidget{
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () => {
-              isSelected.value = !isSelected.value,
-              print('valueSelected in main : $isSelected'),
+              notifierList[0].value = !notifierList[0].value,
+              toprint = notifierList[0].value,
+              print('valueSelected in main : $toprint'),
             }
           ),
         )
