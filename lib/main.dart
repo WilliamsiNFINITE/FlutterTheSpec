@@ -46,21 +46,19 @@ class Home extends StatelessWidget{
     notifierList.add(automateNotifier);
 
 
+    // Main widgets
     final TopPalette topPalette = TopPalette(notifierList: notifierList);
     final LeftMenu leftMenu = LeftMenu();
     final TopMenu topMenu = TopMenu();
     final GraphScene graphScene = GraphScene(notifierList: notifierList);
 
-
-    // const GraphScene graphScene = GraphScene(key: keyGraphScene);
-
     return MaterialApp(
         // debugShowCheckedModeBanner: false, // Remove debug banner
         title: 'Flutter The Spec',
-        // theme: ThemeData(
-        //   // This is the theme of your application.
-        //   primarySwatch: Colors.blue,
-        // ),
+        theme: ThemeData(
+          // This is the theme of your application.
+          primarySwatch: Colors.blue,
+        ),
         home:  Scaffold(
           body:  Center(
             // Column  with 2 containers

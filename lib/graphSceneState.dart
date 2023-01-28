@@ -47,6 +47,24 @@ class GraphSceneState extends State<GraphScene> {
     });
   }
 
+  importAutomateFromLocal(automateIn) async {
+
+    var nodesTemp = automateIn.nodes;
+    var relationsTemp = automateIn.relations;
+    Map<Node, Offset> nodeMapTemp = {};
+
+    for (Node node in nodesTemp) {
+      nodeMapTemp[node] = Offset( node.offset.dx,node.offset.dy);
+    }
+
+    setState(() {
+      automate = automateIn;
+      nodes = nodesTemp;
+      relations = relationsTemp;
+      nodeMap = nodeMapTemp;
+    });
+  }
+
   // partie de production
   final TransformationController _transformationController = TransformationController();
   int idx = 0;
@@ -102,15 +120,19 @@ class GraphSceneState extends State<GraphScene> {
                   //   },
                   //   valueListenable: drawLineNotifier,
                   // ),
-                  // ValueListenableBuilder<dynamic>(
-                  //   builder: (BuildContext context, dynamic value, Widget? child) {
-                  //     automate = value;
-                  //     var toprint = value.toJson();
-                  //     var autoToPrint = automate.toJson();
-                  //     return Text('automate actuel $autoToPrint');
-                  //   },
-                  //   valueListenable: widget.notifierList[11],
-                  // ),
+                  ValueListenableBuilder<dynamic>(
+                    builder: (BuildContext context, dynamic value, Widget? child) {
+                      automate = value;
+                      // var toprint = value.toJson();
+                      // var autoToPrint = automate.toJson();
+                      importAutomateFromLocal(automate);
+                      return CustomPaint(
+                        size: const Size(double.infinity, double.infinity),
+                        painter: RelationPainter(nodeMap: nodeMap, relations: relations),
+                      );
+                    },
+                    valueListenable: widget.notifierList[11],
+                  ),
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
                     painter: RelationPainter(nodeMap: nodeMap, relations: relations),
