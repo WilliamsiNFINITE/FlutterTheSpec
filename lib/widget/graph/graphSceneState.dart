@@ -113,26 +113,26 @@ class GraphSceneState extends State<GraphScene> {
               transformationController: _transformationController,
               child: Stack(
                 children: <Widget>[
-                  // ValueListenableBuilder<bool>(
-                  //   builder: (BuildContext context, bool value, Widget? child) {
-                  //     // This builder will only get called when isSelected.value is updated.
-                  //     return Text('node tap : $value');
-                  //   },
-                  //   valueListenable: drawLineNotifier,
-                  // ),
-                  ValueListenableBuilder<dynamic>(
-                    builder: (BuildContext context, dynamic value, Widget? child) {
-                      automate = value;
-                      // var toprint = value.toJson();
-                      // var autoToPrint = automate.toJson();
-                      importAutomateFromLocal(automate);
-                      return CustomPaint(
-                        size: const Size(double.infinity, double.infinity),
-                        painter: RelationPainter(nodeMap: nodeMap, relations: relations),
-                      );
+                  ValueListenableBuilder<bool>(
+                    builder: (BuildContext context, bool value, Widget? child) {
+                      // This builder will only get called when isSelected.value is updated.
+                      return Text('node tap : $value');
                     },
-                    valueListenable: widget.notifierList[11],
+                    valueListenable: drawLineNotifier,
                   ),
+                  // ValueListenableBuilder<dynamic>(
+                  //   builder: (BuildContext context, dynamic value, Widget? child) {
+                  //     automate = value;
+                  //     // var toprint = value.toJson();
+                  //     // var autoToPrint = automate.toJson();
+                  //     importAutomateFromLocal(automate);
+                  //     return CustomPaint(
+                  //       size: const Size(double.infinity, double.infinity),
+                  //       painter: RelationPainter(nodeMap: nodeMap, relations: relations),
+                  //     );
+                  //   },
+                  //   valueListenable: widget.notifierList[11],
+                  // ),
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
                     painter: RelationPainter(nodeMap: nodeMap, relations: relations),

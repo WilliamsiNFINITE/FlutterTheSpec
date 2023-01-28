@@ -23,6 +23,10 @@ class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
   late List<ValueNotifier<dynamic>> notifierList;
   bool isPressed = false;
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

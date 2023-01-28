@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_the_spec/widget/codeEditor.dart';
 import 'package:flutter_the_spec/widget/leftMenu.dart';
 import 'package:flutter_the_spec/widget/topMenu.dart';
 import 'package:flutter_the_spec/widget/topPalette.dart';
@@ -50,7 +51,9 @@ class Home extends StatelessWidget{
     final TopPalette topPalette = TopPalette(notifierList: notifierList);
     final LeftMenu leftMenu = LeftMenu();
     final TopMenu topMenu = TopMenu();
-    final GraphScene graphScene = GraphScene(notifierList: notifierList);
+    GraphScene graphScene = GraphScene(notifierList: notifierList);
+    final CodeEditor codeEditor = CodeEditor();
+
 
     return MaterialApp(
         // debugShowCheckedModeBanner: false, // Remove debug banner
@@ -91,7 +94,7 @@ class Home extends StatelessWidget{
                           height: MediaQuery.of(context).size.height-102, //size of toolbar and palette
                           alignment: Alignment.center,
                           decoration: BoxDecoration(border:  Border.all(color: Colors.black)),
-                          child: graphScene,
+                          child: codeEditor,
                         ),
                       ),
                     ],
