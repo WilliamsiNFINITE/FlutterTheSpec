@@ -4,7 +4,7 @@ import 'package:flutter_the_spec/widget/leftMenu.dart';
 import 'package:flutter_the_spec/widget/topMenu.dart';
 import 'package:flutter_the_spec/widget/topPalette.dart';
 import 'automate.dart';
-import 'graphScene.dart';
+import 'widget/graph/graphScene.dart';
 
 
 Future<void> main() async {

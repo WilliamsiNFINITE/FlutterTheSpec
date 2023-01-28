@@ -1,7 +1,5 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_the_spec/relationPainter.dart';
+import 'package:flutter_the_spec/widget/relationPainter.dart';
 import '../automate.dart';
 
 class NodeWidget extends StatefulWidget {

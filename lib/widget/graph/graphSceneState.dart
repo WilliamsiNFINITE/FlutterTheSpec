@@ -1,10 +1,10 @@
 import 'dart:convert';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'automate.dart';
+import '../../automate.dart';
+import '../nodeWidget.dart';
 import 'graphScene.dart';
-import 'widget/nodeWidget.dart';
-import 'relationPainter.dart';
+import '../relationPainter.dart';
 // import to read data from internet
 import 'package:http/http.dart' as http;
 
