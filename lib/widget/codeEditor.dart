@@ -34,13 +34,29 @@ class _CodeEditorState extends State<CodeEditor> {
   Widget build(BuildContext context) {
     return
     Container(
-      height: MediaQuery.of(context).size.height-102,
+      color: Colors.white,
+      height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child:
         CodeField(
+          // padding: EdgeInsets.all(100), // padding for the line numbers
+          // enabled: false, // text cannot be selected with the cursor
+          // readOnly: true, // text can be selected with the cursor
+          // textSelectionTheme: TextSelectionThemeData(
+          //   cursorColor: Colors.blue,
+          //   selectionColor: Colors.blue.shade200,
+          //   selectionHandleColor: Colors.blue,
+          // ),
+          background: Colors.white,
           controller: _codeController!,
-          textStyle: TextStyle(fontFamily: 'SourceCode'),
+          lineNumberStyle: LineNumberStyle(
+            textStyle: TextStyle(fontFamily: 'SourceCode', color: Colors.blue),
+          ),  // LineNumberStyle
+          textStyle: TextStyle(fontFamily: 'SourceCode', color: Colors.black),
+          cursorColor: Colors.blue,
+          isDense: true,
+          keyboardType: TextInputType.multiline,
         ),
       ),
     );
