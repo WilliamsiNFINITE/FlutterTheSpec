@@ -14,8 +14,8 @@ class GraphSceneState extends State<GraphScene> {
   ValueNotifier<bool> drawLineNotifier = ValueNotifier(false);
 
   Map<Node, Offset> nodeMap = {};
-  late List<Node> nodes;
-  late List<Relation> relations;
+  List<Node> nodes = [];
+  List<Relation> relations = [];
   late Automate automate;
 
   Future<Map<String,dynamic>> fetchData() async {

@@ -291,7 +291,7 @@ class TopPalette extends Container {
               ValueListenableBuilder<dynamic>(
                 builder: (BuildContext context, dynamic value, Widget? child) {
                   // This builder will only get called when isSelected.value is updated.
-                  return Text('$value');
+                  return Text('editor : $value');
                 },
                 valueListenable: notifierList[12],
                 // The child parameter is most helpful if the child is
