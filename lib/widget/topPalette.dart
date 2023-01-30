@@ -18,7 +18,7 @@ class PaletteButton extends StatefulWidget{
   PaletteButtonState createState() => new PaletteButtonState();
 }
 
-class PaletteButtonState extends State<PaletteButton> with ChangeNotifier {
+class PaletteButtonState extends State<PaletteButton>{
 
   late List<ValueNotifier<dynamic>> notifierList;
   bool isPressed = false;
@@ -288,16 +288,16 @@ class TopPalette extends Container {
                 width: 100,
                 child: PaletteButton(buttonType: "addRelation", notifierList: notifierList),
               ),
-              // ValueListenableBuilder<bool>(
-              //   builder: (BuildContext context, bool value, Widget? child) {
-              //     // This builder will only get called when isSelected.value is updated.
-              //     return Text('$value');
-              //   },
-              //   valueListenable: notifierList,
-              //   // The child parameter is most helpful if the child is
-              //   // expensive to build and does not depend on the value from
-              //   // the notifier.
-              // ),
+              ValueListenableBuilder<dynamic>(
+                builder: (BuildContext context, dynamic value, Widget? child) {
+                  // This builder will only get called when isSelected.value is updated.
+                  return Text('$value');
+                },
+                valueListenable: notifierList[12],
+                // The child parameter is most helpful if the child is
+                // expensive to build and does not depend on the value from
+                // the notifier.
+              ),
             ],
           ),
         ),

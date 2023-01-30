@@ -45,6 +45,10 @@ class Home extends StatelessWidget{
     // 11 = automate
     ValueNotifier<dynamic> automateNotifier = ValueNotifier<dynamic>(Automate(nodes: [], relations: []));
     notifierList.add(automateNotifier);
+    // notifier for the codeEditor (true = code, false = graph)
+    // 12 = codeEditor/graphEditor
+    ValueNotifier<dynamic> activeEditingWidget = ValueNotifier<bool>(true);
+    notifierList.add(activeEditingWidget);
 
 
     // Main widgets
@@ -90,12 +94,30 @@ class Home extends StatelessWidget{
                       Expanded( //GraphScene
                         flex: 9,
                         child:
+                        // Container(
+                        //   height: MediaQuery.of(context).size.height-102, //size of toolbar and palette
+                        //   alignment: Alignment.center,
+                        //   decoration: BoxDecoration(border:  Border.all(color: Colors.black)),
+                        //   child: codeEditor,
+                        // ),
                         Container(
                           height: MediaQuery.of(context).size.height-102, //size of toolbar and palette
                           alignment: Alignment.center,
                           decoration: BoxDecoration(border:  Border.all(color: Colors.black)),
-                          child: codeEditor,
+                          child: ValueListenableBuilder<dynamic>(
+                            builder: (BuildContext context, dynamic value, Widget? child) {
+                              // This builder will only get called when isSelected.value is updated.
+                              if (value == true){
+                                return codeEditor;
+                              }
+                              else{
+                                return graphScene;
+                              }
+                            },
+                            valueListenable: notifierList[12],
+                          ),
                         ),
+
                       ),
                     ],
                   ),
@@ -106,8 +128,8 @@ class Home extends StatelessWidget{
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.cached),
             onPressed: () => {
-              notifierList[0].value = !notifierList[0].value,
-              toprint = notifierList[0].value,
+              notifierList[12].value = !notifierList[12].value,
+              toprint = notifierList[12].value,
               print('valueSelected in main : $toprint'),
             }
           ),
