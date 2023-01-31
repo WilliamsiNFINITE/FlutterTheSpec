@@ -56,7 +56,7 @@ class Home extends StatelessWidget{
     final LeftMenu leftMenu = LeftMenu();
     final TopMenu topMenu = TopMenu();
     GraphScene graphScene = GraphScene(notifierList: notifierList);
-    final CodeEditor codeEditor = CodeEditor();
+    final CodeEditor codeEditor = CodeEditor(notifierList: notifierList);
 
 
     return MaterialApp(
@@ -94,30 +94,25 @@ class Home extends StatelessWidget{
                       Expanded( //GraphScene
                         flex: 9,
                         child:
-                        // Container(
-                        //   height: MediaQuery.of(context).size.height-102, //size of toolbar and palette
-                        //   alignment: Alignment.center,
-                        //   decoration: BoxDecoration(border:  Border.all(color: Colors.black)),
-                        //   child: codeEditor,
-                        // ),
                         Container(
                           height: MediaQuery.of(context).size.height-102, //size of toolbar and palette
                           alignment: Alignment.center,
                           decoration: BoxDecoration(border:  Border.all(color: Colors.black)),
                           child: ValueListenableBuilder<dynamic>(
-                            builder: (BuildContext context, dynamic value, Widget? child) {
-                              // This builder will only get called when isSelected.value is updated.
-                              if (value == true){
-                                return codeEditor;
-                              }
-                              else{
-                                return graphScene;
-                              }
+                            builder: (BuildContext context, dynamic value, Widget? child) {// print('valueSelected in main : $value');
+                              return
+                              Container(
+                                child: AnimatedCrossFade(
+                                  firstChild: graphScene,
+                                  secondChild: codeEditor,
+                                  crossFadeState: value ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                  duration: const Duration(milliseconds: 50),
+                                )
+                              );
                             },
                             valueListenable: notifierList[12],
                           ),
                         ),
-
                       ),
                     ],
                   ),

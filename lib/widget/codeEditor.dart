@@ -5,11 +5,14 @@ import 'package:highlight/languages/dart.dart';
 import 'package:flutter_highlight/themes/monokai-sublime.dart';
 
 class CodeEditor extends StatefulWidget {
+  List<ValueNotifier<dynamic>> notifierList;
+  CodeEditor({super.key, required this.notifierList});
   @override
   _CodeEditorState createState() => _CodeEditorState();
 }
 
 class _CodeEditorState extends State<CodeEditor> {
+  late List<ValueNotifier<dynamic>> notifierList;
   CodeController? _codeController;
 
   @override
@@ -40,14 +43,6 @@ class _CodeEditorState extends State<CodeEditor> {
         scrollDirection: Axis.vertical,
         child:
         CodeField(
-          // padding: EdgeInsets.all(100), // padding for the line numbers
-          // enabled: false, // text cannot be selected with the cursor
-          // readOnly: true, // text can be selected with the cursor
-          // textSelectionTheme: TextSelectionThemeData(
-          //   cursorColor: Colors.blue,
-          //   selectionColor: Colors.blue.shade200,
-          //   selectionHandleColor: Colors.blue,
-          // ),
           background: Colors.white,
           controller: _codeController!,
           lineNumberStyle: LineNumberStyle(
