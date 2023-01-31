@@ -23,14 +23,13 @@ class PaletteButtonState extends State<PaletteButton>{
   late List<ValueNotifier<dynamic>> notifierList;
   bool isPressed = false;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
-
     // test to get the right button
     switch (widget.buttonType) {
       case 'new':
@@ -69,44 +68,63 @@ class PaletteButtonState extends State<PaletteButton>{
     highlightColor: Colors.red.withOpacity(0.12),
   );
 
+
+
+  // Widget newButton(List<ValueNotifier<dynamic>> notifierList, ColorScheme colors) {
+  //   return IconButton(
+  //       icon: const Icon(
+  //           Icons.filter_drama,
+  //           color: Colors.blue,
+  //           ),
+  //       onPressed: () {
+  //           setState(() {
+  //             isPressed = !isPressed;
+  //           });
+  //           print('Nouveau :  $isPressed');
+  //         },
+  //   );
+  // }
+
+
   Widget newButton(List<ValueNotifier<dynamic>> notifierList) {
-    return IconButton(
-      icon: const Icon(Icons.add),
-      tooltip: 'Nouveau',
-      onPressed: () {
-        notifierList[0].value = !notifierList[0].value;
-//         notifierList[.value = !notifierList[.value;
-        print('Nouveau :  $notifierList[');
-      },
-      style: buttonStyle,
-    );
+    return
+      IconButton(
+        icon: const Icon(Icons.add),
+        tooltip: 'Nouveau',
+        onPressed: () {
+          notifierList[0].value = !notifierList[0].value;
+          print('isSelected :  $notifierList');
+        },
+        highlightColor : Colors.blue.shade100,
+      );
   }
 
   Widget openButton(List<ValueNotifier<dynamic>> notifierList) {
-    return IconButton(
+    return
+      IconButton(
       icon: const Icon(Icons.file_open),
       tooltip: 'Ouvrir',
       onPressed: () async {
-        notifierList[1].value = !notifierList[1].value;
-        final result = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: ['json'],
-        );
-        if(result != null){
-          var bytesFile = result.files.single.bytes;
-          var jsonText = String.fromCharCodes(bytesFile!);
-          Automate automate = Automate.fromJson(jsonDecode(jsonText));
+          notifierList[1].value = !notifierList[1].value;
+          final result = await FilePicker.platform.pickFiles(
+            type: FileType.custom,
+            allowedExtensions: ['json'],
+          );
+          if(result != null){
+            var bytesFile = result.files.single.bytes;
+            var jsonText = String.fromCharCodes(bytesFile!);
+            Automate automate = Automate.fromJson(jsonDecode(jsonText));
 
-          notifierList[11].value = automate;
+            notifierList[11].value = automate;
 
-          print(notifierList[11].value.toJson());
-          print('Import réussi');
-        }
-        else{
-          print('Import échoué');
-        }
+            print(notifierList[11].value.toJson());
+            print('Import réussi');
+          }
+          else{
+            print('Import échoué');
+          }
       },
-      style: buttonStyle,
+      highlightColor : Colors.blue.shade100,
     );
   }
 
@@ -185,42 +203,77 @@ class PaletteButtonState extends State<PaletteButton>{
   }
 
   Widget selectButton(List<ValueNotifier<dynamic>> notifierList) {
-    return IconButton(
-      icon: const Icon(Icons.back_hand_rounded),
-      tooltip: 'Sélectionner',
-      onPressed: () {
-        notifierList[8].value = !notifierList[8].value;
-        print('Sélectionner');
-      },
-      style: buttonStyle,
-    );
+    return
+      ValueListenableBuilder<dynamic>(
+        builder: (BuildContext context, dynamic value, Widget? child) {// print('valueSelected in main : $value');
+          return
+            IconButton(
+              icon: const Icon(Icons.back_hand_rounded),
+              tooltip: 'Sélectionner',
+              onPressed: () {
+                notifierList[8].value = !notifierList[8].value;
+                if (notifierList[8].value) {
+                  notifierList[9].value = false;
+                  notifierList[10].value = false;
+                }
+                print('Sélectionner');
+              },
+              color: notifierList[8].value ? Colors.blue : Colors.black,
+              highlightColor : Colors.blue.shade100,
+            );
+        },
+        valueListenable: notifierList[8],
+      );
   }
 
   Widget addNodeButton(List<ValueNotifier<dynamic>> notifierList) {
-    return IconButton(
-      icon: const Icon(Icons.circle),
-      tooltip: 'Ajouter un noeud',
-      onPressed: () {
-        //change style of button
-        notifierList[9].value = !notifierList[9].value;
-        print('Ajouter un noeud');
-      },
-      style: buttonStyle,
-    );
+    return
+      ValueListenableBuilder<dynamic>(
+        builder: (BuildContext context, dynamic value, Widget? child) {// print('valueSelected in main : $value');
+          return
+            IconButton(
+              icon: const Icon(Icons.circle),
+              tooltip: 'Ajouter un noeud',
+              onPressed: () {
+                //change style of button
+                notifierList[9].value = !notifierList[9].value;
+                if (notifierList[9].value) {
+                  notifierList[8].value = false;
+                  notifierList[10].value = false;
+                }
+                print('Ajouter un noeud');
+              },
+              color: notifierList[9].value ? Colors.blue : Colors.black,
+              highlightColor : Colors.blue.shade100,
+            );
+        },
+        valueListenable: notifierList[9],
+      );
   }
 
   Widget addRelationButton(List<ValueNotifier<dynamic>> notifierList) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_right_alt),
-      tooltip: 'Ajouter une relation',
-      onPressed: () {
-        notifierList[10].value = !notifierList[10].value;
-        print('Ajouter une relation');
-      },
-      style: buttonStyle,
-    );
+    return
+      ValueListenableBuilder<dynamic>(
+        builder: (BuildContext context, dynamic value, Widget? child) {// print('valueSelected in main : $value');
+          return
+            IconButton(
+              icon: const Icon(Icons.arrow_right_alt),
+              tooltip: 'Ajouter une relation',
+              onPressed: () {
+                notifierList[10].value = !notifierList[10].value;
+                if (notifierList[10].value) {
+                  notifierList[8].value = false;
+                  notifierList[9].value = false;
+                }
+                print('Ajouter une relation');
+              },
+              color: notifierList[10].value ? Colors.blue : Colors.black,
+              highlightColor : Colors.blue.shade100,
+            );
+        },
+        valueListenable: notifierList[10],
+      );
   }
-
 }
 
 class TopPalette extends Container {
@@ -234,9 +287,7 @@ class TopPalette extends Container {
     return Container(
         decoration: BoxDecoration(
             border:  Border.all(color: Colors.black),
-            color: Color.fromRGBO(220, 220, 220, 1)
         ),
-
         height: 50,
         width: MediaQuery.of(context).size.width,
         child: SingleChildScrollView(

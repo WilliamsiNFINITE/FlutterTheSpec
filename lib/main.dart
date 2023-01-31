@@ -62,10 +62,10 @@ class Home extends StatelessWidget{
     return MaterialApp(
         // debugShowCheckedModeBanner: false, // Remove debug banner
         title: 'Flutter The Spec',
-        theme: ThemeData(
-          // This is the theme of your application.
-          primarySwatch: Colors.blue,
-        ),
+        // theme: ThemeData(
+        //   // This is the theme of your application.
+        //   primarySwatch: Colors.blue,
+        // ),
         home:  Scaffold(
           body:  Center(
             // Column  with 2 containers
@@ -84,7 +84,6 @@ class Home extends StatelessWidget{
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children:
                     <Widget>[
-
                       Expanded( //Left MENU
                         flex: 1,
                         child:
@@ -121,13 +120,15 @@ class Home extends StatelessWidget{
             ),
             ),
           floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.cached),
+            child: const Icon(Icons.cached, color: Colors.black),
             onPressed: () => {
               notifierList[12].value = !notifierList[12].value,
               toprint = notifierList[12].value,
               print('valueSelected in main : $toprint'),
             }
           ),
+
+
         )
 
   );
