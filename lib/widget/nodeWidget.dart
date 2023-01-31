@@ -82,30 +82,32 @@ class NodeWidgetState extends State<NodeWidget> {
             }),
           },
 
-          child: Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              color: Colors.blueAccent.withOpacity(1),
-              border: Border.all(color: Colors.black),
-              shape: BoxShape.circle,
-            ),
-            child: Container(
-                alignment : Alignment.centerLeft,
-                child: TextField(
-                  decoration: const InputDecoration(
-                    hoverColor: Colors.redAccent,
-                    focusColor: Colors.redAccent,
-                    border: InputBorder.none,
-                    labelText: 'Name:'
-                  ),
-                  controller: TextEditingController()..text = node.name,
-                  onSubmitted: (value) => node.name = value,
-                )
+          child:
+            Container(
+              width: size,
+              height: size,
+              decoration: BoxDecoration(
+                color: Colors.blueAccent,
+                border: Border.all(color: Colors.black),
+                shape: BoxShape.circle,
+              ),
             ),
           )
-      ),
-    );
+          //
+          // Container(
+          //     alignment : Alignment.bottomCenter,
+          //     child: TextField(
+          //       decoration: const InputDecoration(
+          //         // hoverColor: Colors.redAccent,
+          //         // focusColor: Colors.redAccent,
+          //           border: InputBorder.none,
+          //           labelText: 'Name: '
+          //       ),
+          //       controller: TextEditingController()..text = node.name,
+          //       onSubmitted: (value) => node.name = value,
+          //     )
+          // )
+      );
   }
 
   void drawLine(Node initialNode) {

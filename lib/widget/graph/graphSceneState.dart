@@ -1,6 +1,7 @@
 import 'dart:convert';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_the_spec/widget/nodeLabel.dart';
 import '../../automate.dart';
 import '../nodeWidget.dart';
 import 'graphScene.dart';
@@ -136,6 +137,7 @@ class GraphSceneState extends State<GraphScene> {
                     painter: RelationPainter(nodeMap: nodeMap, relations: relations),
                   ),
                   ..._buildNodes(),
+                  ..._buildLabels(),
                 ],
               )),
         ));
@@ -144,8 +146,15 @@ class GraphSceneState extends State<GraphScene> {
   List<Widget> _buildNodes() {
     final res = <Widget>[];
     nodeMap.forEach((node, offset) {
-      res.add(
-          NodeWidget(offset: offset, node: node, onDragStarted: onDragStarted(node), drawLineNotifier: drawLineNotifier));
+      res.add(NodeWidget(offset: offset, node: node, onDragStarted: onDragStarted(node), drawLineNotifier: drawLineNotifier));
+    });
+    return res;
+  }
+
+  List<Widget> _buildLabels() {
+    final res = <Widget>[];
+    nodeMap.forEach((node, offset) {
+      res.add(NodeLabel(node: node));
     });
     return res;
   }
@@ -156,10 +165,6 @@ class GraphSceneState extends State<GraphScene> {
         node.offset = Offset(x, y);
       }
     }
-    //print nodes offset
-    // for (Node node in nodes) {
-    //   print('node ${node.name} offset: ${node.offset}');
-    // }
     updateAutomate();
   }
 
@@ -167,9 +172,6 @@ class GraphSceneState extends State<GraphScene> {
     automate.nodes = nodes;
     automate.relations = relations;
     widget.notifierList[11].value = automate;
-    // print automate
-    // exportAutomate(automate);
-    // print('automate: ${automate.  toJson()}');
   }
 
   void addNewNode(String name, double dx, double dy) {
