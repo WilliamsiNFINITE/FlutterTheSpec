@@ -9,7 +9,7 @@ import '../relationPainter.dart';
 import 'package:http/http.dart' as http;
 
 class GraphSceneState extends State<GraphScene> {
-  late List<ValueNotifier<dynamic>> notifierList;
+  late List<ValueNotifier<dynamic>> notifierList = widget.notifierList;
 
   ValueNotifier<bool> drawLineNotifier = ValueNotifier(false);
 
@@ -88,22 +88,20 @@ class GraphSceneState extends State<GraphScene> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => {
-          nodeMap.forEach((node, offset) => print(node.offset)),
+          if (notifierList[9].value){ // if the button for placing a new node is pressed
+            setState(() {
+              nodeMap[Node(name: 'new node ${idx}')] = _transformationController.toScene(_doubleTapPosition!);
+              addNewNode('new node ${idx}', _doubleTapPosition!.dx, _doubleTapPosition!.dy);
+              idx++;
+            }),
+          },
           print('tap graphSceneState'),
-          // drawLine(),
-          print(automate.toJson()),
         },
-        onDoubleTap: () {
-          setState(() {
-            nodeMap[Node(name: 'new node ${idx}')] = _transformationController.toScene(_doubleTapPosition!);
-            addNewNode('new node ${idx}', _doubleTapPosition!.dx, _doubleTapPosition!.dy);
-            idx++;
-          });
-        },
-        onDoubleTapDown: (details) {
+        onTapDown: (details) {
           final RenderBox box = context.findRenderObject() as RenderBox;
           _doubleTapPosition = box.globalToLocal(details.globalPosition);
         },
+
         child: Center(
           child: InteractiveViewer(
             // boundaryMargin: const EdgeInsets.all(2.0),

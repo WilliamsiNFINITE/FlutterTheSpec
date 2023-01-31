@@ -20,7 +20,7 @@ class PaletteButton extends StatefulWidget{
 
 class PaletteButtonState extends State<PaletteButton>{
 
-  late List<ValueNotifier<dynamic>> notifierList;
+  late List<ValueNotifier<dynamic>> notifierList = widget.notifierList;
   bool isPressed = false;
 
   // @override
@@ -33,27 +33,27 @@ class PaletteButtonState extends State<PaletteButton>{
     // test to get the right button
     switch (widget.buttonType) {
       case 'new':
-        return newButton(widget.notifierList);
+        return newButton(notifierList);
       case 'download':
-        return downloadButton(widget.notifierList);
+        return downloadButton(notifierList);
       case 'open':
-        return openButton(widget.notifierList);
+        return openButton(notifierList);
       case 'undo':
-        return undoButton(widget.notifierList);
+        return undoButton(notifierList);
       case 'redo':
-        return redoButton(widget.notifierList);
+        return redoButton(notifierList);
       case 'adaptedZoom':
-        return adaptedZoomButton(widget.notifierList);
+        return adaptedZoomButton(notifierList);
       case 'zoomIn':
-        return zoomInButton(widget.notifierList);
+        return zoomInButton(notifierList);
       case 'zoomOut':
-        return zoomOutButton(widget.notifierList);
+        return zoomOutButton(notifierList);
       case 'select':
-        return selectButton(widget.notifierList);
+        return selectButton(notifierList);
       case 'addNode':
-        return addNodeButton(widget.notifierList);
+        return addNodeButton(notifierList);
       case 'addRelation':
-        return addRelationButton(widget.notifierList);
+        return addRelationButton(notifierList);
       default:
         return Container();
     }
@@ -67,24 +67,6 @@ class PaletteButtonState extends State<PaletteButton>{
     focusColor: Colors.red.withOpacity(0.12),
     highlightColor: Colors.red.withOpacity(0.12),
   );
-
-
-
-  // Widget newButton(List<ValueNotifier<dynamic>> notifierList, ColorScheme colors) {
-  //   return IconButton(
-  //       icon: const Icon(
-  //           Icons.filter_drama,
-  //           color: Colors.blue,
-  //           ),
-  //       onPressed: () {
-  //           setState(() {
-  //             isPressed = !isPressed;
-  //           });
-  //           print('Nouveau :  $isPressed');
-  //         },
-  //   );
-  // }
-
 
   Widget newButton(List<ValueNotifier<dynamic>> notifierList) {
     return
