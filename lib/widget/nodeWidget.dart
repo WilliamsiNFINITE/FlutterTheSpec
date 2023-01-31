@@ -87,20 +87,24 @@ class NodeWidgetState extends State<NodeWidget> {
             height: size,
             decoration: BoxDecoration(
               color: Colors.blueAccent.withOpacity(1),
-              // border: Border.all(color: Colors.black),
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(100),
+              border: Border.all(color: Colors.black),
+              shape: BoxShape.circle,
             ),
-            child: Center(
+            child: Container(
+                alignment : Alignment.centerLeft,
                 child: TextField(
                   decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      labelText: 'Name:'),
-
+                    hoverColor: Colors.redAccent,
+                    focusColor: Colors.redAccent,
+                    border: InputBorder.none,
+                    labelText: 'Name:'
+                  ),
                   controller: TextEditingController()..text = node.name,
                   onSubmitted: (value) => node.name = value,
-                )),
-          )),
+                )
+            ),
+          )
+      ),
     );
   }
 
