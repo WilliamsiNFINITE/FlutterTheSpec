@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_the_spec/widget/codeEditor.dart';
 import 'package:flutter_the_spec/widget/leftMenu.dart';
 import 'package:flutter_the_spec/widget/topMenu.dart';
-import 'package:flutter_the_spec/widget/topPalette.dart';
+import 'package:flutter_the_spec/widget/topPalette_test.dart';
 import 'automate.dart';
 import 'widget/graph/graphScene.dart';
 
@@ -134,11 +134,11 @@ class Home extends StatelessWidget{
   );
   }
 
-  double getLeftValue(key) {
-    RenderBox box = key.currentContext?.findRenderObject() as RenderBox;
-    Offset position = box.localToGlobal(Offset.zero); //this is global position
-    double yEdition = position.dy; //this is y - I think it's what you want
-    print(yEdition);
-    return yEdition;
-  }
+  // double getLeftValue(key) {
+  //   RenderBox box = key.currentContext?.findRenderObject() as RenderBox;
+  //   Offset position = box.localToGlobal(Offset.zero); //this is global position
+  //   double yEdition = position.dy; //this is y
+  //   print(yEdition);
+  //   return yEdition;
+  // }
 }

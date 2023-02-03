@@ -12,24 +12,24 @@ void main() {
             expect(2!=1, true);
         }
     }
-
-    group('Methods', (){
-        void setUp(){
-            graphScene //TODO init graphScene
-        }
-
-
-        test('the method to update nodes should change the offset of the node given in parameter'){
-            x = 0;
-            y = 1;
-            node = Node() //TODO fill the node constructor
-            updateNode(node,x,y)
-            expect(node.offset, Offset(x,y));
-        }
-        test('the method to update the automata should update nodes and relations'){
-            initAutomata = Automate() //TODO constructor
-
-        }
-    }
+    //
+    // group('Methods', (){
+    //     void setUp(){
+    //         graphScene //TODO init graphScene
+    //     }
+    //
+    //
+    //     test('the method to update nodes should change the offset of the node given in parameter'){
+    //         x = 0;
+    //         y = 1;
+    //         node = Node() //TODO fill the node constructor
+    //         updateNode(node,x,y)
+    //         expect(node.offset, Offset(x,y));
+    //     }
+    //     test('the method to update the automata should update nodes and relations'){
+    //         initAutomata = Automate() //TODO constructor
+    //
+    //     }
+    // }
 }
 
