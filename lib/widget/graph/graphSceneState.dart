@@ -19,8 +19,9 @@ class GraphSceneState extends State<GraphScene> {
   List<Relation> relations = [];
   late Automate automate;
 
-  Future<Map<String,dynamic>> fetchData() async {
-    final response = await http.get(Uri.parse('https://dl.dropbox.com/s/e2886piklyftecv/nodes.json?dl=0'));
+  Future<Map<String, dynamic>> fetchData() async {
+    final response = await http.get(
+        Uri.parse('https://dl.dropbox.com/s/e2886piklyftecv/nodes.json?dl=0'));
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -29,7 +30,7 @@ class GraphSceneState extends State<GraphScene> {
   }
 
   importAutomateFromWeb() async {
-    Map<String,dynamic> data = await fetchData();
+    Map<String, dynamic> data = await fetchData();
 
     var automateTemp = Automate.fromJson(data);
     var nodesTemp = automateTemp.nodes;
@@ -37,7 +38,7 @@ class GraphSceneState extends State<GraphScene> {
     Map<Node, Offset> nodeMapTemp = {};
 
     for (Node node in nodesTemp) {
-      nodeMapTemp[node] = Offset( node.offset.dx,node.offset.dy);
+      nodeMapTemp[node] = Offset(node.offset.dx, node.offset.dy);
     }
 
     setState(() {
@@ -48,39 +49,30 @@ class GraphSceneState extends State<GraphScene> {
     });
   }
 
-  importAutomateFromLocal(automateIn) async {
-
-    var nodesTemp = automateIn.nodes;
-    var relationsTemp = automateIn.relations;
-    Map<Node, Offset> nodeMapTemp = {};
-
-    for (Node node in nodesTemp) {
-      nodeMapTemp[node] = Offset( node.offset.dx,node.offset.dy);
-    }
-
-    setState(() {
-      automate = automateIn;
-      nodes = nodesTemp;
-      relations = relationsTemp;
-      nodeMap = nodeMapTemp;
-    });
-  }
-
   // partie de production
-  final TransformationController _transformationController = TransformationController();
+  final TransformationController _transformationController =
+      TransformationController();
   int idx = 0;
 
   Function onDragStarted(Node key) => (x, y) {
-    setState(() {
-      nodeMap[key] = _transformationController.toScene(Offset(x, y));
-      updateNode(key, x, y);
-    });
-  };
+        setState(() {
+          nodeMap[key] = _transformationController.toScene(Offset(x, y));
+          updateNode(key, x, y);
+        });
+      };
 
   @override
   void initState() {
     super.initState();
-    importAutomateFromWeb();
+    // importAutomateFromWeb();
+    automate = Automate(nodes: [], relations: []);
+    nodes = automate.nodes;
+    relations = automate.relations;
+    notifierList[11].addListener(() {
+      setState(() {
+        automate = notifierList[11].value;
+      });
+    });
   }
 
   Offset? _doubleTapPosition;
@@ -89,23 +81,26 @@ class GraphSceneState extends State<GraphScene> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => {
-          if (notifierList[9].value){ // if the button for placing a new node is pressed
-            setState(() {
-              nodeMap[Node(name: 'new node ${idx}')] = _transformationController.toScene(_doubleTapPosition!);
-              addNewNode('new node ${idx}', _doubleTapPosition!.dx, _doubleTapPosition!.dy);
-              idx++;
-            }),
-          },
-          print('tap graphSceneState'),
-        },
+              if (notifierList[9].value)
+                {
+                  // if the button for placing a new node is pressed
+                  setState(() {
+                    nodeMap[Node(name: 'new node ${idx}')] =
+                        _transformationController.toScene(_doubleTapPosition!);
+                    addNewNode('new node ${idx}', _doubleTapPosition!.dx,
+                        _doubleTapPosition!.dy);
+                    idx++;
+                  }),
+                },
+              print('tap graphSceneState'),
+            },
         onTapDown: (details) {
           final RenderBox box = context.findRenderObject() as RenderBox;
           _doubleTapPosition = box.globalToLocal(details.globalPosition);
         },
-
         child: Center(
           child: InteractiveViewer(
-            // boundaryMargin: const EdgeInsets.all(2.0),
+              // boundaryMargin: const EdgeInsets.all(2.0),
               minScale: 0.001,
               maxScale: 10.5,
               // constrained: true,
@@ -119,25 +114,18 @@ class GraphSceneState extends State<GraphScene> {
                     },
                     valueListenable: drawLineNotifier,
                   ),
-                  // ValueListenableBuilder<dynamic>(
-                  //   builder: (BuildContext context, dynamic value, Widget? child) {
-                  //     automate = value;
-                  //     var toprint = value.toJson();
-                  //     // var autoToPrint = automate.toJson();
-                  //     // print('automate from local : $toprint');
-                  //     // print('automate from local2 : $autoToPrint');
-                  //     importAutomateFromLocal(automate);
-                  //     return Text('automate from local : $toprint');
-                  //     // return CustomPaint(
-                  //     //   size: const Size(double.infinity, double.infinity),
-                  //     //   painter: RelationPainter(nodeMap: nodeMap, relations: relations),
-                  //     // );
-                  //   },
-                  //   valueListenable: notifierList[11],
-                  // ),
+                  ValueListenableBuilder<dynamic>(
+                    builder:
+                        (BuildContext context, dynamic value, Widget? child) {
+                      var toprint = value.toJson();
+                      return Text('automate from local : $toprint');
+                    },
+                    valueListenable: notifierList[11],
+                  ),
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
-                    painter: RelationPainter(nodeMap: nodeMap, relations: relations),
+                    painter:
+                        RelationPainter(nodeMap: nodeMap, relations: relations),
                   ),
                   ..._buildNodes(),
                   ..._buildLabels(),
@@ -148,39 +136,38 @@ class GraphSceneState extends State<GraphScene> {
 
   List<Widget> _buildNodes() {
     final res = <Widget>[];
-    nodeMap.forEach((node, offset) {
-      res.add(NodeWidget(offset: offset, node: node, onDragStarted: onDragStarted(node), drawLineNotifier: drawLineNotifier));
+    automate.nodes.forEach((element) {
+      res.add(NodeWidget(
+          offset: element.offset,
+          node: element,
+          onDragStarted: onDragStarted(element),
+          drawLineNotifier: drawLineNotifier));
     });
     return res;
   }
 
   List<Widget> _buildLabels() {
     final res = <Widget>[];
-    nodeMap.forEach((node, offset) {
-      res.add(NodeLabel(node: node));
+    automate.nodes.forEach((element) {
+      res.add(NodeLabel(node: element));
     });
     return res;
   }
 
   void updateNode(Node key, x, y) {
-    for (Node node in nodes) {
+    automate = notifierList[11].value;
+    for (Node node in automate.nodes) {
       if (node.name == key.name) {
         node.offset = Offset(x, y);
       }
     }
-    updateAutomate();
-  }
-
-  void updateAutomate() {
-    automate.nodes = nodes;
-    automate.relations = relations;
     notifierList[11].value = automate;
-    print('automate updated');
   }
 
   void addNewNode(String name, double dx, double dy) {
-    nodes.add(Node(name: name, offset: Offset(dx, dy)));
-    updateAutomate();
+    automate = notifierList[11].value;
+    automate.nodes.add(Node(name: name, offset: Offset(dx, dy)));
+    notifierList[11].value = automate;
   }
 
   Automate getAutomate() {
@@ -189,12 +176,10 @@ class GraphSceneState extends State<GraphScene> {
 
   drawLine() {
     relations.add(Relation(source: nodes[0].name, target: nodes[3].name));
-    updateAutomate();
   }
-
 }
 
-class LinePainter  extends CustomPainter {
+class LinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()

@@ -75,6 +75,7 @@ class PaletteButtonState extends State<PaletteButton>{
         tooltip: 'Nouveau',
         onPressed: () {
           notifierList[0].value = !notifierList[0].value;
+          notifierList[11].value = Automate(nodes: [], relations: []);
           print('isSelected :  $notifierList');
         },
         highlightColor : Colors.blue.shade100,
