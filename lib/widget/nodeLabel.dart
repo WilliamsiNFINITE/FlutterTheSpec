@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_the_spec/widget/relationPainter.dart';
 import '../automate.dart';
 
 class NodeLabel extends StatefulWidget {
@@ -24,10 +23,13 @@ class NodeLabelState extends State<NodeLabel> {
   void initState() {
     this.node = widget.node;
     this.offset = node.offset;
+
   }
 
   @override
   Widget build(BuildContext context) {
+    // put a listener on the node to update the offset when the node is moved
+
     return Positioned(
       left: offset.dx,
       top:  offset.dy + size / 2,
@@ -43,27 +45,32 @@ class NodeLabelState extends State<NodeLabel> {
                offset = Offset(data.globalPosition.dx-(MediaQuery.of(context).size.width*0.1), data.globalPosition.dy-100 - size/2);//offset from the menu
             }),
           },
-
-         onPanEnd: (data) => {
+          onPanEnd: (data) => {
             setState(() {
               isDragged = false;
             }),
           },
-
           child:
-          Container(
-              // alignment : Alignment.bottomLeft,
-              child:
-              Text(node.name),
-              // TextField(
-              //   decoration: const InputDecoration(
-              //       border: InputBorder.none,
-              //       labelText: 'Name: '
-              //   ),
-              //   controller: TextEditingController()..text = node.name,
-              //   onSubmitted: (value) => node.name = value,
-              // )
-          ),
+          Text(node.name),
+
+          // TextField(
+          //   decoration: const InputDecoration(
+          //       border: InputBorder.none,
+          //       labelText: 'Name: '
+          //   ),
+          //   controller: TextEditingController()..text = node.name,
+          //   onSubmitted: (value) => node.name = value,
+          // )
+          //
+          // const TextField(
+          //   obscureText: true,
+          //   decoration: InputDecoration(
+          //     border: OutlineInputBorder(),
+          //     labelText: 'Password',
+          //   ),
+          // )
+
+
       )
     );
   }

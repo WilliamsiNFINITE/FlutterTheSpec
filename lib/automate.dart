@@ -66,6 +66,8 @@ class Node {
         };
     }
 
+  void addListener(Null Function() param0) {}
+
 
 }
 

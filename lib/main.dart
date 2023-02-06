@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       //theme: useMaterial3 : true; --> pour utiliser Iconbutton. avoir isSelected
         home: Home() //create new class for 'home' property of MaterialApp()
-
       //to escape 'No MaterialLocalizations found' error
     );
   }
@@ -44,7 +43,12 @@ class Home extends StatelessWidget{
     // notifier for the graphSceneState
     // 11 = automate
     ValueNotifier<dynamic> automateNotifier = ValueNotifier<dynamic>(Automate(nodes: [], relations: []));
+    automateNotifier.addListener(() {
+      toprint = automateNotifier.value.toJson();
+      print('blablabla : $toprint');
+    });
     notifierList.add(automateNotifier);
+
     // notifier for the codeEditor (true = code, false = graph)
     // 12 = codeEditor/graphEditor
     ValueNotifier<dynamic> activeEditingWidget = ValueNotifier<bool>(true);
@@ -127,8 +131,6 @@ class Home extends StatelessWidget{
               print('valueSelected in main : $toprint'),
             }
           ),
-
-
         )
 
   );

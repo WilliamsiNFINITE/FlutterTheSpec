@@ -122,15 +122,18 @@ class GraphSceneState extends State<GraphScene> {
                   // ValueListenableBuilder<dynamic>(
                   //   builder: (BuildContext context, dynamic value, Widget? child) {
                   //     automate = value;
-                  //     // var toprint = value.toJson();
+                  //     var toprint = value.toJson();
                   //     // var autoToPrint = automate.toJson();
+                  //     // print('automate from local : $toprint');
+                  //     // print('automate from local2 : $autoToPrint');
                   //     importAutomateFromLocal(automate);
-                  //     return CustomPaint(
-                  //       size: const Size(double.infinity, double.infinity),
-                  //       painter: RelationPainter(nodeMap: nodeMap, relations: relations),
-                  //     );
+                  //     return Text('automate from local : $toprint');
+                  //     // return CustomPaint(
+                  //     //   size: const Size(double.infinity, double.infinity),
+                  //     //   painter: RelationPainter(nodeMap: nodeMap, relations: relations),
+                  //     // );
                   //   },
-                  //   valueListenable: widget.notifierList[11],
+                  //   valueListenable: notifierList[11],
                   // ),
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
@@ -171,7 +174,8 @@ class GraphSceneState extends State<GraphScene> {
   void updateAutomate() {
     automate.nodes = nodes;
     automate.relations = relations;
-    widget.notifierList[11].value = automate;
+    notifierList[11].value = automate;
+    print('automate updated');
   }
 
   void addNewNode(String name, double dx, double dy) {
