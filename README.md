@@ -44,6 +44,13 @@ Please choose one (To quit, press "q/Q"):
 
 There is nothing to configure in this project.
 
+## Tests
+
+You can run tests from a terminal with the following command:
+
+```console
+---->flutter test
+```
 ## More
 
 ### Author

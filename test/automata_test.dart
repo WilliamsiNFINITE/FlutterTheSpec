@@ -1,11 +1,6 @@
-// This will test the methods in graphSceneState.
-
-
 import 'dart:convert';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_the_spec/automate.dart';
-import 'package:flutter_the_spec/widget/graph/graphSceneState.dart';
 
 void main() {
     late var jsonTextAutomate;
