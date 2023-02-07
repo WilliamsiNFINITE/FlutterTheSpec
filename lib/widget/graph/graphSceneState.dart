@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_the_spec/widget/nodeLabel.dart';
 import '../../automate.dart';
 import '../nodeWidget.dart';
+import '../relationWidget.dart';
 import 'graphScene.dart';
 import '../relationPainter.dart';
 // import to read data from internet
@@ -11,8 +12,6 @@ import 'package:http/http.dart' as http;
 
 class GraphSceneState extends State<GraphScene> {
   late Map<String, ValueNotifier<dynamic>> notifierMap = widget.notifierMap;
-
-  ValueNotifier<bool> drawLineNotifier = ValueNotifier(false);
 
   Map<Node, Offset> nodeMap = {};
   List<Node> nodes = [];
@@ -107,28 +106,24 @@ class GraphSceneState extends State<GraphScene> {
               transformationController: _transformationController,
               child: Stack(
                 children: <Widget>[
-                  ValueListenableBuilder<bool>(
-                    builder: (BuildContext context, bool value, Widget? child) {
+                  ValueListenableBuilder<dynamic>(
+                    builder: (BuildContext context, dynamic value, Widget? child) {
                       // This builder will only get called when isSelected.value is updated.
                       return Text('node tap : $value');
                     },
-                    valueListenable: drawLineNotifier,
+                    valueListenable: notifierMap['drawLineNotifier']!,
                   ),
-                  ValueListenableBuilder<dynamic>(
-                    builder:
-                        (BuildContext context, dynamic value, Widget? child) {
-                      var toprint = value.toJson();
-                      return Text('automate from local : $toprint');
-                    },
-                    valueListenable: notifierMap['automata']!,
-                  ),
-                  CustomPaint(
-                    size: const Size(double.infinity, double.infinity),
-                    painter:
-                        RelationPainter(nodeMap: nodeMap, relations: relations),
-                  ),
+                  // ValueListenableBuilder<dynamic>(
+                  //   builder:
+                  //       (BuildContext context, dynamic value, Widget? child) {
+                  //     var toprint = value.toJson();
+                  //     return Text('automate from local : $toprint');
+                  //   },
+                  //   valueListenable: notifierMap['automata']!,
+                  // ),
                   ..._buildNodes(),
                   ..._buildLabels(),
+                  ..._buildRelations(),
                 ],
               )),
         ));
@@ -141,18 +136,29 @@ class GraphSceneState extends State<GraphScene> {
           offset: element.offset,
           node: element,
           onDragStarted: onDragStarted(element),
-          drawLineNotifier: drawLineNotifier));
+          notifierMap: notifierMap));
     });
     return res;
   }
 
   List<Widget> _buildLabels() {
     final res = <Widget>[];
-    automate.nodes.forEach((element) {
+    automate.nodes.forEach((node) {
       res.add(NodeLabel(notifierMap: notifierMap));
     });
     return res;
   }
+
+  List<Widget> _buildRelations() {
+    final res = <Widget>[];
+    automate.relations.forEach((relation) {
+      res.add(RelationWidget(
+          relation: relation,
+          notifierMap: notifierMap));
+    });
+    return res;
+  }
+
 
   void updateNode(Node key, x, y) {
     automate = notifierMap['automata']?.value;
@@ -168,28 +174,5 @@ class GraphSceneState extends State<GraphScene> {
     automate = notifierMap['automata']?.value;
     automate.nodes.add(Node(name: name, offset: Offset(dx, dy)));
     notifierMap['automata']?.value = automate;
-  }
-
-  Automate getAutomate() {
-    return automate;
-  }
-
-  drawLine() {
-    relations.add(Relation(source: nodes[0].name, target: nodes[3].name));
-  }
-}
-
-class LinePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.red
-      ..strokeWidth = 2;
-    canvas.drawLine(Offset(0, 0), Offset(100, 100), paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }

@@ -27,13 +27,11 @@ class MyApp extends StatelessWidget {
 
 class Home extends StatelessWidget{
   var toprint;
-
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
 
-    // map dans lequel se trouve des value notifier dynamic
+    // map containing dynamic value notifier
     Map<String, ValueNotifier<dynamic>> notifierMap = {};
 
     //topPalette Buttons
@@ -54,6 +52,11 @@ class Home extends StatelessWidget{
 
     // Active editing widget
     notifierMap['activeEditingWidget'] = ValueNotifier<bool>(true);
+
+    // GraphScene
+    notifierMap['drawLineNotifier'] = ValueNotifier(false);
+    notifierMap['beginNode'] = ValueNotifier<Node>(Node(name: 'begin node'));
+    notifierMap['endNode'] = ValueNotifier<Node>(Node(name: 'end node'));
 
 
     // Main widgets

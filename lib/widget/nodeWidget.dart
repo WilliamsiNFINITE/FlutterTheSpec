@@ -3,7 +3,7 @@ import 'package:flutter_the_spec/widget/relationPainter.dart';
 import '../automate.dart';
 
 class NodeWidget extends StatefulWidget {
-  final ValueNotifier<bool> drawLineNotifier;
+  final Map<String, ValueNotifier<dynamic>> notifierMap;
   final Offset offset;
   final Node node;
   final double size = 100;
@@ -14,14 +14,14 @@ class NodeWidget extends StatefulWidget {
       required this.offset,
       required this.node,
       required this.onDragStarted,
-      required this.drawLineNotifier});
+      required this.notifierMap});
 
   @override
   State<StatefulWidget> createState() => NodeWidgetState();
 }
 
 class NodeWidgetState extends State<NodeWidget> {
-  late ValueNotifier<bool> drawLineNotifier;
+  late Map<String, ValueNotifier<dynamic>> notifierMap;
   bool isDragged = false;
   bool isSelected = false;
   bool isDrawing = false;
@@ -34,7 +34,8 @@ class NodeWidgetState extends State<NodeWidget> {
 
   @override
   void initState() {
-    this.drawLineNotifier = widget.drawLineNotifier;
+    super.initState();
+    this.notifierMap = widget.notifierMap;
     this.offset = widget.offset;
     this.node = widget.node;
     this.size = widget.size;
@@ -50,58 +51,67 @@ class NodeWidgetState extends State<NodeWidget> {
           onDoubleTap: () {
             print('double tap nodewidget');
             setState(() {});
-            // Offset position = Offset(offset.dx, offset.dy);
-            // Offset cursorPosition = Offset(position.dx, position.dy);
-            // print(position);
-            // print(cursorPosition);
           },
 
           // On tap, makes a new line between the node and the cursor
-          onTap: () => {
-            print('tap node widget $drawLineNotifier'),
-            drawLineNotifier.value = !drawLineNotifier.value,
+          onTap: () =>
+          {
+            setState(() {
+              if (notifierMap['addRelationButton']?.value){
+                notifierMap['drawLineNotifier']?.value =
+                !notifierMap['drawLineNotifier']?.value;
+                if (notifierMap['drawLineNotifier']?.value) {
+                  notifierMap['beginNode']?.value = node;
+                  print('begin node ${notifierMap['beginNode']?.value.name}');
+                } else {
+                  notifierMap['endNode']?.value = node;
+                  print('end node ${notifierMap['endNode']?.value.name}');
+                  // now that we have the begin and end node, we can add a new relation
+                  addNewRelation();
+                }
+              }
+            }),
+            print('taped node widget'),
+
+            // print('tap node widget $drawLineNotifier'),
           },
-          // onTap: () => {
-          //   if (drawLineNotifier.value)
-          //     {
-          //       // if the button for placing a new node is pressed
-          //       setState(() {
-          //         nodeMap[Node(name: 'new node ${idx}')] =
-          //             _transformationController.toScene(_tapPosition!);
-          //         addNewNode('new node ${idx}', _tapPosition!.dx,
-          //             _tapPosition!.dy);
-          //         idx++;
-          //       }),
-          //     },
-          //   print('tap graphSceneState'),
-          // },
+
           onTapDown: (details) {
             final RenderBox box = context.findRenderObject() as RenderBox;
             _tapPosition = box.globalToLocal(details.globalPosition);
           },
 
 
-          onPanStart: (data) => {
+          onPanStart: (data) =>
+          {
             setState(() {
               isDragged = true;
             }),
           },
 
-          onPanUpdate: (data) => {
+          onPanUpdate: (data) =>
+          {
             setState(() {
               isDragged = true;
               offset = Offset(
                   data.globalPosition.dx -
-                      (MediaQuery.of(context).size.width * 0.1),
+                      (MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.1),
                   data.globalPosition.dy - 100); //offset from the menu
               onDragStarted(
                   data.globalPosition.dx -
-                      (MediaQuery.of(context).size.width * 0.1),
+                      (MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.1),
                   data.globalPosition.dy - 100); //offset from the menu
             }),
           },
 
-          onPanEnd: (data) => {
+          onPanEnd: (data) =>
+          {
             setState(() {
               isDragged = false;
             }),
@@ -118,20 +128,20 @@ class NodeWidgetState extends State<NodeWidget> {
           ),
         )
 
-        // Container(
-        //     alignment : Alignment.bottomCenter,
-        //     child: TextField(
-        //       decoration: const InputDecoration(
-        //         // hoverColor: Colors.redAccent,
-        //         // focusColor: Colors.redAccent,
-        //           border: InputBorder.none,
-        //           labelText: 'Name: '
-        //       ),
-        //       controller: TextEditingController()..text = node.name,
-        //       onSubmitted: (value) => node.name = value,
-        //     )
-        // )
-        );
+      // Container(
+      //     alignment : Alignment.bottomCenter,
+      //     child: TextField(
+      //       decoration: const InputDecoration(
+      //         // hoverColor: Colors.redAccent,
+      //         // focusColor: Colors.redAccent,
+      //           border: InputBorder.none,
+      //           labelText: 'Name: '
+      //       ),
+      //       controller: TextEditingController()..text = node.name,
+      //       onSubmitted: (value) => node.name = value,
+      //     )
+      // )
+    );
   }
 
   void drawLine(Node initialNode) {
@@ -144,5 +154,29 @@ class NodeWidgetState extends State<NodeWidget> {
       painter: PartialRelationPainter(initialNode: initialNode),
     );
     isDrawing = true;
+  }
+
+  void addNewRelation() {
+    // add a new relation between the begin and end node
+    if (notifierMap['beginNode']?.value != null &&
+        notifierMap['endNode']?.value != null) {
+      Relation relation = Relation(source: notifierMap['beginNode']?.value.name,
+          target: notifierMap['endNode']?.value.name);
+      // notifierMap['beginNode']?.value = null;
+      // notifierMap['endNode']?.value = null;
+      // now that the relation is created, we can add it to the automata
+      Automate automata = notifierMap['automata']?.value;
+      automata.relations.add(relation);
+      notifierMap['automata']?.value = automata;
+      print('new relation added');
+    }
+    else {
+      print('begin or end node is null');
+    }
+
+    print('add new relation');
+    print(notifierMap['beginNode']?.value);
+    print(notifierMap['endNode']?.value);
+
   }
 }
