@@ -56,25 +56,6 @@ class Home extends StatelessWidget{
     notifierMap['activeEditingWidget'] = ValueNotifier<bool>(true);
 
 
-
-    // Notifier that will be used to notify the graphSceneState that a button from the palette has been pressed
-    // 0 = new, 1 = open, 2 = download, 3 = undo, 4 = redo, 5 = adaptedZoom, 6 = zoomIn, 7 = zoomOut, 8 = select, 9 = addNode, 10 = addRelation
-    List<ValueNotifier<dynamic>> notifierList = List<ValueNotifier<dynamic>>.empty(growable: true);
-    // notifier for the topPalette
-    for (int i = 0; i < 11; i++){
-      notifierList.add(ValueNotifier(false));
-    }
-    // notifier for the graphSceneState
-    // 11 = automate
-    ValueNotifier<dynamic> automateNotifier = ValueNotifier<dynamic>(Automate(nodes: [], relations: []));
-    notifierList.add(automateNotifier);
-
-    // notifier for the codeEditor (true = code, false = graph)
-    // 12 = codeEditor/graphEditor
-    ValueNotifier<dynamic> activeEditingWidget = ValueNotifier<bool>(true);
-    notifierList.add(activeEditingWidget);
-
-
     // Main widgets
     final TopPalette topPalette = TopPalette(notifierMap: notifierMap);
     final LeftMenu leftMenu = LeftMenu();
@@ -133,7 +114,7 @@ class Home extends StatelessWidget{
                                 )
                               );
                             },
-                            valueListenable: notifierList[12],
+                            valueListenable: notifierMap['activeEditingWidget']!,
                           ),
                         ),
                       ),
@@ -146,8 +127,8 @@ class Home extends StatelessWidget{
           floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.cached, color: Colors.black),
             onPressed: () => {
-              notifierList[12].value = !notifierList[12].value,
-              toprint = notifierList[12].value,
+              notifierMap['activeEditingWidget']?.value = !notifierMap['activeEditingWidget']?.value,
+              toprint = notifierMap['activeEditingWidget']?.value,
               print('valueSelected in main : $toprint'),
             }
           ),

@@ -86,7 +86,7 @@ class PaletteButtonState extends State<PaletteButton>{
       icon: const Icon(Icons.file_open),
       tooltip: 'Ouvrir',
       onPressed: () async {
-          notifierMap['openButton']?.value = !notifierMap['openButton']?.value;
+          notifierMap['openButton']?.value = !notifierMap['openButton']?.value; //Button turned to true
           final result = await FilePicker.platform.pickFiles(
             type: FileType.custom,
             allowedExtensions: ['json'],
@@ -104,6 +104,7 @@ class PaletteButtonState extends State<PaletteButton>{
           else{
             print('Import échoué');
           }
+          // notifierMap['openButton']?.value = !notifierMap['openButton']?.value; //Button turned to false
       },
       highlightColor : Colors.blue.shade100,
     );

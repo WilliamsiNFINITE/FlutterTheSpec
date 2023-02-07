@@ -2,29 +2,43 @@ import 'package:flutter/material.dart';
 import '../automate.dart';
 
 class NodeLabel extends StatefulWidget {
-  final Node node;
+  final Map<String, ValueNotifier<dynamic>> notifierMap;
   final double size = 100;
 
-  NodeLabel({super.key, required this.node});
+  NodeLabel({super.key, required this.notifierMap});
 
   @override
   State<StatefulWidget> createState() => NodeLabelState();
-
 }
 
 class NodeLabelState extends State<NodeLabel> {
 
   bool isDragged = false;
-  late Node node;
+  late Automate automate;
+  late Map<String, ValueNotifier<dynamic>> notifierMap;
   late Offset offset;
+  late String label;
   double size = 100;
 
   @override
   void initState() {
-    this.node = widget.node;
-    this.offset = node.offset;
+    this.notifierMap = widget.notifierMap;
+    this.automate = notifierMap['automata']?.value;
+    this.offset = automate.nodes.last.offset;
+    this.label = automate.nodes.last.name;
+    print('offset: $offset');
+
+
+    notifierMap['automata']?.addListener(() {
+      setState(() {
+        automate = notifierMap['automata']?.value;
+        offset = automate.nodes.last.offset;
+      });
+    });
 
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +65,7 @@ class NodeLabelState extends State<NodeLabel> {
             }),
           },
           child:
-          Text(node.name),
+          Text(label),
 
           // TextField(
           //   decoration: const InputDecoration(

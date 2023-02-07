@@ -55,11 +55,11 @@ class GraphSceneState extends State<GraphScene> {
   int idx = 0;
 
   Function onDragStarted(Node key) => (x, y) {
-        setState(() {
-          nodeMap[key] = _transformationController.toScene(Offset(x, y));
-          updateNode(key, x, y);
-        });
-      };
+    setState(() {
+      nodeMap[key] = _transformationController.toScene(Offset(x, y));
+      updateNode(key, x, y);
+    });
+  };
 
   @override
   void initState() {
@@ -149,7 +149,7 @@ class GraphSceneState extends State<GraphScene> {
   List<Widget> _buildLabels() {
     final res = <Widget>[];
     automate.nodes.forEach((element) {
-      res.add(NodeLabel(node: element));
+      res.add(NodeLabel(notifierMap: notifierMap));
     });
     return res;
   }
