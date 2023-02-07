@@ -33,6 +33,30 @@ class Home extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
+    // map dans lequel se trouve des value notifier dynamic
+    Map<String, ValueNotifier<dynamic>> notifierMap = {};
+
+    //topPalette Buttons
+    notifierMap['newButton'] = ValueNotifier<bool>(false);
+    notifierMap['openButton'] = ValueNotifier<bool>(false);
+    notifierMap['downloadButton'] = ValueNotifier<bool>(false);
+    notifierMap['undoButton'] = ValueNotifier<bool>(false);
+    notifierMap['redoButton'] = ValueNotifier<bool>(false);
+    notifierMap['adaptedZoomButton'] = ValueNotifier<bool>(false);
+    notifierMap['zoomInButton'] = ValueNotifier<bool>(false);
+    notifierMap['zoomOutButton'] = ValueNotifier<bool>(false);
+    notifierMap['selectButton'] = ValueNotifier<bool>(false);
+    notifierMap['addNodeButton'] = ValueNotifier<bool>(false);
+    notifierMap['addRelationButton'] = ValueNotifier<bool>(false);
+
+    // Automata
+    notifierMap['automata'] = ValueNotifier<dynamic>(Automate(nodes: [], relations: []));
+
+    // Active editing widget
+    notifierMap['activeEditingWidget'] = ValueNotifier<bool>(true);
+
+
+
     // Notifier that will be used to notify the graphSceneState that a button from the palette has been pressed
     // 0 = new, 1 = open, 2 = download, 3 = undo, 4 = redo, 5 = adaptedZoom, 6 = zoomIn, 7 = zoomOut, 8 = select, 9 = addNode, 10 = addRelation
     List<ValueNotifier<dynamic>> notifierList = List<ValueNotifier<dynamic>>.empty(growable: true);
@@ -43,10 +67,6 @@ class Home extends StatelessWidget{
     // notifier for the graphSceneState
     // 11 = automate
     ValueNotifier<dynamic> automateNotifier = ValueNotifier<dynamic>(Automate(nodes: [], relations: []));
-    automateNotifier.addListener(() {
-      toprint = automateNotifier.value.toJson();
-      print('blablabla : $toprint');
-    });
     notifierList.add(automateNotifier);
 
     // notifier for the codeEditor (true = code, false = graph)
@@ -56,11 +76,11 @@ class Home extends StatelessWidget{
 
 
     // Main widgets
-    final TopPalette topPalette = TopPalette(notifierList: notifierList);
+    final TopPalette topPalette = TopPalette(notifierMap: notifierMap);
     final LeftMenu leftMenu = LeftMenu();
     final TopMenu topMenu = TopMenu();
-    GraphScene graphScene = GraphScene(notifierList: notifierList);
-    final CodeEditor codeEditor = CodeEditor(notifierList: notifierList);
+    GraphScene graphScene = GraphScene(notifierMap: notifierMap);
+    final CodeEditor codeEditor = CodeEditor(notifierMap: notifierMap);
 
 
     return MaterialApp(

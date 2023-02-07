@@ -10,7 +10,7 @@ import '../relationPainter.dart';
 import 'package:http/http.dart' as http;
 
 class GraphSceneState extends State<GraphScene> {
-  late List<ValueNotifier<dynamic>> notifierList = widget.notifierList;
+  late Map<String, ValueNotifier<dynamic>> notifierMap = widget.notifierMap;
 
   ValueNotifier<bool> drawLineNotifier = ValueNotifier(false);
 
@@ -68,9 +68,9 @@ class GraphSceneState extends State<GraphScene> {
     automate = Automate(nodes: [], relations: []);
     nodes = automate.nodes;
     relations = automate.relations;
-    notifierList[11].addListener(() {
+    notifierMap['automata']?.addListener(() {
       setState(() {
-        automate = notifierList[11].value;
+        automate = notifierMap['automata']?.value;
       });
     });
   }
@@ -81,7 +81,7 @@ class GraphSceneState extends State<GraphScene> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => {
-              if (notifierList[9].value)
+              if (notifierMap['addNodeButton']?.value)
                 {
                   // if the button for placing a new node is pressed
                   setState(() {
@@ -120,7 +120,7 @@ class GraphSceneState extends State<GraphScene> {
                       var toprint = value.toJson();
                       return Text('automate from local : $toprint');
                     },
-                    valueListenable: notifierList[11],
+                    valueListenable: notifierMap['automata']!,
                   ),
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
@@ -155,19 +155,19 @@ class GraphSceneState extends State<GraphScene> {
   }
 
   void updateNode(Node key, x, y) {
-    automate = notifierList[11].value;
+    automate = notifierMap['automata']?.value;
     for (Node node in automate.nodes) {
       if (node.name == key.name) {
         node.offset = Offset(x, y);
       }
     }
-    notifierList[11].value = automate;
+    notifierMap['automata']?.value = automate;
   }
 
   void addNewNode(String name, double dx, double dy) {
-    automate = notifierList[11].value;
+    automate = notifierMap['automata']?.value;
     automate.nodes.add(Node(name: name, offset: Offset(dx, dy)));
-    notifierList[11].value = automate;
+    notifierMap['automata']?.value = automate;
   }
 
   Automate getAutomate() {

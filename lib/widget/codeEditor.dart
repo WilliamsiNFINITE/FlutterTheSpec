@@ -5,8 +5,8 @@ import 'package:highlight/languages/dart.dart';
 import 'package:flutter_highlight/themes/monokai-sublime.dart';
 
 class CodeEditor extends StatefulWidget {
-  List<ValueNotifier<dynamic>> notifierList;
-  CodeEditor({super.key, required this.notifierList});
+  Map<String, ValueNotifier<dynamic>> notifierMap;
+  CodeEditor({super.key, required this.notifierMap});
   @override
   _CodeEditorState createState() => _CodeEditorState();
 }

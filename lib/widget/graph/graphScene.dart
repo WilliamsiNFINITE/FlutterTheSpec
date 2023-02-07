@@ -3,8 +3,8 @@ import 'graphSceneState.dart';
 
 
 class GraphScene extends StatefulWidget {
-  List<ValueNotifier<dynamic>> notifierList;
-  GraphScene({super.key, required this.notifierList});
+  Map<String, ValueNotifier<dynamic>> notifierMap;
+  GraphScene({super.key, required this.notifierMap});
 
   @override
   State<GraphScene> createState() => GraphSceneState();
