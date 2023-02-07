@@ -8,13 +8,13 @@ void main() {
 
 
     group('Buttons', (){
-        void setUp(){
+        setUp((){
 
-        }
+        });
 
-        test(''){
-
-        }
-    }
+        test('', (){
+            //TODO
+        });
+    });
 }
 

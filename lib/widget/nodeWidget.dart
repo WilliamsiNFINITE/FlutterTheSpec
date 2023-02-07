@@ -61,20 +61,20 @@ class NodeWidgetState extends State<NodeWidget> {
             print('tap node widget $drawLineNotifier'),
             drawLineNotifier.value = !drawLineNotifier.value,
           },
-          onTap: () => {
-            if (drawLineNotifier.value)
-              {
-                // if the button for placing a new node is pressed
-                setState(() {
-                  nodeMap[Node(name: 'new node ${idx}')] =
-                      _transformationController.toScene(_doubleTapPosition!);
-                  addNewNode('new node ${idx}', _doubleTapPosition!.dx,
-                      _doubleTapPosition!.dy);
-                  idx++;
-                }),
-              },
-            print('tap graphSceneState'),
-          },
+          // onTap: () => {
+          //   if (drawLineNotifier.value)
+          //     {
+          //       // if the button for placing a new node is pressed
+          //       setState(() {
+          //         nodeMap[Node(name: 'new node ${idx}')] =
+          //             _transformationController.toScene(_tapPosition!);
+          //         addNewNode('new node ${idx}', _tapPosition!.dx,
+          //             _tapPosition!.dy);
+          //         idx++;
+          //       }),
+          //     },
+          //   print('tap graphSceneState'),
+          // },
           onTapDown: (details) {
             final RenderBox box = context.findRenderObject() as RenderBox;
             _tapPosition = box.globalToLocal(details.globalPosition);
