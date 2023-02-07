@@ -9,17 +9,18 @@ class NodeWidget extends StatefulWidget {
   final double size = 100;
   final Function onDragStarted;
 
-  NodeWidget({super.key, required this.offset, required this.node, required this.onDragStarted, required this.drawLineNotifier});
-
-
+  NodeWidget(
+      {super.key,
+      required this.offset,
+      required this.node,
+      required this.onDragStarted,
+      required this.drawLineNotifier});
 
   @override
   State<StatefulWidget> createState() => NodeWidgetState();
-
 }
 
 class NodeWidgetState extends State<NodeWidget> {
-
   late ValueNotifier<bool> drawLineNotifier;
   bool isDragged = false;
   bool isSelected = false;
@@ -29,6 +30,7 @@ class NodeWidgetState extends State<NodeWidget> {
   late Offset offset;
   late Function onDragStarted;
   late double size;
+  Offset? _tapPosition;
 
   @override
   void initState() {
@@ -42,14 +44,12 @@ class NodeWidgetState extends State<NodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left:offset.dx - size / 2,
-      top: offset.dy - size / 2,
-      child: GestureDetector(
+        left: offset.dx - size / 2,
+        top: offset.dy - size / 2,
+        child: GestureDetector(
           onDoubleTap: () {
             print('double tap nodewidget');
-            setState(() {
-
-            });
+            setState(() {});
             // Offset position = Offset(offset.dx, offset.dy);
             // Offset cursorPosition = Offset(position.dx, position.dy);
             // print(position);
@@ -61,6 +61,25 @@ class NodeWidgetState extends State<NodeWidget> {
             print('tap node widget $drawLineNotifier'),
             drawLineNotifier.value = !drawLineNotifier.value,
           },
+          onTap: () => {
+            if (drawLineNotifier.value)
+              {
+                // if the button for placing a new node is pressed
+                setState(() {
+                  nodeMap[Node(name: 'new node ${idx}')] =
+                      _transformationController.toScene(_doubleTapPosition!);
+                  addNewNode('new node ${idx}', _doubleTapPosition!.dx,
+                      _doubleTapPosition!.dy);
+                  idx++;
+                }),
+              },
+            print('tap graphSceneState'),
+          },
+          onTapDown: (details) {
+            final RenderBox box = context.findRenderObject() as RenderBox;
+            _tapPosition = box.globalToLocal(details.globalPosition);
+          },
+
 
           onPanStart: (data) => {
             setState(() {
@@ -71,43 +90,48 @@ class NodeWidgetState extends State<NodeWidget> {
           onPanUpdate: (data) => {
             setState(() {
               isDragged = true;
-              offset = Offset(data.globalPosition.dx-(MediaQuery.of(context).size.width*0.1), data.globalPosition.dy-100);//offset from the menu
-              onDragStarted(data.globalPosition.dx-(MediaQuery.of(context).size.width*0.1), data.globalPosition.dy-100);//offset from the menu
+              offset = Offset(
+                  data.globalPosition.dx -
+                      (MediaQuery.of(context).size.width * 0.1),
+                  data.globalPosition.dy - 100); //offset from the menu
+              onDragStarted(
+                  data.globalPosition.dx -
+                      (MediaQuery.of(context).size.width * 0.1),
+                  data.globalPosition.dy - 100); //offset from the menu
             }),
           },
 
-         onPanEnd: (data) => {
+          onPanEnd: (data) => {
             setState(() {
               isDragged = false;
             }),
           },
 
-          child:
-            Container(
-              width: size,
-              height: size,
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                border: Border.all(color: Colors.black),
-                shape: BoxShape.circle,
-              ),
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: Colors.blueAccent,
+              border: Border.all(color: Colors.black),
+              shape: BoxShape.circle,
             ),
-          )
+          ),
+        )
 
-          // Container(
-          //     alignment : Alignment.bottomCenter,
-          //     child: TextField(
-          //       decoration: const InputDecoration(
-          //         // hoverColor: Colors.redAccent,
-          //         // focusColor: Colors.redAccent,
-          //           border: InputBorder.none,
-          //           labelText: 'Name: '
-          //       ),
-          //       controller: TextEditingController()..text = node.name,
-          //       onSubmitted: (value) => node.name = value,
-          //     )
-          // )
-      );
+        // Container(
+        //     alignment : Alignment.bottomCenter,
+        //     child: TextField(
+        //       decoration: const InputDecoration(
+        //         // hoverColor: Colors.redAccent,
+        //         // focusColor: Colors.redAccent,
+        //           border: InputBorder.none,
+        //           labelText: 'Name: '
+        //       ),
+        //       controller: TextEditingController()..text = node.name,
+        //       onSubmitted: (value) => node.name = value,
+        //     )
+        // )
+        );
   }
 
   void drawLine(Node initialNode) {
@@ -120,7 +144,5 @@ class NodeWidgetState extends State<NodeWidget> {
       painter: PartialRelationPainter(initialNode: initialNode),
     );
     isDrawing = true;
-
   }
-
 }
