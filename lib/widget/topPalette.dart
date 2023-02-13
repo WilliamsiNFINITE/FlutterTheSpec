@@ -5,7 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../automate.dart';
+import '../automaton.dart';
 import '../logic/export.dart';
 
 
@@ -74,7 +74,7 @@ class PaletteButtonState extends State<PaletteButton>{
         tooltip: 'Nouveau',
         onPressed: () {
           notifierMap['newButton']?.value = !notifierMap['newButton']?.value;
-          notifierMap['automata']?.value = Automate(nodes: [], relations: []);
+          notifierMap['automata']?.value = Automaton(nodes: [], relations: []);
         },
         highlightColor : Colors.blue.shade100,
       );
@@ -94,7 +94,7 @@ class PaletteButtonState extends State<PaletteButton>{
           if(result != null){
             var bytesFile = result.files.single.bytes;
             var jsonText = String.fromCharCodes(bytesFile!);
-            Automate automate = Automate.fromJson(jsonDecode(jsonText));
+            Automaton automate = Automaton.fromJson(jsonDecode(jsonText));
 
             notifierMap['automata']?.value = automate;
 

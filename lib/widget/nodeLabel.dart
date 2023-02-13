@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../automate.dart';
+import '../automaton.dart';
 
 class NodeLabel extends StatefulWidget {
   final Map<String, ValueNotifier<dynamic>> notifierMap;
@@ -14,7 +14,7 @@ class NodeLabel extends StatefulWidget {
 class NodeLabelState extends State<NodeLabel> {
 
   bool isDragged = false;
-  late Automate automate;
+  late Automaton automate;
   late Map<String, ValueNotifier<dynamic>> notifierMap;
   late Offset offset;
   late String label;

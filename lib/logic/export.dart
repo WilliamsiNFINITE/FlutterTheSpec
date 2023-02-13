@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:convert' show json;
-import 'package:flutter_the_spec/automate.dart';
+import 'package:flutter_the_spec/automaton.dart';
 import 'dart:html' as webFile;
 
-void exportAutomate(Automate automate) {
+void exportAutomate(Automaton automate) {
     try{
     List jsonList = [];
     jsonList.add(json.encode(automate.toJson()));

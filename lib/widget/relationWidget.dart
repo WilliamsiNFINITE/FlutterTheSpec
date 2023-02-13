@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_spec/widget/relationPainter.dart';
-import '../automate.dart';
+import '../automaton.dart';
 
 class RelationWidget extends StatefulWidget {
   final Map<String, ValueNotifier<dynamic>> notifierMap;
@@ -28,7 +28,7 @@ class RelationWidgetState extends State<RelationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Text('relation widget');
+    return Text("RelationWidget");
   }
 
 

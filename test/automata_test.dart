@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_the_spec/automate.dart';
+import 'package:flutter_the_spec/automaton.dart';
 
 void main() {
     late var jsonTextAutomate;
@@ -17,7 +17,7 @@ void main() {
         test('Should import an automata from a json file', (){
             // Automate.fromJson
             var jsonDecoded = jsonDecode(jsonTextAutomate);
-            Automate automate = Automate.fromJson(jsonDecoded);
+            Automaton automate = Automaton.fromJson(jsonDecoded);
 
             // Assertions on nodes
             assert(automate.nodes.length == 2);

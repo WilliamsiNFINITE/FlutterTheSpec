@@ -245,6 +245,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  widget_arrows:
+    dependency: "direct main"
+    description:
+      name: widget_arrows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   win32:
     dependency: transitive
     description:
@@ -254,4 +261,4 @@ packages:
     version: "3.1.3"
 sdks:
   dart: ">=2.18.2 <3.0.0"
-  flutter: ">=2.8.0"
+  flutter: ">=3.0.0"

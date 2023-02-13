@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.5
   file_picker: ^5.2.5
   code_text_field: ^1.1.0
+  widget_arrows: ^0.4.0
 
 dev_dependencies:
   flutter_test:

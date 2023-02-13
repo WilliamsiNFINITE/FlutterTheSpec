@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_spec/widget/relationPainter.dart';
-import '../automate.dart';
+import 'package:widget_arrows/widget_arrows.dart';
+import '../automaton.dart';
 
 class NodeWidget extends StatefulWidget {
   final Map<String, ValueNotifier<dynamic>> notifierMap;
@@ -126,6 +127,21 @@ class NodeWidgetState extends State<NodeWidget> {
               shape: BoxShape.circle,
             ),
           ),
+
+          // child: ArrowElement(
+          //       show: false,
+          //       id: "text",
+          //       targetAnchor: Alignment.centerRight,
+          //       child: Container(
+          //         width: size,
+          //         height: size,
+          //         decoration: BoxDecoration(
+          //           color: Colors.blueAccent,
+          //           border: Border.all(color: Colors.black),
+          //           shape: BoxShape.circle,
+          //         ),
+          //       ),
+          //     ),
         )
 
       // Container(
@@ -165,7 +181,7 @@ class NodeWidgetState extends State<NodeWidget> {
       // notifierMap['beginNode']?.value = null;
       // notifierMap['endNode']?.value = null;
       // now that the relation is created, we can add it to the automata
-      Automate automata = notifierMap['automata']?.value;
+      Automaton automata = notifierMap['automata']?.value;
       automata.relations.add(relation);
       notifierMap['automata']?.value = automata;
       print('new relation added');
@@ -174,9 +190,8 @@ class NodeWidgetState extends State<NodeWidget> {
       print('begin or end node is null');
     }
 
-    print('add new relation');
-    print(notifierMap['beginNode']?.value);
-    print(notifierMap['endNode']?.value);
+    print(notifierMap['beginNode']?.value.offset);
+    print(notifierMap['endNode']?.value.offset);
 
   }
 }

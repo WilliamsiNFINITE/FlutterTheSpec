@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_the_spec/automate.dart';
+import 'package:flutter_the_spec/automaton.dart';
 import 'package:flutter_the_spec/widget/topPalette.dart';
 
 void main() {
@@ -24,7 +24,7 @@ void main() {
             notifierMap['addRelationButton'] = ValueNotifier<bool>(false);
 
             // Automata
-            notifierMap['automata'] = ValueNotifier<dynamic>(Automate(nodes: [], relations: []));
+            notifierMap['automata'] = ValueNotifier<dynamic>(Automaton(nodes: [], relations: []));
 
             // Active editing widget
             notifierMap['activeEditingWidget'] = ValueNotifier<bool>(true);

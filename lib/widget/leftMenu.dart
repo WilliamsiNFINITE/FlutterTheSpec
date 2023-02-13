@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../automate.dart';
+import '../automaton.dart';
 
 class LeftMenu extends Container {
   LeftMenu({super.key});

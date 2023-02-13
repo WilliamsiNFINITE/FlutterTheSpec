@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../automate.dart';
+import '../automaton.dart';
 import '../logic/export.dart';
 
 class TopMenu extends Container {
@@ -24,7 +24,7 @@ class TopMenu extends Container {
             TextButton(
               //change hovering color to blue
               style: TextButton.styleFrom(
-                primary: Colors.blue,
+                foregroundColor: Colors.blue,
               ),
               child: Text('Fichier', style: TextStyle(color: Colors.black)),
               onPressed: () {
@@ -127,7 +127,7 @@ class TopMenu extends Container {
         break;
       case "Enregistrer":
         print("Enregistrer dans fonction topMenuHandler");
-        exportAutomate(Automate(nodes: [], relations: [])); //TODO save file
+        exportAutomate(Automaton(nodes: [], relations: [])); //TODO save file
         break;
       case "Annuler":
         print("Annuler dans fonction topMenuHandler");
@@ -175,7 +175,7 @@ class TopMenu extends Container {
         break;
       case "A propos":
         print("A propos dans fonction topMenuHandler");
-        exportAutomate(Automate(nodes: [], relations: []));
+        exportAutomate(Automaton(nodes: [], relations: []));
         showDialog(
             context: context,
             builder: (BuildContext context) {

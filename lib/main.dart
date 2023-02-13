@@ -4,7 +4,7 @@ import 'package:flutter_the_spec/widget/codeEditor.dart';
 import 'package:flutter_the_spec/widget/leftMenu.dart';
 import 'package:flutter_the_spec/widget/topMenu.dart';
 import 'package:flutter_the_spec/widget/topPalette.dart';
-import 'automate.dart';
+import 'automaton.dart';
 import 'widget/graph/graphScene.dart';
 
 
@@ -48,7 +48,7 @@ class Home extends StatelessWidget{
     notifierMap['addRelationButton'] = ValueNotifier<bool>(false);
 
     // Automata
-    notifierMap['automata'] = ValueNotifier<dynamic>(Automate(nodes: [], relations: []));
+    notifierMap['automata'] = ValueNotifier<dynamic>(Automaton(nodes: [], relations: []));
 
     // Active editing widget
     notifierMap['activeEditingWidget'] = ValueNotifier<bool>(true);

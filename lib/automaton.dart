@@ -1,19 +1,19 @@
 import 'dart:ui';
 
-class Automate {
+class Automaton {
     // List of nodes
     List<Node> nodes;
     // List of relations
     List<Relation> relations;
 
-    Automate({required this.nodes, required this.relations});
+    Automaton({required this.nodes, required this.relations});
 
-    factory Automate.fromJson(Map<String, dynamic> json) {
+    factory Automaton.fromJson(Map<String, dynamic> json) {
       var nodesJson = json['nodes'] as List;
       List<Node> nodesList = nodesJson.map((node) => Node.fromJson(node)).toList();
       var relationsJson = json['relations'] as List;
       List<Relation> relationsList = relationsJson.map((relation) => Relation.fromJson(relation)).toList();
-      return Automate(nodes: nodesList, relations: relationsList);
+      return Automaton(nodes: nodesList, relations: relationsList);
     }
 
     Map<String, dynamic> toJson() {
@@ -32,12 +32,13 @@ class Node {
     String invariant;
     String expIntensity;
     bool isInitial;
+    bool isFinal;
     bool isUrgent;
     bool isEngaged;
     Offset offset;
 
     //
-    Node({this.name = "", this.invariant = "", this.expIntensity = "", this.isInitial = false, this.isUrgent = false, this.isEngaged = false, this.offset = Offset.zero});
+    Node({this.name = "", this.invariant = "", this.expIntensity = "", this.isInitial = false, this.isFinal = false, this.isUrgent = false, this.isEngaged = false, this.offset = Offset.zero});
 
 
     factory Node.fromJson(Map<String, dynamic> json) {
