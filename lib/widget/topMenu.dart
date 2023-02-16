@@ -1,9 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../automaton.dart';
-import '../logic/export.dart';
+import '../logic/utils.dart';
 
 class TopMenu extends Container {
-  TopMenu({super.key});
+
+  Map<String, ValueNotifier<dynamic>> notifierMap;
+  File? jsonFile;
+  TopMenu({super.key, required this.notifierMap});
 
   @override
   Widget build(BuildContext context) {
@@ -112,22 +116,20 @@ class TopMenu extends Container {
       ),
     );
 
-
   }
-
   void topMenuHandler(String value, BuildContext context) {
     switch (value) {
       case "Nouveau":
+        newAutomaton(notifierMap);
         print("Nouveau dans fonction topMenuHandler");
-        //TODO reset graphScene
         break;
       case "Ouvrir":
+        importAutomaton(notifierMap);
         print("Ouvrir dans fonction topMenuHandler");
-        //TODO open file
         break;
       case "Enregistrer":
+        exportAutomaton(notifierMap);
         print("Enregistrer dans fonction topMenuHandler");
-        exportAutomate(Automaton(nodes: [], relations: [])); //TODO save file
         break;
       case "Annuler":
         print("Annuler dans fonction topMenuHandler");
@@ -175,7 +177,7 @@ class TopMenu extends Container {
         break;
       case "A propos":
         print("A propos dans fonction topMenuHandler");
-        exportAutomate(Automaton(nodes: [], relations: []));
+        exportAutomaton(Automaton(nodes: [], relations: []));
         showDialog(
             context: context,
             builder: (BuildContext context) {

@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import '../automaton.dart';
-import '../logic/export.dart';
+import '../logic/utils.dart';
 
 
 class PaletteButton extends StatefulWidget{
@@ -70,8 +67,7 @@ class PaletteButtonState extends State<PaletteButton>{
         icon: const Icon(Icons.add),
         tooltip: 'Nouveau',
         onPressed: () {
-          notifierMap['newButton']?.value = !notifierMap['newButton']?.value;
-          notifierMap['automata']?.value = Automaton(nodes: [], relations: []);
+          newAutomaton(notifierMap);
         },
         highlightColor : Colors.blue.shade100,
       );
@@ -82,26 +78,8 @@ class PaletteButtonState extends State<PaletteButton>{
       IconButton(
       icon: const Icon(Icons.file_open),
       tooltip: 'Ouvrir',
-      onPressed: () async {
-          notifierMap['openButton']?.value = !notifierMap['openButton']?.value; //Button turned to true
-          final result = await FilePicker.platform.pickFiles(
-            type: FileType.custom,
-            allowedExtensions: ['json'],
-          );
-          if(result != null){
-            var bytesFile = result.files.single.bytes;
-            var jsonText = String.fromCharCodes(bytesFile!);
-            Automaton automate = Automaton.fromJson(jsonDecode(jsonText));
-
-            notifierMap['automata']?.value = automate;
-
-            print(notifierMap['automata']?.value.toJson());
-            print('Import réussi');
-          }
-          else{
-            print('Import échoué');
-          }
-          // notifierMap['openButton']?.value = !notifierMap['openButton']?.value; //Button turned to false
+      onPressed: (){
+        importAutomaton(notifierMap);
       },
       highlightColor : Colors.blue.shade100,
     );
@@ -113,8 +91,7 @@ class PaletteButtonState extends State<PaletteButton>{
       icon: const Icon(Icons.download),
       tooltip: 'Télécharger',
       onPressed: () {
-        notifierMap['downloadButton']?.value = !notifierMap['downloadButton']?.value;
-        exportAutomate(notifierMap['automata']?.value);
+        exportAutomaton(notifierMap);
         print('Télécharger');
       },
       style: buttonStyle,

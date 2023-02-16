@@ -61,7 +61,7 @@ class Home extends StatelessWidget{
     // Main widgets
     final TopPalette topPalette = TopPalette(notifierMap: notifierMap);
     final LeftMenu leftMenu = LeftMenu();
-    final TopMenu topMenu = TopMenu();
+    final TopMenu topMenu = TopMenu(notifierMap: notifierMap);
     GraphScene graphScene = GraphScene(notifierMap: notifierMap);
     final CodeEditor codeEditor = CodeEditor(notifierMap: notifierMap);
 
