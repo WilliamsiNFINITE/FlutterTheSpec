@@ -127,30 +127,18 @@ class GraphSceneState extends State<GraphScene> {
         child: Center(
           child: InteractiveViewer(
               // boundaryMargin: const EdgeInsets.all(2.0),
-              minScale: 0.001,
-              maxScale: 10.5,
+              // minScale: 0.001,
+              // maxScale: 10.5,
               // constrained: true,
               transformationController: _transformationController,
               child: Stack(
                 children: <Widget>[
-
-                  ValueListenableBuilder<dynamic>(
-                    builder: (BuildContext context, dynamic value, Widget? child) {
-                      automate = value;
-                      // var toprint = value.toJson();
-                      // var autoToPrint = automate.toJson();
-                      return Text(automate.toJson().toString(),
-                      );
-                    },
-                    valueListenable: notifierMap['automata']!,
-                  ),
-
                   // CustomPaint(
                   //   size: const Size(double.infinity, double.infinity),
                   //   painter: RelationPainter(nodeMap: nodeMap, relations: relations),
                   // ),
                   ..._buildNodes(),
-                  // ..._buildLabels(),
+                  ..._buildLabels(),
                   // ..._buildRelations(),
                 ],
               )),

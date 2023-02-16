@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatelessWidget{
-  var toprint;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -109,7 +108,7 @@ class Home extends StatelessWidget{
                             builder: (BuildContext context, dynamic value, Widget? child) {// print('valueSelected in main : $value');
                               return
                               Container(
-                                child: AnimatedCrossFade(
+                                  child: AnimatedCrossFade(
                                   firstChild: graphScene,
                                   secondChild: codeEditor,
                                   crossFadeState: value ? CrossFadeState.showFirst : CrossFadeState.showSecond,
@@ -131,8 +130,6 @@ class Home extends StatelessWidget{
             child: const Icon(Icons.cached, color: Colors.black),
             onPressed: () => {
               notifierMap['activeEditingWidget']?.value = !notifierMap['activeEditingWidget']?.value,
-              toprint = notifierMap['activeEditingWidget']?.value,
-              print('valueSelected in main : $toprint'),
             }
           ),
         )

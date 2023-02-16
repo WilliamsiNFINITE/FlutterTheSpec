@@ -1,10 +1,7 @@
 import 'dart:convert';
-// import 'dart:ffi';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../automaton.dart';
 import '../logic/export.dart';
 
@@ -12,10 +9,10 @@ import '../logic/export.dart';
 class PaletteButton extends StatefulWidget{
   final Map<String, ValueNotifier<dynamic>> notifierMap;
   final String buttonType;
-  PaletteButton({super.key, required this.buttonType, required this.notifierMap});
+  const PaletteButton({super.key, required this.buttonType, required this.notifierMap});
 
   @override
-  PaletteButtonState createState() => new PaletteButtonState();
+  PaletteButtonState createState() => PaletteButtonState();
 }
 
 class PaletteButtonState extends State<PaletteButton>{
@@ -276,60 +273,50 @@ class TopPalette extends Container {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "new", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child:
                 PaletteButton(buttonType: "open", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "download", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "undo", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "redo", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "adaptedZoom", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "zoomIn", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "zoomOut", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "select", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "addNode", notifierMap: notifierMap),
               ),
-              Container(
+              SizedBox(
                 width: 100,
                 child: PaletteButton(buttonType: "addRelation", notifierMap: notifierMap),
-              ),
-              ValueListenableBuilder<dynamic>(
-                builder: (BuildContext context, dynamic value, Widget? child) {
-                  // This builder will only get called when isSelected.value is updated.
-                  return Text('editor : $value');
-                },
-                valueListenable: notifierMap['activeEditingWidget']!,
-                // The child parameter is most helpful if the child is
-                // expensive to build and does not depend on the value from
-                // the notifier.
               ),
             ],
           ),

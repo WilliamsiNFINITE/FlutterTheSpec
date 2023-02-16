@@ -68,6 +68,7 @@ class NodeWidgetState extends State<NodeWidget> {
                   notifierMap['endNode']?.value = node;
                   print('end node ${notifierMap['endNode']?.value.name}');
                   // now that we have the begin and end node, we can add a new relation
+
                   addNewRelation();
                 }
               }
@@ -118,45 +119,23 @@ class NodeWidgetState extends State<NodeWidget> {
             }),
           },
 
-          child: Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              color: Colors.blueAccent,
-              border: Border.all(color: Colors.black),
-              shape: BoxShape.circle,
-            ),
-          ),
+          child: Stack(
+            children: [
+              Container(
+                width: size,
+                height: size,
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  border: Border.all(color: Colors.black),
+                  shape: BoxShape.circle,
+                ),
+              ),
+              // ...List<Widget> _buildArrows(),
+            ]
+          )
 
-          // child: ArrowElement(
-          //       show: false,
-          //       id: "text",
-          //       targetAnchor: Alignment.centerRight,
-          //       child: Container(
-          //         width: size,
-          //         height: size,
-          //         decoration: BoxDecoration(
-          //           color: Colors.blueAccent,
-          //           border: Border.all(color: Colors.black),
-          //           shape: BoxShape.circle,
-          //         ),
-          //       ),
-          //     ),
         )
 
-      // Container(
-      //     alignment : Alignment.bottomCenter,
-      //     child: TextField(
-      //       decoration: const InputDecoration(
-      //         // hoverColor: Colors.redAccent,
-      //         // focusColor: Colors.redAccent,
-      //           border: InputBorder.none,
-      //           labelText: 'Name: '
-      //       ),
-      //       controller: TextEditingController()..text = node.name,
-      //       onSubmitted: (value) => node.name = value,
-      //     )
-      // )
     );
   }
 
@@ -169,7 +148,7 @@ class NodeWidgetState extends State<NodeWidget> {
       size: const Size(double.infinity, double.infinity),
       painter: PartialRelationPainter(initialNode: initialNode),
     );
-    isDrawing = true;
+    // isDrawing = true;
   }
 
   void addNewRelation() {
@@ -185,6 +164,7 @@ class NodeWidgetState extends State<NodeWidget> {
       automata.relations.add(relation);
       notifierMap['automata']?.value = automata;
       print('new relation added');
+      drawLine(notifierMap['beginNode']?.value);
     }
     else {
       print('begin or end node is null');
@@ -195,3 +175,21 @@ class NodeWidgetState extends State<NodeWidget> {
 
   }
 }
+//
+// List<Widget> _buildArrows() {
+//     List<Widget> arrows = [];
+//     for (Relation relation in notifierMap['automata'].relations) {
+//       arrows.add(
+//         ArrowElement(
+//           id: relation.source,
+//           targetId: relation.target,
+//           child: Container(
+//             width: 100,
+//             height: 100,
+//             color: Colors.transparent,
+//           ),
+//         ),
+//       );
+//     }
+//     return arrows;
+// }
