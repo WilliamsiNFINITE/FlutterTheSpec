@@ -1,12 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_the_spec/widget/codeEditor.dart';
 import 'package:flutter_the_spec/widget/leftMenu.dart';
 import 'package:flutter_the_spec/widget/topMenu.dart';
 import 'package:flutter_the_spec/widget/topPalette.dart';
 import 'automaton.dart';
 import 'widget/graph/graphScene.dart';
-
 
 Future<void> main() async {
   runApp(const MyApp());
@@ -25,11 +24,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget{
+class Home extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     // map containing dynamic value notifier
     Map<String, ValueNotifier<dynamic>> notifierMap = {};
 
@@ -47,7 +45,8 @@ class Home extends StatelessWidget{
     notifierMap['addRelationButton'] = ValueNotifier<bool>(false);
 
     // Automata
-    notifierMap['automata'] = ValueNotifier<dynamic>(Automaton(nodes: [], relations: []));
+    notifierMap['automata'] =
+        ValueNotifier<dynamic>(Automaton(nodes: [], relations: []));
 
     // Active editing widget
     notifierMap['activeEditingWidget'] = ValueNotifier<bool>(true);
@@ -56,7 +55,9 @@ class Home extends StatelessWidget{
     notifierMap['drawLineNotifier'] = ValueNotifier(false);
     notifierMap['beginNode'] = ValueNotifier<Node>(Node(name: 'begin node'));
     notifierMap['endNode'] = ValueNotifier<Node>(Node(name: 'end node'));
+    notifierMap["selectedWidget"] = ValueNotifier<Map<String,bool>>({}); //List of selected widget
 
+    //
 
     // Main widgets
     final TopPalette topPalette = TopPalette(notifierMap: notifierMap);
@@ -65,83 +66,105 @@ class Home extends StatelessWidget{
     GraphScene graphScene = GraphScene(notifierMap: notifierMap);
     final CodeEditor codeEditor = CodeEditor(notifierMap: notifierMap);
 
-
     return MaterialApp(
-        // debugShowCheckedModeBanner: false, // Remove debug banner
+      // debugShowCheckedModeBanner: false, // Remove debug banner
         title: 'Flutter The Spec',
         // theme: ThemeData(
         //   // This is the theme of your application.
         //   primarySwatch: Colors.blue,
         // ),
-        home:  Scaffold(
-          body:  Center(
-            // Column  with 2 containers
-            child:
-            Column(// Ici, le parent des widgets que je vais utiliser pour les notifier // TODO le modifier pour en faire un stateful widget qui va pouvoir modifier les etat et les partager
-              children: [
-                topMenu,
-                topPalette,
-                Container(
-                  decoration: BoxDecoration(
-                      border:  Border.all(color: Colors.black),
-                      // color: Color.fromRGBO(0, 0, 0, 1),
-                  ),
-                  child:
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                    <Widget>[
-                      Expanded( //Left MENU
-                        flex: 1,
-                        child:
-                        leftMenu,
+        home: RawKeyboardListener(
+            autofocus: true,
+            focusNode: FocusNode(),
+            onKey: (RawKeyEvent event) {
+              if (event.isKeyPressed(LogicalKeyboardKey.delete)) {
+                print('delete key pressed');
+                // on delete les node selctionne dans la liste
+                for (var node in notifierMap['automata']!.value.nodes) {
+                  if (notifierMap['selectedWidget']!.value[node.name] == true) {
+                    notifierMap['automata']!.value.nodes.remove(node);
+                  }
+                }
+                // on delete les relation qui ont un des node selectionne
+                for (var relation in notifierMap['automata']!.value.relations) {
+                  if (notifierMap['selectedWidget']!.value[relation.begin.name] ==
+                      true ||
+                      notifierMap['selectedWidget']!.value[relation.end.name] ==
+                          true) {
+                    notifierMap['automata']!.value.relations.remove(relation);
+                  }
+                }
+              }
+            },
+            child: Scaffold(
+              body: Center(
+                // Column  with 2 containers
+                child: Column(
+                  // Ici, le parent des widgets que je vais utiliser pour les notifier
+                  children: [
+                    topMenu,
+                    topPalette,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        // color: Color.fromRGBO(0, 0, 0, 1),
                       ),
-
-                      Expanded( //GraphScene
-                        flex: 9,
-                        child:
-                        Container(
-                          height: MediaQuery.of(context).size.height-102, //size of toolbar and palette
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(border:  Border.all(color: Colors.black)),
-                          child: ValueListenableBuilder<dynamic>(
-                            builder: (BuildContext context, dynamic value, Widget? child) {// print('valueSelected in main : $value');
-                              return
-                              Container(
-                                  child: AnimatedCrossFade(
-                                  firstChild: graphScene,
-                                  secondChild: codeEditor,
-                                  crossFadeState: value ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                                  duration: const Duration(milliseconds: 50),
-                                )
-                              );
-                            },
-                            valueListenable: notifierMap['activeEditingWidget']!,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            //Left MENU
+                            flex: 1,
+                            child: leftMenu,
                           ),
-                        ),
+                          Expanded(
+                            //GraphScene
+                            flex: 9,
+                            child: Container(
+                              height: MediaQuery.of(context).size.height -
+                                  102, //size of toolbar and palette
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black)),
+                              child: ValueListenableBuilder<dynamic>(
+                                builder: (BuildContext context, dynamic value,
+                                    Widget? child) {
+                                  // print('valueSelected in main : $value');
+                                  return Container(
+                                      child: AnimatedCrossFade(
+                                        firstChild: graphScene,
+                                        secondChild: codeEditor,
+                                        crossFadeState: value
+                                            ? CrossFadeState.showFirst
+                                            : CrossFadeState.showSecond,
+                                        duration: const Duration(milliseconds: 50),
+                                      ));
+                                },
+                                valueListenable:
+                                notifierMap['activeEditingWidget']!,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            ),
-          floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.cached, color: Colors.black),
-            onPressed: () => {
-              notifierMap['activeEditingWidget']?.value = !notifierMap['activeEditingWidget']?.value,
-            }
-          ),
-        )
-
-  );
+              ),
+              floatingActionButton: FloatingActionButton(
+                  child: const Icon(Icons.cached, color: Colors.black),
+                  onPressed: () => {
+                    notifierMap['activeEditingWidget']?.value =
+                    !notifierMap['activeEditingWidget']?.value,
+                  }),
+            )));
   }
 
-  // double getLeftValue(key) {
-  //   RenderBox box = key.currentContext?.findRenderObject() as RenderBox;
-  //   Offset position = box.localToGlobal(Offset.zero); //this is global position
-  //   double yEdition = position.dy; //this is y
-  //   print(yEdition);
-  //   return yEdition;
-  // }
+// double getLeftValue(key) {
+//   RenderBox box = key.currentContext?.findRenderObject() as RenderBox;
+//   Offset position = box.localToGlobal(Offset.zero); //this is global position
+//   double yEdition = position.dy; //this is y
+//   print(yEdition);
+//   return yEdition;
+// }
 }

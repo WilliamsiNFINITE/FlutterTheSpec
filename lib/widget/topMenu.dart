@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../automaton.dart';
 import '../logic/utils.dart';
 
 class TopMenu extends Container {
-
   Map<String, ValueNotifier<dynamic>> notifierMap;
   File? jsonFile;
   TopMenu({super.key, required this.notifierMap});
@@ -13,13 +13,10 @@ class TopMenu extends Container {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border:  Border.all(color: Colors.black),
-          color: const Color.fromRGBO(220, 220, 220, 1)
-      ),
-
+          border: Border.all(color: Colors.black),
+          color: const Color.fromRGBO(220, 220, 220, 1)),
       height: 50,
       width: MediaQuery.of(context).size.width,
-
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -30,93 +27,131 @@ class TopMenu extends Container {
               style: TextButton.styleFrom(
                 foregroundColor: Colors.blue,
               ),
-              child: const Text('Fichier', style: TextStyle(color: Colors.black)),
+              child: const Text('Fichier',
+                  style: TextStyle(color: Colors.black)),
               onPressed: () {
                 // Afficher les 4 boutons dans un menu déroulant
                 showMenu(
                     context: context,
                     // position: const RelativeRect.fromRect(new Rect.fromPoints(new Offset(0.0, 55.0), new Offset(0.0, 55.0)), new Rect.fromPoints(new Offset(50.0, 5.0), new Offset(200.0, 500.0))),
-                    position: const RelativeRect.fromLTRB(15, 52, 15, 0), //TODO éviter de coder en dur la position du menu
-                    items: ["Nouveau", "Ouvrir", "Enregistrer"].map((e) => PopupMenuItem(child: Text(e), value: e, onTap: ()=>{topMenuHandler(e, context)})).toList());
+                    position: const RelativeRect.fromLTRB(15, 52, 15,
+                        0), //TODO éviter de coder en dur la position du menu
+                    items: ["Nouveau", "Ouvrir", "Enregistrer"]
+                        .map((e) => PopupMenuItem(
+                        child: Text(e),
+                        value: e,
+                        onTap: () => {topMenuHandler(e, context)}))
+                        .toList());
                 print('Fichier');
               },
             ),
             TextButton(
-              child: const Text('Edition', style: TextStyle(color: Colors.black)),
+              child: const Text('Edition',
+                  style: TextStyle(color: Colors.black)),
               onPressed: () {
                 showMenu(
                     context: context,
-                    position: const RelativeRect.fromLTRB(75, 52, 75, 0), //TODO éviter de coder en dur la position du menu
-                    items: ["Annuler", "Refaire", "Copier", "Couper", "Coller"].map((e) => PopupMenuItem(child: Text(e), value: e)).toList());
+                    position: const RelativeRect.fromLTRB(75, 52, 75,
+                        0), //TODO éviter de coder en dur la position du menu
+                    items: [
+                      "Annuler",
+                      "Refaire",
+                      "Copier",
+                      "Couper",
+                      "Coller"
+                    ]
+                        .map((e) => PopupMenuItem(child: Text(e), value: e))
+                        .toList());
 
                 print('Edition');
               },
             ),
             TextButton(
-              child: const Text('Vue', style: TextStyle(color: Colors.black)),
+              child:
+              const Text('Vue', style: TextStyle(color: Colors.black)),
               onPressed: () {
                 showMenu(
                     context: context,
-                    position: const RelativeRect.fromLTRB(135, 52, 135, 0), //TODO éviter de coder en dur la position du menu
-                    items: ["Zoom Adapté", "Zoomer", "Dézoomer", "Etiquettes", "Grille"].map((e) => PopupMenuItem(child: Text(e), value: e)).toList());
+                    position: const RelativeRect.fromLTRB(135, 52, 135,
+                        0), //TODO éviter de coder en dur la position du menu
+                    items: [
+                      "Zoom Adapté",
+                      "Zoomer",
+                      "Dézoomer",
+                      "Etiquettes",
+                      "Grille"
+                    ]
+                        .map((e) => PopupMenuItem(child: Text(e), value: e))
+                        .toList());
 
                 print('Vue');
               },
             ),
             TextButton(
-              child: const Text('Outils', style: TextStyle(color: Colors.black)),
+              child: const Text('Outils',
+                  style: TextStyle(color: Colors.black)),
               onPressed: () {
                 showMenu(
                     context: context,
-                    position: const RelativeRect.fromLTRB(190, 52, 190, 0), //TODO éviter de coder en dur la position du menu
-                    items: ["Vérifier la synthaxe"].map((e) => PopupMenuItem(child: Text(e), value: e)).toList());
+                    position: const RelativeRect.fromLTRB(190, 52, 190,
+                        0), //TODO éviter de coder en dur la position du menu
+                    items: ["Vérifier la synthaxe"]
+                        .map((e) => PopupMenuItem(child: Text(e), value: e))
+                        .toList());
 
                 print('Outils');
               },
             ),
             TextButton(
-              child: const Text('Options', style: TextStyle(color: Colors.black)),
+              child: const Text('Options',
+                  style: TextStyle(color: Colors.black)),
               onPressed: () {
                 //get the automate from graphScene
                 // TODO: implement onPressed
               },
             ),
             TextButton(
-              child: const Text('Aide', style: TextStyle(color: Colors.black)),
+              child:
+              const Text('Aide', style: TextStyle(color: Colors.black)),
               onPressed: () {
                 showMenu(
                     context: context,
-                    position: const RelativeRect.fromLTRB(310, 52, 310, 0), //TODO éviter de coder en dur la position du menu
-                    items: ["A propos"].map((e) => PopupMenuItem(child: Text(e), value: e, onTap: ()=>{
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("A propos"),
-                              content: const Text("Flutter The Spec est un logiciel de création de machines à états finis."),
-                              actions: [
-                                TextButton(
-                                  child: const Text("Fermer"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          }
-                      )
-                    })).toList());
+                    position: const RelativeRect.fromLTRB(310, 52, 310,
+                        0), //TODO éviter de coder en dur la position du menu
+                    items: ["A propos"]
+                        .map((e) => PopupMenuItem(
+                        child: Text(e),
+                        value: e,
+                        onTap: () => {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("A propos"),
+                                  content: const Text(
+                                      "Flutter The Spec est un logiciel de création de machines à états finis."),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text("Fermer"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              })
+                        }))
+                        .toList());
 
                 print('Aide');
               },
             ),
           ],
-
         ),
       ),
     );
-
   }
+
   void topMenuHandler(String value, BuildContext context) {
     switch (value) {
       case "Nouveau":
@@ -183,7 +218,8 @@ class TopMenu extends Container {
             builder: (BuildContext context) {
               return const AlertDialog(
                 title: Text('Flutter the spec'),
-                content: Text('Application de création de machines à états finis'),
+                content:
+                Text('Application de création de machines à états finis'),
               );
             });
 
