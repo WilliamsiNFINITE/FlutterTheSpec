@@ -86,7 +86,6 @@ class GraphSceneState extends State<GraphScene> {
 
 
     notifierMap['automata']?.addListener(() {
-      print('automata changed in graphSceneState up');
       setState(() {
         automate = notifierMap['automata']?.value;
         nodes = automate.nodes;

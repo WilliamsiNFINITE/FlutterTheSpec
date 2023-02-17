@@ -33,6 +33,8 @@ class NodeWidgetState extends State<NodeWidget> {
   late double size;
   Offset? _tapPosition;
 
+  var toprint;
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +43,14 @@ class NodeWidgetState extends State<NodeWidget> {
     this.node = widget.node;
     this.size = widget.size;
     this.onDragStarted = widget.onDragStarted;
+
+    notifierMap['selectedWidget']?.addListener(() {
+      setState(() {
+        isSelected = notifierMap['selectedWidget']?.value[node.name.toString()];
+      });
+    });
+
+
   }
 
   @override
@@ -78,7 +88,8 @@ class NodeWidgetState extends State<NodeWidget> {
                 notifierMap[node.name.toString()]?.value = isSelected;
               }
             }),
-            print('taped node widget'),
+            toprint = notifierMap['selectedWidget']!.value,
+            print('taped node widget : $toprint'),
 
             // print('tap node widget $drawLineNotifier'),
           },
@@ -114,7 +125,7 @@ class NodeWidgetState extends State<NodeWidget> {
               width: size,
               height: size,
               decoration: BoxDecoration(
-                color: notifierMap["selectedWidget"]?.value[node.name.toString()]
+                color: isSelected
                     ? Colors.blueAccent.shade100
                     : Colors.blueAccent,
                 border: Border.all(color: Colors.black),

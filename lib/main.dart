@@ -78,22 +78,39 @@ class Home extends StatelessWidget {
             focusNode: FocusNode(),
             onKey: (RawKeyEvent event) {
               if (event.isKeyPressed(LogicalKeyboardKey.delete)) {
+                // we make a copy of the list of nodes
+                var notifierMapCopy = new Map.from(notifierMap);
+                print('lui');
+                print(notifierMapCopy['selectedWidget']!.value);
                 print('delete key pressed');
                 // on delete les node selctionne dans la liste
                 for (var node in notifierMap['automata']!.value.nodes) {
                   if (notifierMap['selectedWidget']!.value[node.name] == true) {
-                    notifierMap['automata']!.value.nodes.remove(node);
+                    notifierMap['selectedWidget']!.value[node.name] = false;
+                    print(notifierMap['selectedWidget']!.value);
+                    try {
+                      // notifierMap['automata']!.value.nodes.remove(node);
+                      // notifierMap['selectedWidget']!.value.removeWhere((key, value) => key == node.name);
+                      print('node to delete : ${node.name}');
+                    } catch (e) {
+                      print('error : $e');
+                    }
                   }
                 }
                 // on delete les relation qui ont un des node selectionne
                 for (var relation in notifierMap['automata']!.value.relations) {
-                  if (notifierMap['selectedWidget']!.value[relation.begin.name] ==
+                  if (notifierMap['selectedWidget']!.value[relation.source] ==
                       true ||
-                      notifierMap['selectedWidget']!.value[relation.end.name] ==
+                      notifierMap['selectedWidget']!.value[relation.target] ==
                           true) {
                     notifierMap['automata']!.value.relations.remove(relation);
                   }
                 }
+                // notifierMap['automate']?.value.nodes = nodesCopy;
+                notifierMap['automata']?.notifyListeners();
+                notifierMap['selectedWidget']?.notifyListeners();
+                print('lui');
+                print(notifierMapCopy['selectedWidget']!.value);
               }
             },
             child: Scaffold(
