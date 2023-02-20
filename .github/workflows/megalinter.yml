@@ -29,7 +29,7 @@ jobs:
         uses: oxsecurity/megalinter@v6.19.0
         env:
           DISABLE: SPELL
-          DISABLE_LINTERS: GROOVY 
+          DISABLE_LINTERS: CPP_CPPLINT
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
         if: ${{ success() }} || ${{ failure() }}
