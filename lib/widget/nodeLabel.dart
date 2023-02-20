@@ -24,15 +24,25 @@ class NodeLabelState extends State<NodeLabel> {
   void initState() {
     this.notifierMap = widget.notifierMap;
     this.automate = notifierMap['automata']?.value;
-    this.offset = automate.nodes.last.offset;
     this.label = automate.nodes.last.name;
+    // find the right offset from the name of the node (label)
+    for (var node in automate.nodes) {
+      if (node.name == label) {
+        this.offset = node.offset;
+      }
+    }
+
     print('offset: $offset');
 
 
     notifierMap['automata']?.addListener(() {
       setState(() {
         automate = notifierMap['automata']?.value;
-        offset = automate.nodes.last.offset;
+        for (var node in automate.nodes) {
+          if (node.name == label) {
+            this.offset = node.offset;
+          }
+        }
       });
     });
 

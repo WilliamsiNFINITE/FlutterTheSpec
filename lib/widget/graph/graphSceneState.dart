@@ -132,10 +132,25 @@ class GraphSceneState extends State<GraphScene> {
               transformationController: _transformationController,
               child: Stack(
                 children: <Widget>[
-                  // CustomPaint(
-                  //   size: const Size(double.infinity, double.infinity),
-                  //   painter: RelationPainter(nodeMap: nodeMap, relations: relations),
-                  // ),
+
+                  ValueListenableBuilder<dynamic>(
+                    builder: (BuildContext context, dynamic value, Widget? child) {
+                      automate = value;
+                      nodeMap = {};
+                      for (Node node in automate.nodes) {
+                        nodeMap[node] = Offset(node.offset.dx, node.offset.dy);
+                      }
+                      relations = automate.relations;
+                      // var toprint = value.toJson();
+                      // var autoToPrint = automate.toJson();
+                      return CustomPaint(
+                        size: const Size(double.infinity, double.infinity),
+                        painter: RelationPainter(nodeMap: nodeMap, relations: relations),
+                      );
+                    },
+                    valueListenable: notifierMap['automata']!,
+                  ),
+
                   ..._buildNodes(),
                   ..._buildLabels(),
                   // ..._buildRelations(),
@@ -153,6 +168,7 @@ class GraphSceneState extends State<GraphScene> {
           onDragStarted: onDragStarted(nodeToBuild),
           notifierMap: notifierMap));
     });
+    // notifierMap['automata']?.notifyListeners();
     return res;
   }
 

@@ -114,6 +114,7 @@ class NodeWidgetState extends State<NodeWidget> {
                       (MediaQuery.of(context).size.width * 0.1),
                   data.globalPosition.dy - 100); //offset from the menu
             }),
+            notifierMap['automata']?.notifyListeners(),
           },
           onPanEnd: (data) => {
             setState(() {
