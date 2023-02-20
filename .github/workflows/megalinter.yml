@@ -29,11 +29,7 @@ jobs:
         uses: oxsecurity/megalinter@v6.19.0
         env:
           DISABLE: SPELL
-          DISABLE_LINTERS: 
-            - MARKDOWN_MARKDOWN_LINK_CHECK
-            - CPP_CPPLINT
-            - C_CPPLINT
-            - GROOVY 
+          DISABLE_LINTERS: GROOVY 
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
         if: ${{ success() }} || ${{ failure() }}
