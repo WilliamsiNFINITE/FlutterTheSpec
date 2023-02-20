@@ -26,10 +26,14 @@ jobs:
       - name: MegaLinter
       # You may pin to the exact commit or the version.
       # uses: oxsecurity/megalinter@f14608fee2e1b307de913042d6aad31d06dccf2b
-        uses: oxsecurity/megalinter@v6.12.0
+        uses: oxsecurity/megalinter@v6.19.0
         env:
           DISABLE: SPELL
-          DISABLE_LINTERS: MARKDOWN_MARKDOWN_LINK_CHECK, CPP_CPPLINT, C_CPPLINT, GROOVY # Disable cpplint, groovy because it is generated code
+          DISABLE_LINTERS: 
+            - MARKDOWN_MARKDOWN_LINK_CHECK
+            - CPP_CPPLINT
+            - C_CPPLINT
+            - GROOVY 
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
         if: ${{ success() }} || ${{ failure() }}
