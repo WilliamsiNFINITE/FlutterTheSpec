@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: megalinter
+name: main
 
 # Controls when the workflow will run
 on:
@@ -39,6 +39,23 @@ jobs:
           path: |
             report
             mega-linter.log
+  tests:
+    name: Tests_flutter
+    runs-on: ubuntu-latest
+    steps:
+      # Git Checkout
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      # Flutter Setup
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+      # Flutter Test
+      - name: Run Flutter Test
+        run: flutter test test/automata_test.dart
+
+
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
