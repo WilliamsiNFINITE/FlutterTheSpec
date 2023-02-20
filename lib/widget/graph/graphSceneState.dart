@@ -141,8 +141,6 @@ class GraphSceneState extends State<GraphScene> {
                         nodeMap[node] = Offset(node.offset.dx, node.offset.dy);
                       }
                       relations = automate.relations;
-                      // var toprint = value.toJson();
-                      // var autoToPrint = automate.toJson();
                       return CustomPaint(
                         size: const Size(double.infinity, double.infinity),
                         painter: RelationPainter(nodeMap: nodeMap, relations: relations),
