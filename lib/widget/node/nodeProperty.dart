@@ -65,15 +65,6 @@ class NodePropertyState extends State<NodeProperty> {
                   });
                 },
               ),
-              Text('Final:'),
-              Checkbox(
-                value: node.isFinal,
-                onChanged: (value) {
-                  setState(() {
-                    node.isFinal = value!;
-                  });
-                },
-              ),
               Text('Urgent:'),
               Checkbox(
                 value: node.isUrgent,
@@ -97,7 +88,6 @@ class NodePropertyState extends State<NodeProperty> {
                       node.isUrgent = false;
                     }
                   });
-                  // node.isEngaged = value!;
                 },
               ),
             ],
