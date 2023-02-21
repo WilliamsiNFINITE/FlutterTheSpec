@@ -102,21 +102,3 @@ class Relation {
         };
     }
 }
-
-// class Predecessor {
-//
-//     Node node;
-//     Relation relation;
-//
-//     Predecessor({required this.node, required this.relation});
-//
-// }
-//
-// class Successor {
-//
-//     Node node;
-//     Relation relation;
-//     Successor({required this.node, required this.relation});
-//
-// }
-//

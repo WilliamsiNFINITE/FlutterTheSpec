@@ -128,7 +128,13 @@ class GraphSceneState extends State<GraphScene> {
               transformationController: _transformationController,
               child: Stack(
                 children: <Widget>[
-
+                  // ValueListenableBuilder<dynamic>(
+                  //   builder: (BuildContext context, dynamic value, Widget? child) {
+                  //     automate = value;
+                  //     return Text('${automate.toJson()}');
+                  //   },
+                  //   valueListenable: notifierMap['automata']!,
+                  // ),
                   ValueListenableBuilder<dynamic>(
                     builder: (BuildContext context, dynamic value, Widget? child) {
                       automate = value;
@@ -144,7 +150,6 @@ class GraphSceneState extends State<GraphScene> {
                     },
                     valueListenable: notifierMap['automata']!,
                   ),
-
                   ..._buildNodes(),
                   ..._buildLabels(),
                   // ..._buildRelations(),
@@ -155,6 +160,10 @@ class GraphSceneState extends State<GraphScene> {
 
   List<Widget> _buildNodes() {
     final res = <Widget>[];
+    automate = notifierMap['automata']?.value;
+    print('build nodes');
+    print(automate.toJson());
+
     automate.nodes.forEach((nodeToBuild) {
       res.add(NodeWidget(
           offset: nodeToBuild.offset,
@@ -163,18 +172,24 @@ class GraphSceneState extends State<GraphScene> {
           notifierMap: notifierMap));
     });
     // notifierMap['automata']?.notifyListeners();
+    print('res');
+    print(res);
     return res;
   }
 
   List<Widget> _buildLabels() {
+    automate = notifierMap['automata']?.value;
     final res = <Widget>[];
     automate.nodes.forEach((node) {
-      res.add(NodeLabel(notifierMap: notifierMap));
+      print('node in build label: ${node.toJson()}');
+      res.add(NodeLabel(notifierMap: notifierMap, node: node));
     });
+    print('res : $res');
     return res;
   }
 
   List<Widget> _buildRelations() {
+    automate = notifierMap['automata']?.value;
     final res = <Widget>[];
     automate.relations.forEach((relation) {
       res.add(RelationWidget(
@@ -209,6 +224,6 @@ class GraphSceneState extends State<GraphScene> {
   void addNewNode(String name, double dx, double dy) {
     automate = notifierMap['automata']?.value;
     automate.nodes.add(Node(name: name, offset: Offset(dx, dy)));
-    // notifierMap['automata']?.value = automate; // not required
+    notifierMap['automata']?.value = automate; // not required
   }
 }

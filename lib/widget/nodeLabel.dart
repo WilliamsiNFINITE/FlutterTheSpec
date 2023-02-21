@@ -3,9 +3,10 @@ import '../automaton.dart';
 
 class NodeLabel extends StatefulWidget {
   final Map<String, ValueNotifier<dynamic>> notifierMap;
+  final Node node;
   final double size = 100;
 
-  NodeLabel({super.key, required this.notifierMap});
+  NodeLabel({super.key, required this.notifierMap, required this.node});
 
   @override
   State<StatefulWidget> createState() => NodeLabelState();
@@ -16,6 +17,7 @@ class NodeLabelState extends State<NodeLabel> {
   bool isDragged = false;
   late Automaton automate;
   late Map<String, ValueNotifier<dynamic>> notifierMap;
+  late Node node;
   late Offset offset;
   late String label;
   double size = 100;
@@ -23,29 +25,22 @@ class NodeLabelState extends State<NodeLabel> {
   @override
   void initState() {
     this.notifierMap = widget.notifierMap;
+    this.node = notifierMap['automata']?.value.nodes.last;
     this.automate = notifierMap['automata']?.value;
-    this.label = automate.nodes.last.name;
-    // find the right offset from the name of the node (label)
-    for (var node in automate.nodes) {
-      if (node.name == label) {
-        this.offset = node.offset;
-      }
-    }
-
-    print('offset: $offset');
-
+    this.label = this.node.name;
+    this.offset = this.node.offset;
 
     notifierMap['automata']?.addListener(() {
       setState(() {
         automate = notifierMap['automata']?.value;
-        for (var node in automate.nodes) {
-          if (node.name == label) {
-            this.offset = node.offset;
+        for (var nodeIter in automate.nodes) {
+          if (nodeIter.offset == node.offset) {
+            offset = nodeIter.offset;
+            label = nodeIter.name;
           }
         }
       });
     });
-
   }
 
 
