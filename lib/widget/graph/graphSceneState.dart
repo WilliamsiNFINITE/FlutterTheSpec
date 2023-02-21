@@ -125,10 +125,6 @@ class GraphSceneState extends State<GraphScene> {
         },
         child: Center(
           child: InteractiveViewer(
-              // boundaryMargin: const EdgeInsets.all(2.0),
-              // minScale: 0.001,
-              // maxScale: 10.5,
-              // constrained: true,
               transformationController: _transformationController,
               child: Stack(
                 children: <Widget>[
@@ -207,14 +203,12 @@ class GraphSceneState extends State<GraphScene> {
         node.offset = Offset(x, y);
       }
     }
-    notifierMap['automata']?.value = automate;
+    // notifierMap['automata']?.notifyListeners(); // not required
   }
 
   void addNewNode(String name, double dx, double dy) {
     automate = notifierMap['automata']?.value;
     automate.nodes.add(Node(name: name, offset: Offset(dx, dy)));
-    notifierMap['automata']?.value = automate;
-    print(notifierMap['automata']?.value.nodes[0].name);
-    print('addNewNode');
+    // notifierMap['automata']?.value = automate; // not required
   }
 }

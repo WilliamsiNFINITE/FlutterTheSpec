@@ -218,8 +218,17 @@ class PaletteButtonState extends State<PaletteButton>{
               onPressed: () {
                 notifierMap['addRelationButton']?.value = !notifierMap['addRelationButton']?.value;
                 if (notifierMap['addRelationButton']?.value) {
+                  // on désactive les autres boutons
                   notifierMap['selectButton']?.value = false;
                   notifierMap['addNodeButton']?.value = false;
+
+                  // // on désactive le mode de sélection (not working)
+                  // for (var node in notifierMap['automata']!.value.nodes) {
+                  //   if (notifierMap['selectedWidget']!.value[node.name] ==
+                  //       true) {
+                  //     notifierMap['selectedWidget']!.value[node.name] = false;
+                  //   }
+                  // }
                 }
                 print('Ajouter une relation');
               },
