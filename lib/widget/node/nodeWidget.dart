@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_the_spec/widget/relationPainter.dart';
 import 'package:widget_arrows/widget_arrows.dart';
-import '../automaton.dart';
+import '../../automaton.dart';
+import 'nodeProperty.dart';
 
 class NodeWidget extends StatefulWidget {
   final Map<String, ValueNotifier<dynamic>> notifierMap;
@@ -123,11 +124,11 @@ class NodeWidgetState extends State<NodeWidget> {
             Container(
               width: size,
               height: size,
-              decoration: BoxDecoration(
-                color:
-                    isSelected ? Colors.blueAccent.shade100 : Colors.blueAccent,
-                border: Border.all(color: Colors.black),
-                shape: BoxShape.circle,
+              decoration:
+              BoxDecoration(
+                color: node.isInitial&&isSelected? Colors.grey : node.isInitial ? Colors.grey.shade700 : node.isFinal&&isSelected? Colors.orange : node.isFinal ? Colors.deepOrange  : isSelected ? Colors.blueAccent.shade100 : Colors.blueAccent,
+                shape: node.isUrgent? BoxShape.rectangle : BoxShape.circle,
+                border: Border.all(color: Colors.black, width: 2),
               ),
             ),
             // ...List<Widget> _buildArrows(),
@@ -136,65 +137,13 @@ class NodeWidgetState extends State<NodeWidget> {
   }
 
   Future openNodeDialog() async {
-    return showDialog(
+    await showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Editer le noeud'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text('Nom:'),
-                  TextField(
-                    onChanged: (value) {
-                      // change the name of the node in the notifierMap
-                      node.name = value;
-                      // node.name = value;
-                    },
-                  ),
-                  Text('Initial:'),
-                  Checkbox(
-                    value: node.isInitial,
-                    onChanged: (value) {
-                      node.isInitial = value!;
-                    },
-                  ),
-                  Text('Final:'),
-                  Checkbox(
-                    value: node.isFinal,
-                    onChanged: (value) {
-                      node.isFinal = value!;
-                    },
-                  ),
-                  Text('Urgent:'),
-                  Checkbox(
-                    value: node.isUrgent,
-                    onChanged: (value) {
-                      node.isUrgent = value!;
-                    },
-                  ),
-                  Text('Engagé:'),
-                  Checkbox(
-                    value: node.isEngaged,
-                    onChanged: (value) {
-                      node.isEngaged = value!;
-                    },
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Save'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  notifierMap['automata']?.notifyListeners();
-                },
-              ),
-            ],
-          );
+          return NodeProperty(node: node, notifierMap: notifierMap);
         });
   }
+
 
   void addNewRelation() {
     // add a new relation between the begin and end node
@@ -214,3 +163,4 @@ class NodeWidgetState extends State<NodeWidget> {
     notifierMap['automata']?.notifyListeners();
   }
 }
+//

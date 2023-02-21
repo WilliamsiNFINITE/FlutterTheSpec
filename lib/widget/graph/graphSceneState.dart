@@ -1,9 +1,9 @@
 import 'dart:convert';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_the_spec/widget/nodeLabel.dart';
+import 'package:flutter_the_spec/widget/node/nodeLabel.dart';
 import '../../automaton.dart';
-import '../nodeWidget.dart';
+import '../node/nodeWidget.dart';
 import '../relationWidget.dart';
 import 'graphScene.dart';
 import '../relationPainter.dart';

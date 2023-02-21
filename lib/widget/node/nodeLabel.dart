@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../automaton.dart';
+import '../../automaton.dart';
 
 class NodeLabel extends StatefulWidget {
   final Map<String, ValueNotifier<dynamic>> notifierMap;
