@@ -28,6 +28,7 @@ class Automaton {
 
 class Node {
 
+    // int id;
     String name;
     String invariant;
     String expIntensity;
@@ -35,10 +36,11 @@ class Node {
     bool isFinal;
     bool isUrgent;
     bool isEngaged;
+    bool isSelected;
     Offset offset;
 
     //
-    Node({this.name = "", this.invariant = "", this.expIntensity = "", this.isInitial = false, this.isFinal = false, this.isUrgent = false, this.isEngaged = false, this.offset = Offset.zero});
+    Node({this.name = "", this.invariant = "", this.expIntensity = "", this.isInitial = false, this.isFinal = false, this.isUrgent = false, this.isEngaged = false, this.isSelected = false, this.offset = Offset.zero});
 
 
     factory Node.fromJson(Map<String, dynamic> json) {
@@ -51,6 +53,7 @@ class Node {
             isInitial: json['isInitial'],
             isUrgent: json['isUrgent'],
             isEngaged: json['isEngaged'],
+            isSelected: json['isSelected'],
             offset: Offset(offset['x'], offset['y']),
         );
     }
@@ -63,6 +66,7 @@ class Node {
             'isInitial': isInitial,
             'isUrgent': isUrgent,
             'isEngaged': isEngaged,
+            'isSelected': isSelected,
             'offset': {'x': offset.dx, 'y': offset.dy},
         };
     }
@@ -74,8 +78,9 @@ class Node {
 
 class Relation {
 
-    String source;
-    String target;
+    // int id;
+    Node source;
+    Node target;
     String guard;
     String sync;
     String update;

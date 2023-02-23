@@ -6,14 +6,13 @@ import 'nodeProperty.dart';
 
 class NodeWidget extends StatefulWidget {
   final Map<String, ValueNotifier<dynamic>> notifierMap;
-  final Offset offset;
+  // final Offset offset;
   final Node node;
   final double size = 100;
   final Function onDragStarted;
 
   NodeWidget(
       {super.key,
-      required this.offset,
       required this.node,
       required this.onDragStarted,
       required this.notifierMap});
@@ -25,39 +24,37 @@ class NodeWidget extends StatefulWidget {
 class NodeWidgetState extends State<NodeWidget> {
   late Map<String, ValueNotifier<dynamic>> notifierMap;
   bool isDragged = false;
-  bool isSelected = false;
   bool isDrawing = false;
-  late Offset previousOffset;
   late Node node;
-  late Offset offset;
   late Function onDragStarted;
   late double size;
   Offset? _tapPosition;
-
-  var toprint;
 
   @override
   void initState() {
     super.initState();
     notifierMap = widget.notifierMap;
-    offset = widget.offset;
     node = widget.node;
     size = widget.size;
     onDragStarted = widget.onDragStarted;
 
-    notifierMap['selectedWidget']?.addListener(() {
+    notifierMap['automata']?.addListener(() {
       setState(() {
-        isSelected = notifierMap['selectedWidget']?.value[node.name.toString()];
+        for (var nodeIter in notifierMap['automata']?.value.nodes) {
+          if (nodeIter.name == node.name) {
+            node = nodeIter;
+          }
+        }
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    notifierMap["selectedWidget"]?.value[node.name.toString()] = isSelected;
+    // notifierMap["selectedWidget"]?.value[node.name] = isSelected;
     return Positioned(
-      left: offset.dx - size / 2,
-      top: offset.dy - size / 2,
+      left: node.offset.dx - size / 2,
+      top: node.offset.dy - size / 2,
       child: GestureDetector(
           onDoubleTap: () {
             // open a dialog window to edit the node properties
@@ -81,14 +78,12 @@ class NodeWidgetState extends State<NodeWidget> {
                     }
                   }
                   if (notifierMap['selectButton']?.value) {
-                    isSelected = !isSelected;
-                    notifierMap["selectedWidget"]?.value[node.name.toString()] =
-                        isSelected;
-                    notifierMap[node.name.toString()]?.value = isSelected;
+                    node.isSelected = !node.isSelected;
+                    notifierMap['automata']?.notifyListeners();
                   }
                 }),
-                toprint = notifierMap['selectedWidget']!.value,
-                print('taped node widget : $toprint'),
+                // print('taped node widget : ${notifierMap['selectedWidget']!.value}}'),
+                // print('taped node widget : ${notifierMap['automata']!.value}}'),
 
                 // print('tap node widget $drawLineNotifier'),
               },
@@ -104,7 +99,7 @@ class NodeWidgetState extends State<NodeWidget> {
           onPanUpdate: (data) => {
                 setState(() {
                   isDragged = true;
-                  offset = Offset(
+                  node.offset = Offset(
                       data.globalPosition.dx -
                           (MediaQuery.of(context).size.width * 0.1),
                       data.globalPosition.dy - 100); //offset from the menu
@@ -126,9 +121,9 @@ class NodeWidgetState extends State<NodeWidget> {
               height: size,
               decoration:
               BoxDecoration(
-                color: node.isInitial&&isSelected? Colors.grey : node.isInitial ? Colors.grey.shade700 : node.isFinal&&isSelected? Colors.orange : node.isFinal ? Colors.deepOrange  : isSelected ? Colors.blueAccent.shade100 : Colors.blueAccent,
+                color: node.isInitial&&node.isSelected? Colors.grey : node.isInitial ? Colors.grey.shade700 : node.isSelected ? Colors.blueAccent.shade100 : Colors.blueAccent, //node.isInitial&&isSelected? Colors.grey : node.isInitial ? Colors.grey.shade700 : node.isFinal&&isSelected? Colors.orange : node.isFinal ? Colors.deepOrange  : isSelected ? Colors.blueAccent.shade100 : Colors.blueAccent,
                 shape: node.isUrgent? BoxShape.rectangle : BoxShape.circle,
-                border: Border.all(color: Colors.black, width: 2),
+                border: Border.all(color: Colors.black, width: node.isUrgent? 5 : 2),
               ),
             ),
             // ...List<Widget> _buildArrows(),
@@ -150,8 +145,8 @@ class NodeWidgetState extends State<NodeWidget> {
     if (notifierMap['beginNode']?.value != null &&
         notifierMap['endNode']?.value != null) {
       Relation relation = Relation(
-          source: notifierMap['beginNode']?.value.name,
-          target: notifierMap['endNode']?.value.name);
+          source: notifierMap['beginNode']?.value,
+          target: notifierMap['endNode']?.value);
 
       Automaton automata = notifierMap['automata']?.value;
       automata.relations.add(relation);

@@ -56,7 +56,7 @@ class Home extends StatelessWidget {
     notifierMap['drawLineNotifier'] = ValueNotifier(false);
     notifierMap['beginNode'] = ValueNotifier<Node>(Node(name: 'begin node'));
     notifierMap['endNode'] = ValueNotifier<Node>(Node(name: 'end node'));
-    notifierMap["selectedWidget"] = ValueNotifier<Map<String,bool>>({}); //List of selected widget
+    notifierMap["selectedWidget"] = ValueNotifier<Map<dynamic,bool>>({}); //List of selected widget
 
     //
 
@@ -79,36 +79,32 @@ class Home extends StatelessWidget {
             focusNode: FocusNode(),
             onKey: (RawKeyEvent event) {
               if (event.isKeyPressed(LogicalKeyboardKey.delete)) {
-                // we make a copy of the list of nodes
+                print('delete pressed');
 
-                // on delete les node selctionne dans la liste
-                // Faire des deux iérations sur la liste de noeuds pour voir les noeuds marqué --> liste de noeuds marqué et ensuite je les vire de la liste de noeuds normale
-                // ou bien garbage collecting strategy. Je parcours la liste et je mets les noeuds pas marqué dans une liste qui va être la liste remplaçante de l'ancienne liste.
-
+                // on delete les nodes selectionnes
                 List<Node> newNodes = [];
+                List<Node> oldNodes = [];
                 for (Node node in notifierMap['automata']!.value.nodes) {
-                  if (notifierMap['selectedWidget']!.value[node.name] == false) {
+                  if (!node.isSelected) {
                     newNodes.add(node);
+                  }
+                  else{
+                    oldNodes.add(node);
                   }
                 }
 
                 // on delete les relation qui ont un des node selectionne
                 List<Relation> newRelations = [];
                 for (Relation relation in notifierMap['automata']!.value.relations) {
-                  if (notifierMap['selectedWidget']!.value[relation.source] !=
-                      true &&
-                      notifierMap['selectedWidget']!.value[relation.target] !=
-                          true) {
-                    // notifierMap['automata']!.value.relations.remove(relation);
+                  if (!oldNodes.contains(relation.source) && !oldNodes.contains(relation.target)) {
                     newRelations.add(relation);
                   }
                 }
-                notifierMap['automata']!.value.nodes = newNodes;
-                notifierMap['automata']!.value.relations = newRelations;
+
+                notifierMap['automata']!.value = Automaton(nodes: newNodes, relations: newRelations);
                 print('newAutomata : ${notifierMap['automata']!.value.toJson()}');
-                // notifierMap['automate']?.value.nodes = nodesCopy;
                 notifierMap['automata']?.notifyListeners();
-                // notifierMap['selectedWidget']?.notifyListeners();
+
               }
             },
             child: Scaffold(

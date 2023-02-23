@@ -39,7 +39,24 @@ class NodePropertyState extends State<NodeProperty> {
               TextField(
                 controller: TextEditingController(text: node.name),
                 onChanged: (value) {
+                  Node previousNode = node;
+                  // update of the node
                   node.name = value;
+                  // update of the relations
+                  try{
+                    for (var relation in notifierMap['automaton']?.value.relations) {
+                      if (relation.source == previousNode) {
+                        relation.source.name = value;
+                      }
+                      if (relation.target == previousNode) {
+                        relation.target.name = value;
+                      }
+                    }
+                  }
+                  catch(e){
+                    print(e);
+                  }
+                  print(node.name);
                 },
               ),
               Text('Invariant:'),
