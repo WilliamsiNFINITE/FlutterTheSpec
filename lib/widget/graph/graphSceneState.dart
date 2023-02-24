@@ -63,7 +63,6 @@ class GraphSceneState extends State<GraphScene> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-
       onTap: () => {
         if (notifierMap['addNodeButton']?.value)
           {
@@ -83,24 +82,15 @@ class GraphSceneState extends State<GraphScene> {
       child: Center(
           child: InteractiveViewer(
         transformationController: _transformationController,
-        child:
-              Stack(children: <Widget> [
-              ValueListenableBuilder<dynamic>(
-                builder: (BuildContext context, dynamic value, Widget? child) {
-                  automate = value;
-                  return Text(automate.toJson().toString(),
-                  );
-                },
-                valueListenable: notifierMap['automata']!,
-              ),
-              CustomPaint(
-                size: const Size(double.infinity, double.infinity),
-                painter: RelationPainter(automaton: automate),
-              ),
-              ..._buildNodes(),
-              ..._buildLabels(),
-            ]
-        ),
+        child: Stack(children: <Widget>[
+          // be sure to add the custom painter first so it is at the bottom of the stack.
+          CustomPaint(
+            size: const Size(double.infinity, double.infinity),
+            painter: RelationPainter(automaton: automate),
+          ),
+          ..._buildNodes(),
+          ..._buildLabels(),
+        ]),
       )),
     );
   }

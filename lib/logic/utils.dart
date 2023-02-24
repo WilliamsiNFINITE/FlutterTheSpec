@@ -38,7 +38,6 @@ void importAutomaton(notifierMap) async {
 
     notifierMap['automata']?.value = automate;
 
-    print(notifierMap['automata']?.value.toJson());
     print('Import réussi');
   }
   else{
