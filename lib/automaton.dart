@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 class Automaton {
@@ -88,9 +89,13 @@ class Relation {
     Relation({required this.source, required this.target, this.guard = "", this.sync = "", this.update = ""});
 
     factory Relation.fromJson(Map<String, dynamic> json) {
+        //encode json to node
+
+        Node source = Node.fromJson(json['source']);
+        Node target = Node.fromJson(json['target']);
         return Relation(
-            source: json['source'],
-            target: json['target'],
+            source: source,
+            target: target,
             guard: json['guard'],
             sync: json['sync'],
             update: json['update']
