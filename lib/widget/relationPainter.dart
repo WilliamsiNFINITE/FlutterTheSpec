@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../automaton.dart';
 
@@ -30,6 +32,12 @@ class RelationPainter extends CustomPainter {
                   Paint()
                     ..color = Colors.black
                     ..strokeWidth = 2);
+
+              // draw the circle at the end of the line with an offset of 50 from the end (it is the radius of the circle)
+              Offset circleOffset;
+              double angle = atan2(end.dy - start.dy, end.dx - start.dx);
+              circleOffset = Offset(end.dx - 50 * cos(angle), end.dy - 50 * sin(angle));
+              canvas.drawCircle(circleOffset, 5, Paint()..color = Colors.black);
             }
           }
         }

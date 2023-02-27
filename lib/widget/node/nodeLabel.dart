@@ -25,7 +25,9 @@ class NodeLabelState extends State<NodeLabel> {
   @override
   void initState() {
     this.notifierMap = widget.notifierMap;
-    this.node = notifierMap['automata']?.value.nodes.last;
+
+    // this.node = widget.node; // case when the model is opened
+    this.node = notifierMap['automata']?.value.nodes.last; // case when the model is created
     this.automate = notifierMap['automata']?.value;
     this.label = this.node.name;
     this.offset = this.node.offset;
@@ -39,6 +41,7 @@ class NodeLabelState extends State<NodeLabel> {
             label = nodeIter.name;
           }
         }
+        // this.node = widget.node;
       });
     });
   }

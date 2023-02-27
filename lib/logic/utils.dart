@@ -35,15 +35,12 @@ void importAutomaton(notifierMap) async {
     var bytesFile = result.files.single.bytes;
     var jsonText = String.fromCharCodes(bytesFile!);
     Automaton automate = Automaton.fromJson(jsonDecode(jsonText));
-
     notifierMap['automata']?.value = automate;
-
     print('Import réussi');
   }
   else{
     print('Import échoué');
   }
-  // notifierMap['openButton']?.value = !notifierMap['openButton']?.value; //Button turned to false
 
 }
 
