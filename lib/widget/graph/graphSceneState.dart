@@ -82,15 +82,33 @@ class GraphSceneState extends State<GraphScene> {
       child: Center(
           child: InteractiveViewer(
         transformationController: _transformationController,
-        child: Stack(children: <Widget>[
-          // be sure to add the custom painter first so it is at the bottom of the stack.
-          CustomPaint(
-            size: const Size(double.infinity, double.infinity),
-            painter: RelationPainter(automaton: automate),
+        child:
+          ValueListenableBuilder(
+            valueListenable: notifierMap['automata']!,
+            builder: (context, value, child) {
+              print('automata changed in graphSceneState (builder)');
+              return Stack(children: <Widget>[
+                // be sure to add the custom painter first so it is at the bottom of the stack.
+                CustomPaint(
+                  size: const Size(double.infinity, double.infinity),
+                  painter: RelationPainter(automaton: automate),
+                ),
+                ..._buildNodes(),
+                ..._buildLabels(),
+              ]);
+            },
           ),
-          ..._buildNodes(),
-          ..._buildLabels(),
-        ]),
+
+        // Stack(children: <Widget>[
+        //   // be sure to add the custom painter first so it is at the bottom of the stack.
+        //   CustomPaint(
+        //     size: const Size(double.infinity, double.infinity),
+        //     painter: RelationPainter(automaton: automate),
+        //   ),
+        //   ..._buildNodes(),
+        //   ..._buildLabels(),
+        // ]),
+
       )),
     );
   }

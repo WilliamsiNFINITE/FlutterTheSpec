@@ -36,6 +36,7 @@ void importAutomaton(notifierMap) async {
     var jsonText = String.fromCharCodes(bytesFile!);
     Automaton automate = Automaton.fromJson(jsonDecode(jsonText));
     notifierMap['automata']?.value = automate;
+    notifierMap['automata']?.notifyListeners();
     print('Import réussi');
   }
   else{

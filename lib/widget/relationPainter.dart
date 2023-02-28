@@ -13,17 +13,23 @@ class RelationPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     //check if relations is empty
     if (automaton.relations.isEmpty) {
+      print('no relations to draw');
       return;
     }
     for (Relation relation in automaton.relations) {
+      print('relation: ${relation.source} -> ${relation.target}');
       //find the offsets and draw the line
       // print('relation: ${relation.source} -> ${relation.target}');
       for (Node node in automaton.nodes) {
-        if (node == relation.source) {
+        print('node: ${node.name}');
+        print('relation.source: ${relation.source.name}');
+        if (node.name == relation.source.name) {
+          print('found source node: ${node.name}');
           Offset start = node.offset;
           //find the ending offset
           for (Node node in automaton.nodes) {
-            if (node == relation.target) {
+            if (node.name == relation.target.name) {
+              print('found target node: ${node.name}');
               Offset end = node.offset;
               //draw the line
               canvas.drawLine(
@@ -43,8 +49,6 @@ class RelationPainter extends CustomPainter {
         }
       }
     }
-
-
   }
 
   @override
