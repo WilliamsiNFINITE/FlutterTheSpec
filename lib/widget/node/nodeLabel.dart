@@ -26,8 +26,18 @@ class NodeLabelState extends State<NodeLabel> {
   void initState() {
     this.notifierMap = widget.notifierMap;
 
-    // this.node = widget.node; // case when the model is opened
-    this.node = notifierMap['automata']?.value.nodes.last; // case when the model is created
+    // default value
+    if (notifierMap['imported']?.value == true) {
+      this.node = widget.node;
+      print('widget node');
+    }
+    else {
+      this.node = notifierMap['automata']?.value.nodes.last;
+      print('last node avec value :');
+      print(notifierMap['imported']?.value);
+    }
+
+    // this.node = notifierMap['automata']?.value.nodes.last; // case when the model is created
     this.automate = notifierMap['automata']?.value;
     this.label = this.node.name;
     this.offset = this.node.offset;
@@ -36,12 +46,25 @@ class NodeLabelState extends State<NodeLabel> {
       setState(() {
         automate = notifierMap['automata']?.value;
         for (var nodeIter in automate.nodes) {
-          if (nodeIter.offset == node.offset) {
+          if (nodeIter.name == node.name) {
             offset = nodeIter.offset;
             label = nodeIter.name;
           }
         }
         // this.node = widget.node;
+      });
+    });
+
+    notifierMap['imported']?.addListener(() {
+      setState(() {
+        if(notifierMap['imported']?.value == false) { // in case the model is empty
+          this.node = notifierMap['automata']?.value.nodes.last;
+          print('last node bis');
+        }
+        else {
+          this.node = widget.node;
+          print('widget node bis');
+        }
       });
     });
   }

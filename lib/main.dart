@@ -48,6 +48,7 @@ class Home extends StatelessWidget {
     // Automata
     notifierMap['automata'] =
         ValueNotifier<dynamic>(Automaton(nodes: [], relations: []));
+    notifierMap['imported'] = ValueNotifier<bool>(false);
 
     // Active editing widget
     notifierMap['activeEditingWidget'] = ValueNotifier<bool>(true);

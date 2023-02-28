@@ -53,7 +53,6 @@ class GraphSceneState extends State<GraphScene> {
     notifierMap['automata']?.addListener(() {
       setState(() {
         automate = notifierMap['automata']?.value;
-        print('automata changed in graphSceneState');
       });
     });
   }
@@ -86,7 +85,6 @@ class GraphSceneState extends State<GraphScene> {
           ValueListenableBuilder(
             valueListenable: notifierMap['automata']!,
             builder: (context, value, child) {
-              print('automata changed in graphSceneState (builder)');
               return Stack(children: <Widget>[
                 // be sure to add the custom painter first so it is at the bottom of the stack.
                 CustomPaint(
@@ -98,17 +96,6 @@ class GraphSceneState extends State<GraphScene> {
               ]);
             },
           ),
-
-        // Stack(children: <Widget>[
-        //   // be sure to add the custom painter first so it is at the bottom of the stack.
-        //   CustomPaint(
-        //     size: const Size(double.infinity, double.infinity),
-        //     painter: RelationPainter(automaton: automate),
-        //   ),
-        //   ..._buildNodes(),
-        //   ..._buildLabels(),
-        // ]),
-
       )),
     );
   }
@@ -136,6 +123,7 @@ class GraphSceneState extends State<GraphScene> {
     automate.nodes.forEach((node) {
       res.add(NodeLabel(notifierMap: notifierMap, node: node));
     });
+    // notifierMap['imported']?.value = false;
     return res;
   }
 

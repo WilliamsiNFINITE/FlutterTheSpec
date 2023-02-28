@@ -26,7 +26,8 @@ void exportAutomaton(notifierMap) {
 
 void importAutomaton(notifierMap) async {
 
-  notifierMap['openButton']?.value = !notifierMap['openButton']?.value; //Button turned to true
+  notifierMap['imported']?.value = !notifierMap['imported']?.value; //Button turned to true
+  print('Importing...${notifierMap['imported']?.value}}');
   final result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: ['json'],
@@ -37,6 +38,7 @@ void importAutomaton(notifierMap) async {
     Automaton automate = Automaton.fromJson(jsonDecode(jsonText));
     notifierMap['automata']?.value = automate;
     notifierMap['automata']?.notifyListeners();
+    notifierMap['imported']?.notifyListeners();
     print('Import réussi');
   }
   else{
